@@ -25,3 +25,14 @@ bibliography: RJreferences.bib
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
+# Introduction
+
+- The animated plot has not been used often in the business data presentation
+- We want to see the movement of our variable of interest
+- Business data: Accounting data (sales), Marketing data (customer interest)
+- Help with storytelling
+- Inspiration: The New York Times (Extensive data shows punishing reach of racism for black boys). The animation plot shows what demographic group between white and black boys where would end up in society. It could be adapted to show, based on the demographic of the company, sees the movement of where they would end up. In the marketing data, the demographic of the customers could tell us the story of what product they preferred.
+
+
+
+
