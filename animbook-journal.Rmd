@@ -29,9 +29,25 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 - The animated plot has not been used often in the business data presentation
 - We want to see the movement of our variable of interest
-- Business data: Accounting data (sales), Marketing data (customer interest)
+- Business data: Accounting data (sales), Marketing data (customer interest), data analysis languages data
 - Help with storytelling
 - Inspiration: The New York Times (Extensive data shows punishing reach of racism for black boys). The animation plot shows what demographic group between white and black boys where would end up in society. It could be adapted to show, based on the demographic of the company, sees the movement of where they would end up. In the marketing data, the demographic of the customers could tell us the story of what product they preferred.
+
+
+# Data and Process
+
+Some ideas:
+
+- The data will need a following structure for it to be ready to plot: time index(time variable for the gganimate), x-axis for ggplot(this does not need to be the same as time index), key(uniqu identifier), rank(y-axis, factor variable), group(optional).
+
+- The user can input any numerical, categorical and factor variable into the prep_anim function which will return the data in the format that the anim_plot function accepted. The x-axis and time index does not need to be the same as this allows for the user to reproduce the nytimes plot which is not time dependent. For the rank variable, no matter what the type of variable is in, it will return numerical variable.
+
+-------------------------------------------------------------------------------
+
+When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
+
+The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
+
 
 
 
