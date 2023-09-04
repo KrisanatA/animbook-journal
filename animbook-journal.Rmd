@@ -1,6 +1,6 @@
 ---
 title: "animbook: An R Package for Visualize ..."
-date: Sys.Date()
+date: 04/09/2023
 abstract: >
   An abstract of less than 150 words.
 draft: true
@@ -27,6 +27,77 @@ knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
 # Introduction
 
+With the increasing computational powers, animation with large amounts of data is now become more accessible than ever. With the inspiration from a New York Times article, "Extensive Data Shows Punishing Reach of Racism for Black Boys". The animation portrays the trajectory of how boys with different demographics could land up in society. With this plot in mind, the paper proposed a new visualization to help capture the movement of the observation for each different group over the specific period.
+
+  This paper will focus on designing and validating the new visualization using a nested model (@nested_model) to offer an animation tool for conveying the observation trend in the given period. The cognitive theory of multimedia learning (@mayer_2005) will be considered during the designing period. This theory employs the structure and the strategies that will help the learner learn more effectively.
+  
+  The challenge of the New York Times article animation was the amount of code needed to reproduce. Additionally, the business data may or may not have the same information as the one in that article. It establishes a need to create tools for generalizing the animation to a wider range of data while still maintaining the main objective.
+  
+  The structure of this paper will consist of four main section. The first section is domain problem and data characterization, identifying the problems the visualization tools try to solve. Secondly, the operation and data type abstraction, the description of operations, and the types of data required for the next stage. The third section is visualization and interaction design, designing the visuals and refining the tools. In the last section, package design, develop the structure of the packages and how to implement the final visualize design into the R package. The checking of the threat and validating of that threat will be carried out throughout the entire process of designing the animbook package.
+
+
+# Domain problem and data characterization
+
+
+# Operation and data type abstraction
+
+When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
+
+The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
+
+
+# Visualization and interaction design
+
+
+# Package design
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Introduction
+
 Some ideas:
 
 - The animated plot has not been used often in the business data presentation
@@ -35,22 +106,8 @@ Some ideas:
 - Help with storytelling
 - Inspiration: The New York Times (Extensive data shows punishing reach of racism for black boys). The animation plot shows what demographic group between white and black boys where would end up in society. It could be adapted to show, based on the demographic of the company, sees the movement of where they would end up. In the marketing data, the demographic of the customers could tell us the story of what product they preferred.
 
-With the increasing computational powers, the animation with the big data are now become more accessible than ever. With the inspiration from a New York Times article, "Extensive Data Shows Punishing Reach of Racism for Black Boys". The animation portrays the trajectory of how boys with different demographic could land up in the society. Having this plot in mind, the paper proposed a new visualization in help capturing the movement of the observation for each different group over the time period.
 
-  This paper will focus on the designing and validating the new visualization using a nested model (@nested_model). With the goal of offering an animation tool for conveying the trend of the observation in the given period. The cognitive theory of multimedia learning (@mayer_2005) need to be considered during the designing period. This theory employs the theory which helps structure the strategies that will help the learner learn more effectively.
-  
-  The challenges of the New York Times article animation was the size of code needed to recreate it, additionally, the business data may or may not have the same information as the one in that article. This establish a need in creating the tools for generalizing the animation to the wider range of data while keeping the main objective.
-  
-  
-  
-
--------------------------------------------------------------------------------
-
-
-
-
-
-# Data and Process
+Data and Process
 
 Some ideas:
 
@@ -58,7 +115,6 @@ Some ideas:
 
 - The user can input any numerical, categorical and factor variable into the prep_anim function which will return the data in the format that the anim_plot function accepted. The x-axis and time index does not need to be the same as this allows for the user to reproduce the nytimes plot which is not time dependent. For the rank variable, no matter what the type of variable is in, it will return numerical variable.
 
--------------------------------------------------------------------------------
 
 When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
 
