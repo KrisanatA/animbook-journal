@@ -35,6 +35,15 @@ Some ideas:
 - Help with storytelling
 - Inspiration: The New York Times (Extensive data shows punishing reach of racism for black boys). The animation plot shows what demographic group between white and black boys where would end up in society. It could be adapted to show, based on the demographic of the company, sees the movement of where they would end up. In the marketing data, the demographic of the customers could tell us the story of what product they preferred.
 
+With the increasing computational powers, the animation with the big data are now become more accessible than ever. With the inspiration from a New York Times article, "Extensive Data Shows Punishing Reach of Racism for Black Boys". The animation portrays the trajectory of how boys with different demographic could land up in the society. Having this plot in mind, the paper proposed a new visualization in help capturing the movement of the observation for each different group over the time period.
+
+  This paper will focus on the designing and validating the new visualization using a nested model (@nested_model). With the goal of offering an animation tool for conveying the trend of the observation in the given period. The cognitive theory of multimedia learning (@mayer_2005) need to be considered during the designing period. This theory employs the theory which helps structure the strategies that will help the learner learn more effectively.
+  
+  The challenges of the New York Times article animation was the size of code needed to recreate it, additionally, the business data may or may not have the same information as the one in that article. This establish a need in creating the tools for generalizing the animation to the wider range of data while keeping the main objective.
+  
+  
+  
+
 -------------------------------------------------------------------------------
 
 
