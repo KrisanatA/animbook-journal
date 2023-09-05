@@ -33,10 +33,10 @@ With the increasing computational powers, animation with large amounts of data i
   
   The challenge of the New York Times article animation was the amount of code needed to reproduce. Additionally, the business data may or may not have the same information as the one in that article. It establishes a need to create tools for generalizing the animation to a wider range of data while still maintaining the main objective.
   
-  The structure of this paper will consist of four main section. The first section is domain problem and data characterization, identifying the problems the visualization tools try to solve. Secondly, the operation and data type abstraction, the description of operations, and the types of data required for the next stage. The third section is visualization and interaction design, designing the visuals and refining the tools. In the last section, package design, develop the structure of the packages and how to implement the final visualize design into the R package. The checking of the threat and validating of that threat will be carried out throughout the entire process of designing the animbook package.
+  The structure of this paper will consist of four main section. The first section is domain problem and data characterization, identifying the problems the visualization tools try to solve. Secondly, the operation and data type abstraction, the description of operations, and the types of data required for the next stage. The third section is visualization and interaction design, designing the visuals and refining the tools. In the forth section, package design, develop the structure of the packages and how to implement the final visualize design into the R package. Lastly, the package usage. The checking of the threat and validating of that threat will be carried out throughout the entire process of designing the animbook package.
 
 
-# Domain problem and data characterization
+# Problem and data characterization
 
 
 # Operation and data type abstraction
@@ -52,6 +52,7 @@ The data set that will be used in this section and in all of the examples of thi
 # Package design
 
 
+# Package Usage
 
 
 
