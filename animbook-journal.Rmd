@@ -17,7 +17,7 @@ output:
   rjtools::rjournal_web_article:
     self_contained: yes
     toc: no
-bibliography: RJreferences.bib
+bibliography: animbook-journal.bib
 
 ---
 
@@ -37,6 +37,16 @@ With the increasing computational powers, animation with large amounts of data i
 
 
 # Problem and data characterization
+
+To look for the flow between group, one of the most common tools we look at is sankey chart. It represent the movement of the values from one set to another. However, with the static sankey, the only information presented are what is the proportion of the movement, and which states the quantities move to, this often enough in explaining the flow and helps making the decision necessary. To present more information, color could be used to represent the demographic of the group. What if the information that are interesting lies in the times domain, how could the plot captured that information?
+
+!!general sankey plot and sankey with color
+
+The technique that is created by Hans, Ola, and Anna Rosling in 2003 is called Gapminder Trendalyzer. Its add an additional dimensions which are the bubble size, animated over changes in a fourth dimension, time. The animation in this tools has created a new way for people to analyse and visualize the trend. 
+
+!!read effectiveness of animation in trend visualization, then add more information to above paragraph
+
+The osiris data from Bureau van Dijk, contains an information on listed, and major unlisted/delisted companies across the world. This is one of an example of accounting data, where the objective is to observed the movement of the company between the quantile and how japan companies are ranked compared to others.
 
 
 # Operation and data type abstraction
