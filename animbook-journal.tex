@@ -1,5 +1,7 @@
 % !TeX root = RJwrapper.tex
-\title{animbook: An R Package for Visualize \ldots{}}
+\title{animbook: Visualizing changes in performance measures and demographic affiliations using animation}
+
+
 \author{by Krisanat Anukarnsakulchularp}
 
 \maketitle
@@ -19,31 +21,35 @@ The challenge of the New York Times article animation was the amount of code nee
 
 The structure of this paper will consist of four main section. The first section is domain problem and data characterization, identifying the problems the visualization tools try to solve. Secondly, the operation and data type abstraction, the description of operations, and the types of data required for the next stage. The third section is visualization and interaction design, designing the visuals and refining the tools. In the forth section, package design, develop the structure of the packages and how to implement the final visualize design into the R package. Lastly, the package usage. The checking of the threat and validating of that threat will be carried out throughout the entire process of designing the animbook package.
 
-\hypertarget{problem-and-data-characterization}{%
-\section{Problem and data characterization}\label{problem-and-data-characterization}}
+\hypertarget{explanation-of-the-ny-times-visualization}{%
+\section{Explanation of the NY Times visualization}\label{explanation-of-the-ny-times-visualization}}
 
-To look for the flow between group, one of the most common tools we look at is sankey chart. It represent the movement of the values from one set to another. However, with the static sankey, the only information presented are what is the proportion of the movement, and which states the quantities move to, this often enough in explaining the flow and helps making the decision necessary. To present more information, color could be used to represent the demographic of the group. What if the information that are interesting lies in the times domain, how could the plot captured that information?
+\hypertarget{data}{%
+\section{Data}\label{data}}
 
-!!general sankey plot and sankey with color
+Diagram illustrating what data is expected, and how it is processed.
 
-The technique that is created by Hans, Ola, and Anna Rosling in 2003 is called Gapminder Trendalyzer. Its add an additional dimensions which are the bubble size, animated over changes in a fourth dimension, time. The animation in this tools has created a new way for people to analyse and visualize the trend.
+\hypertarget{animation-tools}{%
+\section{Animation tools}\label{animation-tools}}
 
-!!read effectiveness of animation in trend visualization, then add more information to above paragraph
+Literature review of animation tools
 
-The osiris data from Bureau van Dijk, contains an information on listed, and major unlisted/delisted companies across the world. This is one of an example of accounting data, where the objective is to observed the movement of the company between the quantile and how japan companies are ranked compared to others.
+\hypertarget{visualization-design}{%
+\section{Visualization design}\label{visualization-design}}
 
-\hypertarget{operation-and-data-type-abstraction}{%
-\section{Operation and data type abstraction}\label{operation-and-data-type-abstraction}}
+This explains how to get from data to the animations, including different sorts of plots.
 
-When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
+\hypertarget{software}{%
+\section{Software}\label{software}}
 
-The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
+\hypertarget{installation}{%
+\subsection{Installation}\label{installation}}
 
-\hypertarget{visualization-and-interaction-design}{%
-\section{Visualization and interaction design}\label{visualization-and-interaction-design}}
+\hypertarget{overview-of-functions}{%
+\subsection{Overview of functions}\label{overview-of-functions}}
 
-\hypertarget{package-design}{%
-\section{Package design}\label{package-design}}
+\hypertarget{example-usage}{%
+\subsection{Example usage}\label{example-usage}}
 
 In designing the package for reproduces the NYtimes animated plot, the package end up with a three steps process in recreates the animation. The first step which is prepared the data into the right format for the plot function. The next stages is to create a ggplot object which then can be inputted into animation function. The last step is to added the animation settings to the ggplot object so that the gganimate::animate() function. The reason for this three steps process is that it allows the user who does not have a lot of experience to reproduces the animation.
 
@@ -52,12 +58,6 @@ As per motivations, the main focus for this package was to look at movement betw
 The next logical design is to allows for different scaling. As mentioned in the paragraph above the first scaling is ``rank''. The function then expanded the function to allows for the ``absolute'' scaling. This scaling is to assign the quantile groups based on the absolute values scales. The default for the function is to breaks the group equally using seq function. The input to the seq function are taken by the min and max of the values and increment by the equal steps depend on number of group of interests.
 
 The algorithms mentions so far only breaks the quantile equally, but that is not always the cases as the users may interested in the group that are not equally breaks.
-
-\hypertarget{package-usage}{%
-\section{Package Usage}\label{package-usage}}
-
-\hypertarget{data-preprocesing-step}{%
-\subsection{Data preprocesing step}\label{data-preprocesing-step}}
 
 This first step can be done using the anim\_prep() function. This function required that the users data contained id which is used to uniquely identified each individual observations, values which is numerical values to be used to group the observation together, and time, the variable that distinguish the values between the time and id. The users will need to understands what data structure can be input into the function. This package included the osiris data as an examples to the users.
 
@@ -122,6 +122,15 @@ To animate the plot, we need to save the plot into an object, which then can be 
 
 \hypertarget{r-animbook---anim_prep_catdata-aeles-id-id-values-party-time-year-color-gender-time_dependent-false-p---wallaby_plotanimbook-p2---anim_animatep-gganimateanimatep2}{%
 \section{\texorpdfstring{\texttt{\{r\}\ \#\ animbook\ \textless{}-\ anim\_prep\_cat(data\ =\ aeles,\ id\ =\ id,\ values\ =\ party,\ time\ =\ year,\ color\ =\ gender,\ time\_dependent\ =\ FALSE)\ \#\ \ \#\ p\ \textless{}-\ wallaby\_plot(animbook)\ \#\ \ \#\ p2\ \textless{}-\ anim\_animate(p)\ \#\ \ \#\ gganimate::animate(p2)\ \#}}{\{r\} \# animbook \textless- anim\_prep\_cat(data = aeles, id = id, values = party, time = year, color = gender, time\_dependent = FALSE) \#  \# p \textless- wallaby\_plot(animbook) \#  \# p2 \textless- anim\_animate(p) \#  \# gganimate::animate(p2) \#}}\label{r-animbook---anim_prep_catdata-aeles-id-id-values-party-time-year-color-gender-time_dependent-false-p---wallaby_plotanimbook-p2---anim_animatep-gganimateanimatep2}}
+
+\hypertarget{application}{%
+\section{Application}\label{application}}
+
+\hypertarget{accounting-database-osiris}{%
+\subsection{Accounting database: osiris}\label{accounting-database-osiris}}
+
+\hypertarget{voter-behavior}{%
+\subsection{Voter behavior}\label{voter-behavior}}
 
 Introduction
 

@@ -1,5 +1,5 @@
 ---
-title: "animbook: An R Package for Visualize ..."
+title: "animbook: Visualizing changes in performance measures and demographic affiliations using animation"
 date: 04/09/2023
 abstract: >
   An abstract of less than 150 words.
@@ -36,9 +36,18 @@ With the increasing computational powers, animation with large amounts of data i
   The structure of this paper will consist of four main section. The first section is domain problem and data characterization, identifying the problems the visualization tools try to solve. Secondly, the operation and data type abstraction, the description of operations, and the types of data required for the next stage. The third section is visualization and interaction design, designing the visuals and refining the tools. In the forth section, package design, develop the structure of the packages and how to implement the final visualize design into the R package. Lastly, the package usage. The checking of the threat and validating of that threat will be carried out throughout the entire process of designing the animbook package.
 
 
-# Problem and data characterization
+# Explanation of the NY Times visualization
 
-To look for the flow between group, one of the most common tools we look at is sankey chart. It represent the movement of the values from one set to another. However, with the static sankey, the only information presented are what is the proportion of the movement, and which states the quantities move to, this often enough in explaining the flow and helps making the decision necessary. To present more information, color could be used to represent the demographic of the group. What if the information that are interesting lies in the times domain, how could the plot captured that information?
+# Data
+
+Diagram illustrating what data is expected, and how it is processed. 
+
+# Animation tools
+
+Literature review of animation tools
+
+
+<!-- To look for the flow between group, one of the most common tools we look at is sankey chart. It represent the movement of the values from one set to another. However, with the static sankey, the only information presented are what is the proportion of the movement, and which states the quantities move to, this often enough in explaining the flow and helps making the decision necessary. To present more information, color could be used to represent the demographic of the group. What if the information that are interesting lies in the times domain, how could the plot captured that information?
 
 !!general sankey plot and sankey with color 
 
@@ -46,22 +55,29 @@ The technique that is created by Hans, Ola, and Anna Rosling in 2003 is called G
 
 !!read effectiveness of animation in trend visualization, then add more information to above paragraph
 
-The osiris data from Bureau van Dijk, contains an information on listed, and major unlisted/delisted companies across the world. This is one of an example of accounting data, where the objective is to observed the movement of the company between the quantile and how japan companies are ranked compared to others.
+The osiris data from Bureau van Dijk, contains an information on listed, and major unlisted/delisted companies across the world. This is one of an example of accounting data, where the objective is to observed the movement of the company between the quantile and how japan companies are ranked compared to others.-->
 
 
-# Operation and data type abstraction
+<!-- # Operation and data type abstraction
 
 When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
 
 The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
+-->
 
 
-# Visualization and interaction design
+# Visualization design
+
+This explains how to get from data to the animations, including different sorts of plots.
 
 
+# Software
 
+## Installation
 
-# Package design
+## Overview of functions
+
+## Example usage
 
 In designing the package for reproduces the NYtimes animated plot, the package end up with a three steps process in recreates the animation. The first step which is prepared the data into the right format for the plot function. The next stages is to create a ggplot object which then can be inputted into animation function. The last step is to added the animation settings to the ggplot object so that the gganimate::animate() function. The reason for this three steps process is that it allows the user who does not have a lot of experience to reproduces the animation.
 
@@ -72,9 +88,9 @@ In designing the package for reproduces the NYtimes animated plot, the package e
   The algorithms mentions so far only breaks the quantile equally, but that is not always the cases as the users may interested in the group that are not equally breaks.
 
 
-# Package Usage
+<!-- # Package Usage
 
-## Data preprocesing step
+## Data preprocesing step-->
 
 This first step can be done using the anim_prep() function. This function required that the users data contained id which is used to uniquely identified each individual observations, values which is numerical values to be used to group the observation together, and time, the variable that distinguish the values between the time and id. The users will need to understands what data structure can be input into the function. This package included the osiris data as an examples to the users.
 
@@ -158,6 +174,11 @@ To animate the plot, we need to save the plot into an object, which then can be 
 # gganimate::animate(p2)
 # ```
 
+# Application
+
+## Accounting database: osiris
+
+## Voter behavior
 
 
 
