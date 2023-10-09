@@ -1,7 +1,5 @@
 % !TeX root = RJwrapper.tex
 \title{animbook: Visualizing changes in performance measures and demographic affiliations using animation}
-
-
 \author{by Krisanat Anukarnsakulchularp}
 
 \maketitle
@@ -13,13 +11,15 @@ An abstract of less than 150 words.
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-With the increasing computational powers, animation with large amounts of data is now become more accessible than ever. With the inspiration from a New York Times article, ``Extensive Data Shows Punishing Reach of Racism for Black Boys''. The animation portrays the trajectory of how boys with different demographics could land up in society. With this plot in mind, the paper proposed a new communication tool to help capture the movement of the observation for each different group over the specific period.
+The concept of ``zombie companies'' began to attract attention when an article on the proliferation of zombie companies (Caballero, Hoshi, and Kashyap (2008)). The ``zombie companies'' are generally defined as companies with an interest coverage ratio of less than one for a period of more than three years. However, there is a simpler and more easily understandable way to show these concepts by visualizing the new listings (enters) and the de-listing (exits) of publicly traded companies on a country-by-country basis. This visualization method makes it clear that the concepts of zombie companies are not unique to Japan, as indicated in the OECD report (McGowan, Andrews, and Millot (2017)) that the United States has a faster metabolize (more new listings and exits) relative to Japan.
 
-This paper will focus on designing and validating the new visualization using a nested model (Munzner (2009)) to offer an animation tool for conveying the observation trend in the given period. The cognitive theory of multimedia learning (Mayer (2005)) will be considered during the designing period. This theory employs the structure and the strategies that will help the learner learn more effectively.
+The visualization above can also be thought of as a movement between groups, which is how many companies have entered the market and how many have exited the market. One example of this visualization is from The New York Times article ``Extensive data shows punishing reach of racism for black boys'' (Badger et al. (2018)). The animation portrays the trajectory of how boys with different demographics could land up in society. It can be adapted to our problems by capturing the movement between the groups over a specific period.
 
-The challenge of the New York Times article animation was the amount of code needed to reproduce. Additionally, the business data may or may not have the same information as the one in that article. It establishes a need to create tools for generalizing the animation to a wider range of data while still maintaining the main objective.
+With an advancement in technology, this results in an increase in both the size and complexity of the data. It requires an experienced hand to convey the right messages from the data. However, as shown in The New York Times article (Badger et al. (2018)), the animation is not only created just for eye-catching graphics. Animation can be used as a tool that helps communicate complex data, enhancing the narrative and keeping it engaged for the audience. Based on Mayer and Moreno (2002), animation can improve learning, especially when the goal is to promote deep understanding. It also requires the designer to understand how people learn. The cognitive theory of multimedia learning (Mayer (2005)) will be considered during the designing period.
 
-The structure of this paper will consist of four main section. The first section is domain problem and data characterization, identifying the problems the visualization tools try to solve. Secondly, the operation and data type abstraction, the description of operations, and the types of data required for the next stage. The third section is visualization and interaction design, designing the visuals and refining the tools. In the forth section, package design, develop the structure of the packages and how to implement the final visualize design into the R package. Lastly, the package usage. The checking of the threat and validating of that threat will be carried out throughout the entire process of designing the animbook package.
+The challenge of the New York Times article animation was the amount of code needed to reproduce. Additionally, the business data may or may not have the same information as the one in the article. These two purposes establish the objective for creating the R package that could generalize the animation to a wider range of data.
+
+The structure of this paper will consist of both the visualization design and software design. The first section will explain about the animation in The New York Times article. Secondly, what are the expected data to be input into the plot, and how it is processed. The third section is about the animation tools, for example, \textbf{gganimate} (Pedersen and Robinson (2020)) and \textbf{plotly} (Sievert (2020)). The next section will be about the design of the package and visualization. The last two sections explore the usage of the R package and the application.
 
 \hypertarget{explanation-of-the-ny-times-visualization}{%
 \section{Explanation of the NY Times visualization}\label{explanation-of-the-ny-times-visualization}}
@@ -27,7 +27,9 @@ The structure of this paper will consist of four main section. The first section
 \hypertarget{data}{%
 \section{Data}\label{data}}
 
-Diagram illustrating what data is expected, and how it is processed.
+When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
+
+The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
 
 \hypertarget{animation-tools}{%
 \section{Animation tools}\label{animation-tools}}
@@ -39,6 +41,12 @@ Literature review of animation tools
 
 This explains how to get from data to the animations, including different sorts of plots.
 
+In designing the package for reproducing the New York Times animated plot, the package ended up with a three-step process in recreating the animation. The first step is to turn the data into the right format for the plot function. The next stage is to create a ggplot object, which can then be inputted into the animation function. The last step is adding the animation settings to the ggplot object so the user can animate the plot using the \texttt{gganimate::animate()} function. The reason for this three-step process is that it allows the user who does not have a lot of experience to reproduce the animation while keeping the customization for an experienced user.
+
+As per motivations, the main focus for this package was to look at movement between the percentile group. Thus, the \texttt{anim\_prep()} function's first purpose was to be able to take any numerical values and output the percentile group of the observations. The algorithms behind the group splitting are the \texttt{quantile()} and \texttt{cut()} functions. The quantile function from the stats R packages (R Core Team (2013)) takes in the numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the quantile function can then be used as the breaks argument for the cut function that is from the base R packages. The concern of this method is that the users might not always be interested in ranking the observations.
+
+The next logical design is to allow for different scaling. As mentioned in the paragraph above, the first scaling for the function is ``rank''. The function then expanded to allow for the ``absolute'' scaling. This scaling calculates the quantile groups based on the absolute values scales. The default is to break the group equally using the \texttt{seq()} function. The input to the seq function is taken by the min and max of the values and increments by equal steps depending on the number of groups of interests. In the real-world scenario, it is not always the case to break the group equally. The users may interested in the groups that are not equally broken. The function then allows the user to provide the vector of the breakpoint.
+
 \hypertarget{software}{%
 \section{Software}\label{software}}
 
@@ -48,23 +56,14 @@ This explains how to get from data to the animations, including different sorts 
 \hypertarget{overview-of-functions}{%
 \subsection{Overview of functions}\label{overview-of-functions}}
 
-\hypertarget{example-usage}{%
-\subsection{Example usage}\label{example-usage}}
+There are three main stages for this packages, one is to prepare the data, two is plotting the data, and three, animating the plot.
 
-In designing the package for reproduces the NYtimes animated plot, the package end up with a three steps process in recreates the animation. The first step which is prepared the data into the right format for the plot function. The next stages is to create a ggplot object which then can be inputted into animation function. The last step is to added the animation settings to the ggplot object so that the gganimate::animate() function. The reason for this three steps process is that it allows the user who does not have a lot of experience to reproduces the animation.
+\hypertarget{prepare-the-data}{%
+\subsubsection{Prepare the data}\label{prepare-the-data}}
 
-As per motivations, the main focus for this package was to look at movement between the percentile group. Thus the anim\_prep() function first purposes was to be able to take any numerical values and output the percentile group of the observations. The algorithms behind the group splitting are quantile and cut function. The quantile function from the stats R packages takes in the numeric vector and output the corresponding quantiles to the given probabilities. The output from the quantile function can then be used as the breaks argument for the cut function that is from the base R packages. The concerns of this method is that the users might not always interests in ranking the observations.
+The first step can be done using the \texttt{anim\_prep()} function. This function required taht the users data contained id, which is used to uniquely identified each individual observaitons, values, which is numerical values to be used to grouping the observation together, and time, the variable that associated the changes of the observation. In the cases when the users already have the values as a group variable, the \texttt{anim\_prep\_cat()} function can then be use instead.
 
-The next logical design is to allows for different scaling. As mentioned in the paragraph above the first scaling is ``rank''. The function then expanded the function to allows for the ``absolute'' scaling. This scaling is to assign the quantile groups based on the absolute values scales. The default for the function is to breaks the group equally using seq function. The input to the seq function are taken by the min and max of the values and increment by the equal steps depend on number of group of interests.
-
-The algorithms mentions so far only breaks the quantile equally, but that is not always the cases as the users may interested in the group that are not equally breaks.
-
-This first step can be done using the anim\_prep() function. This function required that the users data contained id which is used to uniquely identified each individual observations, values which is numerical values to be used to group the observation together, and time, the variable that distinguish the values between the time and id. The users will need to understands what data structure can be input into the function. This package included the osiris data as an examples to the users.
-
-\hypertarget{r-animbook---anim_preposiris-id-sales-year}{%
-\section{\texorpdfstring{\texttt{\{r\}\ \#\ animbook\ \textless{}-\ anim\_prep(osiris,\ ID,\ sales,\ year)\ \#}}{\{r\} \# animbook \textless- anim\_prep(osiris, ID, sales, year) \#}}\label{r-animbook---anim_preposiris-id-sales-year}}
-
-There are an additional options that allow for more customizations to the data structure or the plot.
+The additional options for the \texttt{anim\_prep()} that allow for more customization to the data structure or the plot are as follows:
 
 \begin{itemize}
 \tightlist
@@ -73,7 +72,7 @@ There are an additional options that allow for more customizations to the data s
 \item
   ngroup: number of groups we want to split the values into.
 \item
-  breaks: the group bins size (prototype)
+  breaks: the group bins size
 \item
   group\_scaling: the grouping variable for the bins calculations.
 \item
@@ -88,40 +87,93 @@ There are an additional options that allow for more customizations to the data s
   runif\_max: maximum value for random addition to frame numbers
 \end{itemize}
 
-The function can calculate four different scales using these options.
+Using the different combination of the additioanl options, the users could end up with four different scaling.
 
-\hypertarget{r-rank-scaling-rank_scaling---anim_prepdata-osiris-id-id-values-sales-time-year-absolute-scaling-absolute_scaling---anim_prepdata-osiris-id-id-values-sales-time-year-scaling-absolute-rank-scaling-by-group-rank_group_scaling---anim_prepdata-osiris-id-id-values-sales-time-year-group-country-absolute-scaling-by-group-absolute_group_scaling---anim_prepdata-osiris-id-id-values-sales-time-year-group-country-scaling-absolute-rank_scaling}{%
-\section{\texorpdfstring{\texttt{\{r\}\ \#\ \#\ rank\ scaling\ \#\ rank\_scaling\ \textless{}-\ anim\_prep(data\ =\ osiris,\ id\ =\ ID,\ values\ =\ sales,\ time\ =\ year)\ \#\ \ \#\ \#\ absolute\ scaling\ \#\ absolute\_scaling\ \textless{}-\ anim\_prep(data\ =\ osiris,\ id\ =\ ID,\ values\ =\ sales,\ time\ =\ year,\ \#\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ scaling\ =\ "absolute")\ \#\ \ \#\ \#\ rank\ scaling\ by\ group\ \#\ rank\_group\_scaling\ \textless{}-\ anim\_prep(data\ =\ osiris,\ id\ =\ ID,\ values\ =\ sales,\ time\ =\ year,\ \ \#\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ group\ =\ country)\ \#\ \ \#\ \#\ absolute\ scaling\ by\ group\ \#\ absolute\_group\_scaling\ \textless{}-\ anim\_prep(data\ =\ osiris,\ id\ =\ ID,\ values\ =\ sales,\ time\ =\ year,\ \#\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ group\ =\ country,\ scaling\ =\ "absolute")\ \#\ \ \#\ rank\_scaling\ \#}}{\{r\} \# \# rank scaling \# rank\_scaling \textless- anim\_prep(data = osiris, id = ID, values = sales, time = year) \#  \# \# absolute scaling \# absolute\_scaling \textless- anim\_prep(data = osiris, id = ID, values = sales, time = year, \#                               scaling = "absolute") \#  \# \# rank scaling by group \# rank\_group\_scaling \textless- anim\_prep(data = osiris, id = ID, values = sales, time = year,  \#                                 group = country) \#  \# \# absolute scaling by group \# absolute\_group\_scaling \textless- anim\_prep(data = osiris, id = ID, values = sales, time = year, \#                                     group = country, scaling = "absolute") \#  \# rank\_scaling \#}}\label{r-rank-scaling-rank_scaling---anim_prepdata-osiris-id-id-values-sales-time-year-absolute-scaling-absolute_scaling---anim_prepdata-osiris-id-id-values-sales-time-year-scaling-absolute-rank-scaling-by-group-rank_group_scaling---anim_prepdata-osiris-id-id-values-sales-time-year-group-country-absolute-scaling-by-group-absolute_group_scaling---anim_prepdata-osiris-id-id-values-sales-time-year-group-country-scaling-absolute-rank_scaling}}
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Rank scaling
+\item
+  Absolute scaling
+\item
+  Rank scaling by group
+\item
+  Absolute scaling by group
+\end{enumerate}
 
-This function will return \texttt{animbook} object containing a list of the formatted data and settings.
-
-\hypertarget{plotting-the-data}{%
-\subsection{Plotting the data}\label{plotting-the-data}}
-
-After preparing the data, we can not plot it. There are three plots available in this package:
+For the \texttt{anim\_prep\_cat()} function, the additional options are:
 
 \begin{itemize}
 \tightlist
 \item
-  \texttt{kangaroo}, which plots the observation's movement over time.
+  label: group labeling.
 \item
-  \texttt{wallaby}, which subset the plot to either \texttt{top} or \texttt{bottom} and see which group they are in after the observational period.
+  order: the ordering of the group.
 \item
-  \texttt{funnel\_web\_spider}, which is a faceted plot by time variable.
+  color: the variable used to color the observations.
+\item
+  time\_dependent: logical. Whether we want the observations to start at the same time or not.
+\item
+  runif\_min: minimum value for random addition to frame numbers
+\item
+  runif\_max: maximum value for random addition to frame numbers
 \end{itemize}
 
-\hypertarget{r-label---ctop-20-20-40-40-60-60-80-80-100-not-listed-animbook---anim_prepdata-osiris-id-id-values-sales-time-year-color-japan-label-label-kangaroo-plot-kangaroo_plotanimbook-wallaby-plot-wallaby_plotanimbook-funnel-web-spider-plot-funnel_web_plotanimbook}{%
-\section{\texorpdfstring{\texttt{\{r\}\ \#\ label\ \textless{}-\ c("Top\ 20\%",\ "20-40",\ "40-60",\ "60-80",\ "80-100",\ "not\ listed")\ \#\ \ \#\ animbook\ \textless{}-\ anim\_prep(data\ =\ osiris,\ id\ =\ ID,\ values\ =\ sales,\ time\ =\ year,\ color\ =\ japan,\ label\ =\ label)\ \#\ \ \#\ \#\ kangaroo\ plot\ \#\ kangaroo\_plot(animbook)\ \#\ \ \#\ \#\ wallaby\ plot\ \#\ wallaby\_plot(animbook)\ \#\ \ \ \ \ \ \ \ \ \ \ \ \ \ \#\ \#\ funnel\ web\ spider\ plot\ \#\ funnel\_web\_plot(animbook)\ \#}}{\{r\} \# label \textless- c("Top 20\%", "20-40", "40-60", "60-80", "80-100", "not listed") \#  \# animbook \textless- anim\_prep(data = osiris, id = ID, values = sales, time = year, color = japan, label = label) \#  \# \# kangaroo plot \# kangaroo\_plot(animbook) \#  \# \# wallaby plot \# wallaby\_plot(animbook) \#              \# \# funnel web spider plot \# funnel\_web\_plot(animbook) \#}}\label{r-label---ctop-20-20-40-40-60-60-80-80-100-not-listed-animbook---anim_prepdata-osiris-id-id-values-sales-time-year-color-japan-label-label-kangaroo-plot-kangaroo_plotanimbook-wallaby-plot-wallaby_plotanimbook-funnel-web-spider-plot-funnel_web_plotanimbook}}
+Both the \texttt{anim\_prep()} and \texttt{anim\_prep\_cat()} function will return ``animbook'' object containing a list of the standard format data and settings.
 
-The \texttt{kangaroo} and \texttt{wallaby} plots can be animated using the function of the next stage. \texttt{funnel\_web\_spider} only supported static plot. We can also choose whether we want to animate the plot using gganimate or plotly.
+\hypertarget{plotting-the-data}{%
+\subsubsection{Plotting the data}\label{plotting-the-data}}
+
+Once the data is prepared, the next steps is to created the ggplot object as a basis for the animation. There are three plots available in this package, two plot could be uses for the animation and other plot is used as a static visualization.
+
+\begin{itemize}
+\tightlist
+\item
+  \texttt{kangaroo\_plot()}, plots the observation's movement over time.
+\item
+  \texttt{wallaby\_plot()}, the subset plot of the \texttt{kangaroo\_plot} with the time limit to only start and end.
+\item
+  \texttt{funnel\_web\_plot()}, the faceted static plot by time variable.
+\end{itemize}
+
+All of the plot, have an internal function that converted the standard data format into the required structure for each plotting function.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Kangaroo's plot
+\end{enumerate}
+
+\includegraphics{animbook-journal_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Wallaby's plot
+\end{enumerate}
+
+\includegraphics{animbook-journal_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Funnel web spider's plot
+\end{enumerate}
+
+\includegraphics{animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf}
 
 \hypertarget{animating-the-plot}{%
-\subsection{Animating the plot}\label{animating-the-plot}}
+\subsubsection{Animating the plot}\label{animating-the-plot}}
 
-To animate the plot, we need to save the plot into an object, which then can be passed on to the function.
+To animate the plot, the plot need to be save as an object before passed on to the final function \texttt{anim\_animate()}.
 
-\hypertarget{r-animbook---anim_prep_catdata-aeles-id-id-values-party-time-year-color-gender-time_dependent-false-p---wallaby_plotanimbook-p2---anim_animatep-gganimateanimatep2}{%
-\section{\texorpdfstring{\texttt{\{r\}\ \#\ animbook\ \textless{}-\ anim\_prep\_cat(data\ =\ aeles,\ id\ =\ id,\ values\ =\ party,\ time\ =\ year,\ color\ =\ gender,\ time\_dependent\ =\ FALSE)\ \#\ \ \#\ p\ \textless{}-\ wallaby\_plot(animbook)\ \#\ \ \#\ p2\ \textless{}-\ anim\_animate(p)\ \#\ \ \#\ gganimate::animate(p2)\ \#}}{\{r\} \# animbook \textless- anim\_prep\_cat(data = aeles, id = id, values = party, time = year, color = gender, time\_dependent = FALSE) \#  \# p \textless- wallaby\_plot(animbook) \#  \# p2 \textless- anim\_animate(p) \#  \# gganimate::animate(p2) \#}}\label{r-animbook---anim_prep_catdata-aeles-id-id-values-party-time-year-color-gender-time_dependent-false-p---wallaby_plotanimbook-p2---anim_animatep-gganimateanimatep2}}
+\hypertarget{example-usage}{%
+\subsection{Example usage}\label{example-usage}}
 
 \hypertarget{application}{%
 \section{Application}\label{application}}
@@ -132,48 +184,7 @@ To animate the plot, we need to save the plot into an object, which then can be 
 \hypertarget{voter-behavior}{%
 \subsection{Voter behavior}\label{voter-behavior}}
 
-Introduction
-
-Some ideas:
-
-\begin{itemize}
-\tightlist
-\item
-  The animated plot has not been used often in the business data presentation
-\item
-  We want to see the movement of our variable of interest
-\item
-  Business data: Accounting data (sales), Marketing data (customer interest), data analysis languages data
-\item
-  Help with storytelling
-\item
-  Inspiration: The New York Times (Extensive data shows punishing reach of racism for black boys). The animation plot shows what demographic group between white and black boys where would end up in society. It could be adapted to show, based on the demographic of the company, sees the movement of where they would end up. In the marketing data, the demographic of the customers could tell us the story of what product they preferred.
-\end{itemize}
-
-Data and Process
-
-Some ideas:
-
-\begin{itemize}
-\item
-  The data will need a following structure for it to be ready to plot: time index(time variable for the gganimate), x-axis for ggplot(this does not need to be the same as time index), key(unique identifier), rank(y-axis, factor variable), group(optional).
-\item
-  The user can input any numerical, categorical and factor variable into the prep\_anim function which will return the data in the format that the anim\_plot function accepted. The x-axis and time index does not need to be the same as this allows for the user to reproduce the nytimes plot which is not time dependent. For the rank variable, no matter what the type of variable is in, it will return numerical variable.
-\end{itemize}
-
-When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
-
-The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
-
-\begin{itemize}
-\tightlist
-\item
-  The data structure
-\item
-  The steps for the user
-\item
-  How does the function processes the data
-\end{itemize}
+Based on the 2016 Australian election results, how does the top party perform in keeping the old voters for different genders.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -181,11 +192,29 @@ The data set that will be used in this section and in all of the examples of thi
 
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
+\leavevmode\vadjust pre{\hypertarget{ref-the_new_york_time}{}}%
+Badger, Emily, Claire Cain Miller, Adam Pearce, and Kevin Quealy. 2018. {``Extensive Data Shows Punishing Reach of Racism for Black Boys.''} \emph{The New York Times}. The New York Times. \url{https://www.nytimes.com/interactive/2018/03/19/upshot/race-class-white-and-black-men.html}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-zombie_companies_2008}{}}%
+Caballero, Ricardo J., Takeo Hoshi, and Anil K. Kashyap. 2008. {``Zombie Lending and Depressed Restructuring in Japan.''} \emph{The American Economic Review} 98 (5): 1943--77. \url{http://www.jstor.org/stable/29730158}.
+
 \leavevmode\vadjust pre{\hypertarget{ref-mayer_2005}{}}%
 Mayer, Richard E. 2005. {``Cognitive Theory of Multimedia Learning.''} In \emph{The Cambridge Handbook of Multimedia Learning}, edited by RichardEditor Mayer, 31--48. Cambridge Handbooks in Psychology. Cambridge University Press. \url{https://doi.org/10.1017/CBO9780511816819.004}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-nested_model}{}}%
-Munzner, Tamara. 2009. {``A Nested Model for Visualization Design and Validation.''} \emph{IEEE Transactions on Visualization and Computer Graphics} 15 (6): 921--28. \url{https://doi.org/10.1109/TVCG.2009.111}.
+\leavevmode\vadjust pre{\hypertarget{ref-Mayer_Moreno_2002}{}}%
+Mayer, Richard E., and Roxana Moreno. 2002. \emph{Educational Psychology Review} 14 (1): 87--99. \url{https://doi.org/10.1023/a:1013184611077}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-oecd_report}{}}%
+McGowan, Müge Adalet, Dan Andrews, and Valentine Millot. 2017. {``The Walking Dead?''} no. 1372. https://doi.org/\url{https://doi.org/https://doi.org/10.1787/180d80ad-en}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-gganimate}{}}%
+Pedersen, Thomas Lin, and David Robinson. 2020. {``Gganimate: A Grammar of Animated Graphics.''} \emph{R Package Version} 1 (7): 403--8.
+
+\leavevmode\vadjust pre{\hypertarget{ref-stats}{}}%
+R Core Team. 2013. \emph{R: A Language and Environment for Statistical Computing}. Vienna, Austria: R Foundation for Statistical Computing. \url{http://www.R-project.org/}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-plotly}{}}%
+Sievert, Carson. 2020. {``Interactive {Web-Based} Data Visualization with r, Plotly, and Shiny.''} Chapman; Hall/CRC. \url{https://plotly-r.com}.
 
 \end{CSLReferences}
 

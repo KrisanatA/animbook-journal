@@ -4,3 +4,152 @@
 ## ----setup, include=FALSE-----------------------------------------------------
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 
+
+## -----------------------------------------------------------------------------
+library(animbook)
+library(tidyverse)
+
+
+## -----------------------------------------------------------------------------
+animbook <- anim_prep(osiris, ID, sales, year)
+
+animbook_cat <- anim_prep_cat(aeles, id, party, year)
+
+
+## -----------------------------------------------------------------------------
+# rank scaling
+rank_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year)
+
+
+## -----------------------------------------------------------------------------
+# absolute scaling
+absolute_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year, 
+                              scaling = "absolute")
+
+
+## -----------------------------------------------------------------------------
+# rank scaling by group
+rank_scaling_group <- anim_prep(data = osiris, id = ID, values = sales, time = year,
+                                group_scaling = country)
+
+
+## -----------------------------------------------------------------------------
+# absoluate scaling by group
+absolute_scaling_group <- anim_prep(data = osiris, id = ID, values = sales, time = year,
+                                    group_scaling = country, scaling = "absolute")
+
+
+## -----------------------------------------------------------------------------
+label <- c("Top 20%", "20-40", "40-60", "60-80", "80-100", "not listed")
+
+animbook <- anim_prep(data = osiris, id = ID, values = sales, time = year, color = japan, label = label)
+
+
+## -----------------------------------------------------------------------------
+# kangaroo plot
+kangaroo_plot(object = animbook,
+              palette = RColorBrewer::brewer.pal(9, "Set1"), 
+              rendering = "ggplot")
+
+
+## -----------------------------------------------------------------------------
+# wallaby plot
+wallaby_plot(object = animbook,
+             group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+             shade_palette = RColorBrewer::brewer.pal(9, "Set1"),
+             rendering = "ggplot",
+             subset = "top",
+             relation = "one_many",
+             total_point = NULL)
+
+
+## -----------------------------------------------------------------------------
+# funnel web plot
+funnel_web_plot(object = animbook,
+                palette = RColorBrewer::brewer.pal(9, "Set1"),
+                rendering = "ggplot")
+
+
+## -----------------------------------------------------------------------------
+# animbook <- anim_prep_cat(data = aeles, id = id, values = party, time = year, color = gender, time_dependent = FALSE)
+# 
+# p <- wallaby_plot(animbook)
+# 
+# p2 <- anim_animate(p)
+# 
+# gganimate::animate(p2)
+
+
+## -----------------------------------------------------------------------------
+# raw_data <- read_csv("data-raw/osiris2021-sample1000.csv")
+
+# filter the data with sales record in selected period (2009 - 2018)
+
+# data <- raw_data |>
+#   filter(year >= 2000 & year < 2020,
+#         country %in% c("US", "JP", "CN")) |>
+#   select(year, country, ID, sales) |>
+#   filter(!is.na(sales) & sales != 0)
+# 
+# country <- data |>
+#   select(ID, country) |>
+#   distinct()
+# 
+# # complete the data using complete function for the missing year
+# complete_data <- data |>
+#   select(-country) |>
+#   tidyr::complete(year, ID) |>
+#   left_join(country) |>
+#   mutate(ID = as.factor(ID),
+#         year = as.integer(year))
+# 
+# label <- c("Top 25%", "25-50", "50-75", "75-100", "Not listed")
+# 
+# animbook <- anim_prep(osiris, ID, sales, year, label = label, ngroup = 4, color = country, time_dependent = FALSE)
+# 
+# ptop <- wallaby_plot(animbook, subset = "bottom", relation = "many_one", total_point = 500)
+# 
+# ptop2 <- anim_animate(ptop)
+# 
+# gganimate::animate(ptop2)
+# 
+# pbottom <- wallaby_plot(osiris, subset = "bottom", relation = "one_many", total_point = 500)
+# 
+# pbottom2 <- anim_animate(pbottom)
+# 
+# gganimate::animate(pbottom2)
+# 
+# gganimate::anim_save("inst/new_visualisation/exit.gif", ptop2, height = 8,
+#                      width = 9, units = "in", res = 150)
+# 
+# gganimate::anim_save("inst/new_visualisation/enter.gif", pbottom2, height = 8,
+#                      width = 9, units = "in", res = 150)
+
+
+## -----------------------------------------------------------------------------
+# object <- anim_prep_cat(data = aeles,
+#                         id = id,
+#                         values = party,
+#                         time = year,
+#                         color = gender,
+#                         order = NULL,
+#                         time_dependent = FALSE)
+# 
+# # subset can be either "top", "bottom" or values in the data
+# # many_one not working yet
+# 
+# p <- wallaby_plot(object = object,
+#                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+#                   shade_palette = RColorBrewer::brewer.pal(9, "Set1"),
+#                   rendering = "ggplot",
+#                   subset = "top",
+#                   relation = "one_many",
+#                   height = 1,
+#                   size = 3,
+#                   width = 100,
+#                   total_point = 1000)
+# 
+# p2 <- anim_animate(p)
+# 
+# gganimate::animate(p2)
+

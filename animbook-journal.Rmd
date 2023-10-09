@@ -25,26 +25,299 @@ bibliography: animbook-journal.bib
 knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
 ```
 
+```{r}
+library(animbook)
+library(tidyverse)
+```
+
+
 # Introduction
 
-With the increasing computational powers, animation with large amounts of data is now become more accessible than ever. With the inspiration from a New York Times article, "Extensive Data Shows Punishing Reach of Racism for Black Boys". The animation portrays the trajectory of how boys with different demographics could land up in society. With this plot in mind, the paper proposed a new communication tool to help capture the movement of the observation for each different group over the specific period.
+The concept of "zombie companies" began to attract attention when an article on the proliferation of zombie companies  (@zombie_companies_2008). The "zombie companies" are generally defined as companies with an interest coverage ratio of less than one for a period of more than three years. However, there is a simpler and more easily understandable way to show these concepts by visualizing the new listings (enters) and the de-listing (exits) of publicly traded companies on a country-by-country basis. This visualization method makes it clear that the concepts of zombie companies are not unique to Japan, as indicated in the OECD report (@oecd_report) that the United States has a faster metabolize (more new listings and exits) relative to Japan.
 
-  This paper will focus on designing and validating the new visualization using a nested model (@nested_model) to offer an animation tool for conveying the observation trend in the given period. The cognitive theory of multimedia learning (@mayer_2005) will be considered during the designing period. This theory employs the structure and the strategies that will help the learner learn more effectively.
+  The visualization above can also be thought of as a movement between groups, which is how many companies have entered the market and how many have exited the market. One example of this visualization is from The New York Times article "Extensive data shows punishing reach of racism for black boys" (@the_new_york_time). The animation portrays the trajectory of how boys with different demographics could land up in society. It can be adapted to our problems by capturing the movement between the groups over a specific period.
   
-  The challenge of the New York Times article animation was the amount of code needed to reproduce. Additionally, the business data may or may not have the same information as the one in that article. It establishes a need to create tools for generalizing the animation to a wider range of data while still maintaining the main objective.
+  With an advancement in technology, this results in an increase in both the size and complexity of the data. It requires an experienced hand to convey the right messages from the data. However, as shown in The New York Times article (@the_new_york_time), the animation is not only created just for eye-catching graphics. Animation can be used as a tool that helps communicate complex data, enhancing the narrative and keeping it engaged for the audience. Based on @Mayer_Moreno_2002, animation can improve learning, especially when the goal is to promote deep understanding. It also requires the designer to understand how people learn. The cognitive theory of multimedia learning (@mayer_2005) will be considered during the designing period.
   
-  The structure of this paper will consist of four main section. The first section is domain problem and data characterization, identifying the problems the visualization tools try to solve. Secondly, the operation and data type abstraction, the description of operations, and the types of data required for the next stage. The third section is visualization and interaction design, designing the visuals and refining the tools. In the forth section, package design, develop the structure of the packages and how to implement the final visualize design into the R package. Lastly, the package usage. The checking of the threat and validating of that threat will be carried out throughout the entire process of designing the animbook package.
-
+  The challenge of the New York Times article animation was the amount of code needed to reproduce. Additionally, the business data may or may not have the same information as the one in the article. These two purposes establish the objective for creating the R package that could generalize the animation to a wider range of data.
+  
+  The structure of this paper will consist of both the visualization design and software design. The first section will explain about the animation in The New York Times article. Secondly, what are the expected data to be input into the plot, and how it is processed. The third section is about the animation tools, for example, **gganimate** (@gganimate) and **plotly** (@plotly). The next section will be about the design of the package and visualization. The last two sections explore the usage of the R package and the application.
+  
+  
 
 # Explanation of the NY Times visualization
 
 # Data
 
-Diagram illustrating what data is expected, and how it is processed. 
+<!-- Diagram illustrating what data is expected, and how it is processed. -->
+
+When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
+
+The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
 
 # Animation tools
 
 Literature review of animation tools
+
+
+# Visualization design
+
+This explains how to get from data to the animations, including different sorts of plots.
+
+
+In designing the package for reproducing the New York Times animated plot, the package ended up with a three-step process in recreating the animation. The first step is to turn the data into the right format for the plot function. The next stage is to create a ggplot object, which can then be inputted into the animation function. The last step is adding the animation settings to the ggplot object so the user can animate the plot using the `gganimate::animate()` function. The reason for this three-step process is that it allows the user who does not have a lot of experience to reproduce the animation while keeping the customization for an experienced user.
+
+  As per motivations, the main focus for this package was to look at movement between the percentile group. Thus, the `anim_prep()` function's first purpose was to be able to take any numerical values and output the percentile group of the observations. The algorithms behind the group splitting are the `quantile()` and `cut()` functions. The quantile function from the stats R packages (@stats) takes in the numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the quantile function can then be used as the breaks argument for the cut function that is from the base R packages. The concern of this method is that the users might not always be interested in ranking the observations.
+  
+  The next logical design is to allow for different scaling. As mentioned in the paragraph above, the first scaling for the function is "rank". The function then expanded to allow for the "absolute" scaling. This scaling calculates the quantile groups based on the absolute values scales. The default is to break the group equally using the `seq()` function. The input to the seq function is taken by the min and max of the values and increments by equal steps depending on the number of groups of interests. In the real-world scenario, it is not always the case to break the group equally. The users may interested in the groups that are not equally broken. The function then allows the user to provide the vector of the breakpoint.
+
+
+# Software
+
+## Installation
+
+## Overview of functions
+
+There are three main stages for this packages, one is to prepare the data, two is plotting the data, and three, animating the plot.
+
+
+### Prepare the data
+
+The first step can be done using the `anim_prep()` function. This function required taht the users data contained id, which is used to uniquely identified each individual observaitons, values, which is numerical values to be used to grouping the observation together, and time, the variable that associated the changes of the observation. In the cases when the users already have the values as a group variable, the `anim_prep_cat()` function can then be use instead.
+
+```{r}
+animbook <- anim_prep(osiris, ID, sales, year)
+
+animbook_cat <- anim_prep_cat(aeles, id, party, year)
+```
+
+The additional options for the `anim_prep()` that allow for more customization to the data structure or the plot are as follows:
+
+- label: group labeling.
+- ngroup: number of groups we want to split the values into.
+- breaks: the group bins size
+- group_scaling: the grouping variable for the bins calculations.
+- color: the variable used to color the observations.
+- time_dependent: logical. Whether we want the observations to start at the same time or not.
+- scaling: the scaling method, either `rank` or `absolute`.
+- runif_min: minimum value for random addition to frame numbers
+- runif_max: maximum value for random addition to frame numbers
+
+Using the different combination of the additioanl options, the users could end up with four different scaling.
+
+1. Rank scaling
+
+```{r}
+# rank scaling
+rank_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year)
+```
+
+2. Absolute scaling
+
+```{r}
+# absolute scaling
+absolute_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year, 
+                              scaling = "absolute")
+```
+
+3. Rank scaling by group
+
+```{r}
+# rank scaling by group
+rank_scaling_group <- anim_prep(data = osiris, id = ID, values = sales, time = year,
+                                group_scaling = country)
+```
+
+4. Absolute scaling by group
+
+```{r}
+# absoluate scaling by group
+absolute_scaling_group <- anim_prep(data = osiris, id = ID, values = sales, time = year,
+                                    group_scaling = country, scaling = "absolute")
+```
+
+
+For the `anim_prep_cat()` function, the additional options are:
+
+- label: group labeling.
+- order: the ordering of the group.
+- color: the variable used to color the observations.
+- time_dependent: logical. Whether we want the observations to start at the same time or not.
+- runif_min: minimum value for random addition to frame numbers
+- runif_max: maximum value for random addition to frame numbers
+
+
+Both the `anim_prep()` and `anim_prep_cat()` function will return "animbook" object containing a list of the standard format data and settings.
+
+
+### Plotting the data
+
+Once the data is prepared, the next steps is to created the ggplot object as a basis for the animation. There are three plots available in this package, two plot could be uses for the animation and other plot is used as a static visualization.
+
+- `kangaroo_plot()`, plots the observation's movement over time.
+- `wallaby_plot()`, the subset plot of the `kangaroo_plot` with the time limit to only start and end.
+- `funnel_web_plot()`, the faceted static plot by time variable.
+
+All of the plot, have an internal function that converted the standard data format into the required structure for each plotting function. 
+
+```{r}
+label <- c("Top 20%", "20-40", "40-60", "60-80", "80-100", "not listed")
+
+animbook <- anim_prep(data = osiris, id = ID, values = sales, time = year, color = japan, label = label)
+```
+
+
+1. Kangaroo's plot
+
+```{r}
+# kangaroo plot
+kangaroo_plot(object = animbook,
+              palette = RColorBrewer::brewer.pal(9, "Set1"), 
+              rendering = "ggplot")
+```
+
+
+2. Wallaby's plot
+
+```{r}
+# wallaby plot
+wallaby_plot(object = animbook,
+             group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+             shade_palette = RColorBrewer::brewer.pal(9, "Set1"),
+             rendering = "ggplot",
+             subset = "top",
+             relation = "one_many",
+             total_point = NULL)
+```
+
+
+3. Funnel web spider's plot
+
+```{r}
+# funnel web plot
+funnel_web_plot(object = animbook,
+                palette = RColorBrewer::brewer.pal(9, "Set1"),
+                rendering = "ggplot")
+```
+
+
+### Animating the plot
+
+To animate the plot, the plot need to be save as an object before passed on to the final function `anim_animate()`.
+
+```{r}
+# animbook <- anim_prep_cat(data = aeles, id = id, values = party, time = year, color = gender, time_dependent = FALSE)
+# 
+# p <- wallaby_plot(animbook)
+# 
+# p2 <- anim_animate(p)
+# 
+# gganimate::animate(p2)
+```
+
+
+## Example usage
+
+
+
+
+
+
+
+
+# Application
+
+## Accounting database: osiris
+
+```{r}
+# raw_data <- read_csv("data-raw/osiris2021-sample1000.csv")
+
+# filter the data with sales record in selected period (2009 - 2018)
+
+# data <- raw_data |>
+#   filter(year >= 2000 & year < 2020,
+#         country %in% c("US", "JP", "CN")) |>
+#   select(year, country, ID, sales) |>
+#   filter(!is.na(sales) & sales != 0)
+# 
+# country <- data |>
+#   select(ID, country) |>
+#   distinct()
+# 
+# # complete the data using complete function for the missing year
+# complete_data <- data |>
+#   select(-country) |>
+#   tidyr::complete(year, ID) |>
+#   left_join(country) |>
+#   mutate(ID = as.factor(ID),
+#         year = as.integer(year))
+# 
+# label <- c("Top 25%", "25-50", "50-75", "75-100", "Not listed")
+# 
+# animbook <- anim_prep(osiris, ID, sales, year, label = label, ngroup = 4, color = country, time_dependent = FALSE)
+# 
+# ptop <- wallaby_plot(animbook, subset = "bottom", relation = "many_one", total_point = 500)
+# 
+# ptop2 <- anim_animate(ptop)
+# 
+# gganimate::animate(ptop2)
+# 
+# pbottom <- wallaby_plot(osiris, subset = "bottom", relation = "one_many", total_point = 500)
+# 
+# pbottom2 <- anim_animate(pbottom)
+# 
+# gganimate::animate(pbottom2)
+# 
+# gganimate::anim_save("inst/new_visualisation/exit.gif", ptop2, height = 8,
+#                      width = 9, units = "in", res = 150)
+# 
+# gganimate::anim_save("inst/new_visualisation/enter.gif", pbottom2, height = 8,
+#                      width = 9, units = "in", res = 150)
+```
+
+
+## Voter behavior
+
+Based on the 2016 Australian election results, how does the top party perform in keeping the old voters for different genders.
+
+```{r}
+# object <- anim_prep_cat(data = aeles,
+#                         id = id,
+#                         values = party,
+#                         time = year,
+#                         color = gender,
+#                         order = NULL,
+#                         time_dependent = FALSE)
+# 
+# # subset can be either "top", "bottom" or values in the data
+# # many_one not working yet
+# 
+# p <- wallaby_plot(object = object,
+#                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+#                   shade_palette = RColorBrewer::brewer.pal(9, "Set1"),
+#                   rendering = "ggplot",
+#                   subset = "top",
+#                   relation = "one_many",
+#                   height = 1,
+#                   size = 3,
+#                   width = 100,
+#                   total_point = 1000)
+# 
+# p2 <- anim_animate(p)
+# 
+# gganimate::animate(p2)
+```
+
+
+
+
+
+
+
+
+
+
+
 
 
 <!-- To look for the flow between group, one of the most common tools we look at is sankey chart. It represent the movement of the values from one set to another. However, with the static sankey, the only information presented are what is the proportion of the movement, and which states the quantities move to, this often enough in explaining the flow and helps making the decision necessary. To present more information, color could be used to represent the demographic of the group. What if the information that are interesting lies in the times domain, how could the plot captured that information?
@@ -66,158 +339,9 @@ The data set that will be used in this section and in all of the examples of thi
 -->
 
 
-# Visualization design
 
-This explains how to get from data to the animations, including different sorts of plots.
 
-
-# Software
-
-## Installation
-
-## Overview of functions
-
-## Example usage
-
-In designing the package for reproduces the NYtimes animated plot, the package end up with a three steps process in recreates the animation. The first step which is prepared the data into the right format for the plot function. The next stages is to create a ggplot object which then can be inputted into animation function. The last step is to added the animation settings to the ggplot object so that the gganimate::animate() function. The reason for this three steps process is that it allows the user who does not have a lot of experience to reproduces the animation.
-
-  As per motivations, the main focus for this package was to look at movement between the percentile group. Thus the anim_prep() function first purposes was to be able to take any numerical values and output the percentile group of the observations. The algorithms behind the group splitting are quantile and cut function. The quantile function from the stats R packages takes in the numeric vector and output the corresponding quantiles to the given probabilities. The output from the quantile function can then be used as the breaks argument for the cut function that is from the base R packages. The concerns of this method is that the users might not always interests in ranking the observations.
-  
-  The next logical design is to allows for different scaling. As mentioned in the paragraph above the first scaling is "rank". The function then expanded the function to allows for the "absolute" scaling. This scaling is to assign the quantile groups based on the absolute values scales. The default for the function is to breaks the group equally using seq function. The input to the seq function are taken by the min and max of the values and increment by the equal steps depend on number of group of interests.
-  
-  The algorithms mentions so far only breaks the quantile equally, but that is not always the cases as the users may interested in the group that are not equally breaks.
-
-
-<!-- # Package Usage
-
-## Data preprocesing step-->
-
-This first step can be done using the anim_prep() function. This function required that the users data contained id which is used to uniquely identified each individual observations, values which is numerical values to be used to group the observation together, and time, the variable that distinguish the values between the time and id. The users will need to understands what data structure can be input into the function. This package included the osiris data as an examples to the users.
-
-# ```{r}
-# animbook <- anim_prep(osiris, ID, sales, year)
-# ```
-
-There are an additional options that allow for more customizations to the data structure or the plot.
-
-- label: group labeling.
-- ngroup: number of groups we want to split the values into.
-- breaks: the group bins size (prototype)
-- group_scaling: the grouping variable for the bins calculations.
-- color: the variable used to color the observations.
-- time_dependent: logical. Whether we want the observations to start at the same time or not.
-- scaling: the scaling method, either `rank` or `absolute`.
-- runif_min: minimum value for random addition to frame numbers
-- runif_max: maximum value for random addition to frame numbers
-
-The function can calculate four different scales using these options.
-
-# ```{r}
-# # rank scaling
-# rank_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year)
-# 
-# # absolute scaling
-# absolute_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year,
-#                               scaling = "absolute")
-# 
-# # rank scaling by group
-# rank_group_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year, 
-#                                 group = country)
-# 
-# # absolute scaling by group
-# absolute_group_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year,
-#                                     group = country, scaling = "absolute")
-# 
-# rank_scaling
-# ```
-
-This function will return `animbook` object containing a list of the formatted data and settings.
-
-
-## Plotting the data
-
-After preparing the data, we can not plot it. There are three plots available in this package:
-
-- `kangaroo`, which plots the observation's movement over time.
-- `wallaby`, which subset the plot to either `top` or `bottom` and see which group they are in after the observational period.
-- `funnel_web_spider`, which is a faceted plot by time variable.
-
-# ```{r}
-# label <- c("Top 20%", "20-40", "40-60", "60-80", "80-100", "not listed")
-# 
-# animbook <- anim_prep(data = osiris, id = ID, values = sales, time = year, color = japan, label = label)
-# 
-# # kangaroo plot
-# kangaroo_plot(animbook)
-# 
-# # wallaby plot
-# wallaby_plot(animbook)
-#             
-# # funnel web spider plot
-# funnel_web_plot(animbook)
-# ```
-
-The `kangaroo` and `wallaby` plots can be animated using the function of the next stage. `funnel_web_spider` only supported static plot. We can also choose whether we want to animate the plot using gganimate or plotly.
-
-
-## Animating the plot
-
-To animate the plot, we need to save the plot into an object, which then can be passed on to the function.
-
-# ```{r}
-# animbook <- anim_prep_cat(data = aeles, id = id, values = party, time = year, color = gender, time_dependent = FALSE)
-# 
-# p <- wallaby_plot(animbook)
-# 
-# p2 <- anim_animate(p)
-# 
-# gganimate::animate(p2)
-# ```
-
-# Application
-
-## Accounting database: osiris
-
-## Voter behavior
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Introduction
+<!-- Introduction
 
 Some ideas:
 
@@ -244,7 +368,7 @@ The data set that will be used in this section and in all of the examples of thi
 - The data structure
 - The steps for the user
 - How does the function processes the data
-
+-->
 
 
 
