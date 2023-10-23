@@ -293,6 +293,10 @@ To animate the plot, the plot need to be save as an object before passed on to t
 # knitr::include_graphics("figures/dwchange.gif")
 ```
 
+```{r dwchange-gif, out.extra="class = 'gif'", fig.cap = "Something", eval=knitr::is_html_output()}
+knitr::include_graphics("figures/dwchange.gif")
+```
+
 ## Example usage
 
 
