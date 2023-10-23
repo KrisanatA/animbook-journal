@@ -11,9 +11,61 @@ library(tidyverse)
 
 
 ## -----------------------------------------------------------------------------
+example <- osiris |> 
+  filter(country %in% c("AU", "US"),
+                between(year, 2006, 2007)) |> 
+  arrange(desc(sales)) 
+
+example |> 
+  filter(ID %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  reframe(ID, year, sales, country) |> 
+  arrange(ID)
+
+
+## -----------------------------------------------------------------------------
+rank <- anim_prep(example, ID, sales, year, color = country)
+
+rank$data |> 
+  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  rename(country = color) |> 
+  select(-frame)
+
+
+## -----------------------------------------------------------------------------
+absolute <- anim_prep(example, ID, sales, year, color = country, scaling = "absolute")
+
+absolute$data |> 
+  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  rename(country = color) |> 
+  select(-frame)
+
+
+## -----------------------------------------------------------------------------
+rank_group <- anim_prep(example, ID, sales, year, color = country, group_scaling = country)
+
+rank_group$data |> 
+  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  rename(country = group) |> 
+  select(-c(frame, color))
+
+
+## -----------------------------------------------------------------------------
+absolute_group <- anim_prep(example, ID, sales, year, color = country, group_scaling = country, scaling = "absolute")
+
+absolute_group$data |> 
+  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  rename(country = group) |> 
+  select(-c(frame, color))
+
+
+## ----data-diagram, fig.cap="The data transformation diagram."-----------------
+knitr::include_graphics("figures/data-diagram.png")
+
+
+## -----------------------------------------------------------------------------
 animbook <- anim_prep(osiris, ID, sales, year)
 
-animbook_cat <- anim_prep_cat(aeles, id, party, year)
+animbook_cat <- anim_prep_cat(d_w_change, id, qnt, time)
 
 
 ## -----------------------------------------------------------------------------
@@ -40,19 +92,17 @@ absolute_scaling_group <- anim_prep(data = osiris, id = ID, values = sales, time
 
 
 ## -----------------------------------------------------------------------------
-label <- c("Top 20%", "20-40", "40-60", "60-80", "80-100", "not listed")
-
-animbook <- anim_prep(data = osiris, id = ID, values = sales, time = year, color = japan, label = label)
+animbook <- anim_prep_cat(data = d_w_change, id = id, values = qnt, time = time, color = gp)
 
 
-## -----------------------------------------------------------------------------
+## ----out.width="70%"----------------------------------------------------------
 # kangaroo plot
 kangaroo_plot(object = animbook,
               palette = RColorBrewer::brewer.pal(9, "Set1"), 
               rendering = "ggplot")
 
 
-## -----------------------------------------------------------------------------
+## ----out.width="70%"----------------------------------------------------------
 # wallaby plot
 wallaby_plot(object = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -63,7 +113,7 @@ wallaby_plot(object = animbook,
              total_point = NULL)
 
 
-## -----------------------------------------------------------------------------
+## ----out.width="70%"----------------------------------------------------------
 # funnel web plot
 funnel_web_plot(object = animbook,
                 palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -71,13 +121,17 @@ funnel_web_plot(object = animbook,
 
 
 ## -----------------------------------------------------------------------------
-# animbook <- anim_prep_cat(data = aeles, id = id, values = party, time = year, color = gender, time_dependent = FALSE)
+# animate <- anim_prep_cat(d_w_change, id = id, values = qnt, time = time, color = gp, time_dependent = FALSE)
 # 
-# p <- wallaby_plot(animbook)
+# p <- wallaby_plot(animate)
 # 
 # p2 <- anim_animate(p)
 # 
-# gganimate::animate(p2)
+# gganimate::anim_save("figures/dwchange.gif", p2)
+
+
+## -----------------------------------------------------------------------------
+# knitr::include_graphics("figures/dwchange.gif")
 
 
 ## -----------------------------------------------------------------------------

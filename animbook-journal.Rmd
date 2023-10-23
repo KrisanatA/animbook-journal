@@ -30,6 +30,7 @@ library(animbook)
 library(tidyverse)
 ```
 
+<!-- potential new title: animbook: Visualizing benchmark dynamics using animation, or animbook: Visualizing changes in benchmark using animation-->
 
 # Introduction
 
@@ -43,17 +44,98 @@ The concept of "zombie companies" began to attract attention when an article on 
   
   The structure of this paper will consist of both the visualization design and software design. The first section will explain about the animation in The New York Times article. Secondly, what are the expected data to be input into the plot, and how it is processed. The third section is about the animation tools, for example, **gganimate** (@gganimate) and **plotly** (@plotly). The next section will be about the design of the package and visualization. The last two sections explore the usage of the R package and the application.
   
-  
 
-# Explanation of the NY Times visualization
+# Explanation of the New York Times visualization
+
+The flow chart featured in one of the New York Time articles unveils the issue of income disparities between black and white children who were raised in families with comparable income according to the @race. This visualization reveals that, compared to white children, black children are more likely to drop down to the lower-income group, given that they both grew up in wealthy families. 
+
+  In the visualization, each observation is initially classified into one group at the start and potentially transitions into either the same group or a different group. This dynamics visualization constructs questions on the broader use of this visualization to other types of data. As mentioned in the introduction, one of the data that will make use of this is accounting data. Additionally, the marketing data that exhibits the movement of customers shifting the product interest to another competitor can be valuable insight into the data. It could be extended to incorporate demographic information of the customers. It would allow the marketing analyst to gain a significant understanding of both the company's products and the overall market. This also applies to the election data for the analyst to consolidate the campaign for their political party.
+
+  This animation was developed using two software based on JavaScript, D3.js (@d3js), and WebGL (reference). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. For the animation in this paper, the programming languages that will be used for recreating and revising the visualization done by The New York Times articles is R (@r).
+
 
 # Data
 
-<!-- Diagram illustrating what data is expected, and how it is processed. -->
+Before any visualizations can be performed, the users must first understand the data concept known as `tidy data` (@tidy-data). There are three fundamental key principles: each variable forms a column, each observation forms a row, and each type of observational unit forms a table. These three keys are Codd's third normal form (@relational), but phrase in the language of statistics. The tidy data format focuses on a single dataset instead of many connected datasets typically found in a relational database.
 
-When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
+  The accounting data that will be used in this section and in most of the examples for this paper was collected from Bureau van Dijk (reference). This data set comprises 30,000 rows and 94 variables of information on listed and major unlisted/delisted companies worldwide. The only variables of interest from this data set are ID, year, country, and sales. A subset version of this data set, which only contained variables of interest from 2006 to 2018, is included in this package.
+  
+  Now that the tidy data concept is established and the example data is introduced, let's explore how the data got transformed. As seen in the visualization, each observation is classified into a group. In the accounting data, however, it is represented in a numerical form instead of categories. The numerical value needs to be somehow mapped to a category. One way to handle this is by ranking the sales and grouping the rankings into quantiles. In some cases, this may not be the best option. As the observation is moved up by quantiles, one is bound to move down. It can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different demographics, for example, ranking within a specific country. This generalization leads to a total of four scaling methods for the numerical data.
+  
+  Original data:
+  
+```{r}
+example <- osiris |> 
+  filter(country %in% c("AU", "US"),
+                between(year, 2006, 2007)) |> 
+  arrange(desc(sales)) 
 
-The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
+example |> 
+  filter(ID %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  reframe(ID, year, sales, country) |> 
+  arrange(ID)
+```
+  
+
+1. Ranking by year.
+
+```{r}
+rank <- anim_prep(example, ID, sales, year, color = country)
+
+rank$data |> 
+  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  rename(country = color) |> 
+  select(-frame)
+```
+
+
+2. Fix bins relative to absolute values by year.
+
+```{r}
+absolute <- anim_prep(example, ID, sales, year, color = country, scaling = "absolute")
+
+absolute$data |> 
+  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  rename(country = color) |> 
+  select(-frame)
+```
+
+
+3. Ranking by year within a group.
+
+```{r}
+rank_group <- anim_prep(example, ID, sales, year, color = country, group_scaling = country)
+
+rank_group$data |> 
+  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  rename(country = group) |> 
+  select(-c(frame, color))
+```
+
+
+4. Fix bins relative to absolute values by year within a group (bug in code).
+
+```{r}
+absolute_group <- anim_prep(example, ID, sales, year, color = country, group_scaling = country, scaling = "absolute")
+
+absolute_group$data |> 
+  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
+  rename(country = group) |> 
+  select(-c(frame, color))
+```
+  
+  For the first and third scaling methods, group splitting is executed using the `quantiles()` and `cut()` functions. The `quantile` function from the `stats` R package (@stats) takes a numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the `quantile` function is then used as the `breaks` argument for the cut function that is part of the base R packages.
+  
+  In contrast, the second and fourth scaling methods calculate the quantile based on the absolute values scales. The default approach is to break the group equally using the `seq()` function. The `seq()` function takes input values from the minimum and maximum values and increments by equal steps depending on the number of groups of interest.
+
+```{r data-diagram, fig.cap="The data transformation diagram."}
+knitr::include_graphics("figures/data-diagram.png")
+```
+
+  Based on Figure \@ref(fig:data-diagram), these are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animbook data structure. It is carried out by assigning the frame to each individual observation, ensuring that each ID does not contain repeat frame values. Its lets the **gganimate** or **plotly** to perceive where the observation would be on the plot at a given frame.
+  
+  The frame variable is assigned by sorting the data based on the id and time using the `arrange()` function, followed by applying the `group_by()` function on the id, allowing the `row_number()` function to be performed within each group. The functions mentioned in this paragraph are from the `dplyr` packages (@dplyr).
+
 
 # Animation tools
 
@@ -65,12 +147,7 @@ Literature review of animation tools
 This explains how to get from data to the animations, including different sorts of plots.
 
 
-In designing the package for reproducing the New York Times animated plot, the package ended up with a three-step process in recreating the animation. The first step is to turn the data into the right format for the plot function. The next stage is to create a ggplot object, which can then be inputted into the animation function. The last step is adding the animation settings to the ggplot object so the user can animate the plot using the `gganimate::animate()` function. The reason for this three-step process is that it allows the user who does not have a lot of experience to reproduce the animation while keeping the customization for an experienced user.
-
-  As per motivations, the main focus for this package was to look at movement between the percentile group. Thus, the `anim_prep()` function's first purpose was to be able to take any numerical values and output the percentile group of the observations. The algorithms behind the group splitting are the `quantile()` and `cut()` functions. The quantile function from the stats R packages (@stats) takes in the numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the quantile function can then be used as the breaks argument for the cut function that is from the base R packages. The concern of this method is that the users might not always be interested in ranking the observations.
   
-  The next logical design is to allow for different scaling. As mentioned in the paragraph above, the first scaling for the function is "rank". The function then expanded to allow for the "absolute" scaling. This scaling calculates the quantile groups based on the absolute values scales. The default is to break the group equally using the `seq()` function. The input to the seq function is taken by the min and max of the values and increments by equal steps depending on the number of groups of interests. In the real-world scenario, it is not always the case to break the group equally. The users may interested in the groups that are not equally broken. The function then allows the user to provide the vector of the breakpoint.
-
 
 # Software
 
@@ -78,24 +155,24 @@ In designing the package for reproducing the New York Times animated plot, the p
 
 ## Overview of functions
 
-There are three main stages for this packages, one is to prepare the data, two is plotting the data, and three, animating the plot.
+In designing the package for reproducing the New York Times animated plot, the package ended up with a three-step process in recreating the animation. The first step is to turn the data into the right format for the plot function. The next stage is to create a ggplot object, which can then be inputted into the animation function. The last step is adding the animation settings to the ggplot object so the user can animate the plot using the `gganimate::animate()` function. The reason for this three-step process is that it allows the user who does not have a lot of experience to reproduce the animation while keeping the customization for an experienced user.
 
 
 ### Prepare the data
 
-The first step can be done using the `anim_prep()` function. This function required taht the users data contained id, which is used to uniquely identified each individual observaitons, values, which is numerical values to be used to grouping the observation together, and time, the variable that associated the changes of the observation. In the cases when the users already have the values as a group variable, the `anim_prep_cat()` function can then be use instead.
+The first step can be done using the `anim_prep()` function. This function required that the user data contained ID, which is used to identify each individual observation, values, which are numerical values to be used to group the observation together, and time, the variable associated with the changes of the observation. In the cases when the users already have the values as a group variable, the `anim_prep_cat()` function can then be used instead.
 
 ```{r}
 animbook <- anim_prep(osiris, ID, sales, year)
 
-animbook_cat <- anim_prep_cat(aeles, id, party, year)
+animbook_cat <- anim_prep_cat(d_w_change, id, qnt, time)
 ```
 
 The additional options for the `anim_prep()` that allow for more customization to the data structure or the plot are as follows:
 
 - label: group labeling.
 - ngroup: number of groups we want to split the values into.
-- breaks: the group bins size
+- breaks: the group bins' size
 - group_scaling: the grouping variable for the bins calculations.
 - color: the variable used to color the observations.
 - time_dependent: logical. Whether we want the observations to start at the same time or not.
@@ -103,7 +180,7 @@ The additional options for the `anim_prep()` that allow for more customization t
 - runif_min: minimum value for random addition to frame numbers
 - runif_max: maximum value for random addition to frame numbers
 
-Using the different combination of the additioanl options, the users could end up with four different scaling.
+Using the different combinations of the additional options, the users could end up with four different scales, as mentioned in the \@ref(data) section.
 
 1. Rank scaling
 
@@ -146,30 +223,27 @@ For the `anim_prep_cat()` function, the additional options are:
 - runif_min: minimum value for random addition to frame numbers
 - runif_max: maximum value for random addition to frame numbers
 
-
-Both the `anim_prep()` and `anim_prep_cat()` function will return "animbook" object containing a list of the standard format data and settings.
+Both the `anim_prep()` and `anim_prep_cat()` functions will return the "animbook" object containing a list of the standard format data and settings.
 
 
 ### Plotting the data
 
-Once the data is prepared, the next steps is to created the ggplot object as a basis for the animation. There are three plots available in this package, two plot could be uses for the animation and other plot is used as a static visualization.
+Once the data is prepared. The next step is to create the ggplot object as a basis for the animation. There are three plots available in this package. Two of the plots could be used for the animation, and another plot is used as a static visualization.
 
-- `kangaroo_plot()`, plots the observation's movement over time.
-- `wallaby_plot()`, the subset plot of the `kangaroo_plot` with the time limit to only start and end.
-- `funnel_web_plot()`, the faceted static plot by time variable.
+- `kangaroo_plot()`: plots the observation's movement over time.
+- `wallaby_plot()`: the subset plot of the `kangaroo_plot` with the time limit to only start and end.
+- `funnel_web_plot()`: the faceted static plot by time variable.
 
-All of the plot, have an internal function that converted the standard data format into the required structure for each plotting function. 
+All of the plots have an internal function that converts the standard data format into the required structure for each plotting function. 
 
 ```{r}
-label <- c("Top 20%", "20-40", "40-60", "60-80", "80-100", "not listed")
-
-animbook <- anim_prep(data = osiris, id = ID, values = sales, time = year, color = japan, label = label)
+animbook <- anim_prep_cat(data = d_w_change, id = id, values = qnt, time = time, color = gp)
 ```
 
 
 1. Kangaroo's plot
 
-```{r}
+```{r, out.width="70%"}
 # kangaroo plot
 kangaroo_plot(object = animbook,
               palette = RColorBrewer::brewer.pal(9, "Set1"), 
@@ -179,7 +253,7 @@ kangaroo_plot(object = animbook,
 
 2. Wallaby's plot
 
-```{r}
+```{r, out.width="70%"}
 # wallaby plot
 wallaby_plot(object = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -193,7 +267,7 @@ wallaby_plot(object = animbook,
 
 3. Funnel web spider's plot
 
-```{r}
+```{r, out.width="70%"}
 # funnel web plot
 funnel_web_plot(object = animbook,
                 palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -206,15 +280,18 @@ funnel_web_plot(object = animbook,
 To animate the plot, the plot need to be save as an object before passed on to the final function `anim_animate()`.
 
 ```{r}
-# animbook <- anim_prep_cat(data = aeles, id = id, values = party, time = year, color = gender, time_dependent = FALSE)
+# animate <- anim_prep_cat(d_w_change, id = id, values = qnt, time = time, color = gp, time_dependent = FALSE)
 # 
-# p <- wallaby_plot(animbook)
+# p <- wallaby_plot(animate)
 # 
 # p2 <- anim_animate(p)
 # 
-# gganimate::animate(p2)
+# gganimate::anim_save("figures/dwchange.gif", p2)
 ```
 
+```{r}
+# knitr::include_graphics("figures/dwchange.gif")
+```
 
 ## Example usage
 
@@ -335,7 +412,7 @@ The osiris data from Bureau van Dijk, contains an information on listed, and maj
 
 When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
 
-The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
+The data set that will be used in this section and in all of the examples of this paper is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
 -->
 
 
@@ -363,7 +440,7 @@ Some ideas:
 
 When working with the raw data, the data pre-processing is one of the important steps we need to take before further analysis is taken. The function in this package will offer some flexibility in the types of the variable it accepted. However, there are still some restrictions the user needs to follow. In this section, it will provide what are the accepted format and examples for the user the followed to reproduce the final animate plot.
 
-The data set that will be used in this section and in all of the examples of this journal is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
+The data set that will be used in this section and in all of the examples of this paper is collected from Bureau van Dijk. The data set contained 30,000 rows and 94 variable of information on listed, and major unlisted/delisted companies across the world. From the raw data, we are only interested in the ranking of the companies. The cleaned version of this data set is included in the package which only contained the relevant variables to reproduce the animated plot.
 
 - The data structure
 - The steps for the user
