@@ -14,7 +14,7 @@ author:
     email:  kanu0003@student.monash.edu
 type: package
 output: 
-  rjtools::rjournal_web_article:
+  rjtools::rjournal_article:
     self_contained: yes
     toc: no
 bibliography: animbook-journal.bib
@@ -128,7 +128,7 @@ absolute_group$data |>
   
   In contrast, the second and fourth scaling methods calculate the quantile based on the absolute values scales. The default approach is to break the group equally using the `seq()` function. The `seq()` function takes input values from the minimum and maximum values and increments by equal steps depending on the number of groups of interest.
 
-```{r data-diagram, fig.cap="The data transformation diagram."}
+```{r data-diagram, fig.cap="The data transformation diagram.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
 knitr::include_graphics("figures/data-diagram.png")
 ```
 

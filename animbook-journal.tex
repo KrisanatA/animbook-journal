@@ -1,5 +1,7 @@
 % !TeX root = RJwrapper.tex
 \title{animbook: Visualizing changes in performance measures and demographic affiliations using animation}
+
+
 \author{by Krisanat Anukarnsakulchularp}
 
 \maketitle
@@ -167,7 +169,12 @@ For the first and third scaling methods, group splitting is executed using the \
 In contrast, the second and fourth scaling methods calculate the quantile based on the absolute values scales. The default approach is to break the group equally using the \texttt{seq()} function. The \texttt{seq()} function takes input values from the minimum and maximum values and increments by equal steps depending on the number of groups of interest.
 
 \begin{figure}
-\includegraphics[width=40.33in]{figures/data-diagram} \caption{The data transformation diagram.}\label{fig:data-diagram}
+
+{\centering \includegraphics[width=1\linewidth]{figures/data-diagram} 
+
+}
+
+\caption{The data transformation diagram.}\label{fig:data-diagram}
 \end{figure}
 
 Based on Figure \ref{fig:data-diagram}, these are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animbook data structure. It is carried out by assigning the frame to each individual observation, ensuring that each ID does not contain repeat frame values. Its lets the \textbf{gganimate} or \textbf{plotly} to perceive where the observation would be on the plot at a given frame.

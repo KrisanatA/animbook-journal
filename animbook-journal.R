@@ -58,7 +58,7 @@ absolute_group$data |>
   select(-c(frame, color))
 
 
-## ----data-diagram, fig.cap="The data transformation diagram."-----------------
+## ----data-diagram, fig.cap="The data transformation diagram.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
 knitr::include_graphics("figures/data-diagram.png")
 
 
@@ -95,14 +95,14 @@ absolute_scaling_group <- anim_prep(data = osiris, id = ID, values = sales, time
 animbook <- anim_prep_cat(data = d_w_change, id = id, values = qnt, time = time, color = gp)
 
 
-## ----out.width="70%"----------------------------------------------------------
+## ---- out.width="70%"---------------------------------------------------------
 # kangaroo plot
 kangaroo_plot(object = animbook,
               palette = RColorBrewer::brewer.pal(9, "Set1"), 
               rendering = "ggplot")
 
 
-## ----out.width="70%"----------------------------------------------------------
+## ---- out.width="70%"---------------------------------------------------------
 # wallaby plot
 wallaby_plot(object = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -113,7 +113,7 @@ wallaby_plot(object = animbook,
              total_point = NULL)
 
 
-## ----out.width="70%"----------------------------------------------------------
+## ---- out.width="70%"---------------------------------------------------------
 # funnel web plot
 funnel_web_plot(object = animbook,
                 palette = RColorBrewer::brewer.pal(9, "Set1"),
@@ -132,6 +132,10 @@ funnel_web_plot(object = animbook,
 
 ## -----------------------------------------------------------------------------
 # knitr::include_graphics("figures/dwchange.gif")
+
+
+## ----dwchange-gif, out.extra="class = 'gif'", fig.cap = "Something", eval=knitr::is_html_output()----
+#> knitr::include_graphics("figures/dwchange.gif")
 
 
 ## -----------------------------------------------------------------------------
