@@ -2,7 +2,7 @@
 # Please edit animbook-journal.Rmd to modify this file
 
 ## ----setup, include=FALSE-----------------------------------------------------
-knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+knitr::opts_chunk$set(echo=FALSE, warning=FALSE, message=FALSE)
 
 
 ## -----------------------------------------------------------------------------
@@ -10,204 +10,186 @@ library(animbook)
 library(tidyverse)
 
 
-## -----------------------------------------------------------------------------
-example <- osiris |> 
-  filter(country %in% c("AU", "US"),
-                between(year, 2006, 2007)) |> 
-  arrange(desc(sales)) 
-
-example |> 
-  filter(ID %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
-  reframe(ID, year, sales, country) |> 
-  arrange(ID)
-
-
-## -----------------------------------------------------------------------------
-rank <- anim_prep(example, ID, sales, year, color = country)
-
-rank$data |> 
-  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
-  rename(country = color) |> 
-  select(-frame)
-
-
-## -----------------------------------------------------------------------------
-absolute <- anim_prep(example, ID, sales, year, color = country, scaling = "absolute")
-
-absolute$data |> 
-  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
-  rename(country = color) |> 
-  select(-frame)
-
-
-## -----------------------------------------------------------------------------
-rank_group <- anim_prep(example, ID, sales, year, color = country, group_scaling = country)
-
-rank_group$data |> 
-  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
-  rename(country = group) |> 
-  select(-c(frame, color))
-
-
-## -----------------------------------------------------------------------------
-absolute_group <- anim_prep(example, ID, sales, year, color = country, group_scaling = country, scaling = "absolute")
-
-absolute_group$data |> 
-  filter(id %in% c("US751825172", "US470731996", "AU004085330", "AU009134114", "AU009219809", "US161229730")) |> 
-  rename(country = group) |> 
-  select(-c(frame, color))
-
-
-## ----data-diagram, fig.cap="The data transformation diagram.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+## ----data-diagram, fig.cap="The diagram shows what are the expected data forms.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
 knitr::include_graphics("figures/data-diagram.png")
 
 
-## -----------------------------------------------------------------------------
-animbook <- anim_prep(osiris, ID, sales, year)
-
-animbook_cat <- anim_prep_cat(d_w_change, id, qnt, time)
+## ----animation-diagram, fig.cap="The diagram shows how the animation is done using the successive pictures.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+knitr::include_graphics("figures/animation-diagram.png")
 
 
-## -----------------------------------------------------------------------------
-# rank scaling
-rank_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year)
+## ----animated-diagram, fig.cap="The diagram shows how the frames were used in the animated plot.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+knitr::include_graphics("figures/animated-diagram.png")
 
 
-## -----------------------------------------------------------------------------
-# absolute scaling
-absolute_scaling <- anim_prep(data = osiris, id = ID, values = sales, time = year, 
-                              scaling = "absolute")
+## ----proportional-shade, fig.show="hold", out.width="50%", fig.cap="The plot shows the difference between the sigmoid and sine curves."----
+knitr::include_graphics("figures/sigmoid-shade.png")
+knitr::include_graphics("figures/sine-shade.png")
 
 
 ## -----------------------------------------------------------------------------
-# rank scaling by group
-rank_scaling_group <- anim_prep(data = osiris, id = ID, values = sales, time = year,
-                                group_scaling = country)
+dbl_change |> 
+  filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
+  reframe(id, time, values, gp) |> 
+  arrange(gp, id)
 
 
 ## -----------------------------------------------------------------------------
-# absoluate scaling by group
-absolute_scaling_group <- anim_prep(data = osiris, id = ID, values = sales, time = year,
-                                    group_scaling = country, scaling = "absolute")
+rank <- anim_prep(dbl_change, id, values, time, color = gp) 
+
+rank$data |> 
+  filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
+  rename(gp = color) |> 
+  select(-frame) |> 
+  arrange(gp, id)
 
 
 ## -----------------------------------------------------------------------------
-animbook <- anim_prep_cat(data = d_w_change, id = id, values = qnt, time = time, color = gp)
+absolute <- anim_prep(dbl_change, id, values, time, color = gp, scaling = "absolute") 
+
+absolute$data |> 
+  filter(id %in% c(1, 14, 21, 100, 106, 148)) |>  
+  rename(gp = color) |> 
+  select(-frame) |> 
+  arrange(gp, id)
 
 
-## ---- out.width="70%"---------------------------------------------------------
-# kangaroo plot
-kangaroo_plot(object = animbook,
-              palette = RColorBrewer::brewer.pal(9, "Set1"), 
-              rendering = "ggplot")
+## -----------------------------------------------------------------------------
+rank_group <- anim_prep(dbl_change, id, values, time, color = gp, group_scaling = gp) 
+
+rank_group$data |> 
+  filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
+  rename(gp = group) |> 
+  select(-c(frame, color)) |> 
+  arrange(gp, id)
 
 
-## ---- out.width="70%"---------------------------------------------------------
-# wallaby plot
-wallaby_plot(object = animbook,
+## -----------------------------------------------------------------------------
+absolute_group <- anim_prep(dbl_change, id, values, time, color = gp, group_scaling = gp, scaling = "absolute") 
+
+absolute_group$data |> 
+  filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
+  rename(gp = group) |> 
+  select(-c(frame, color)) |> 
+  arrange(gp, id)
+
+
+## ----shade-algorithm, fig.show="hold", out.width="50%", fig.cap="The plot shows how does the algorithm work."----
+knitr::include_graphics("figures/sankey-shade-1.png")
+knitr::include_graphics("figures/sankey-shade-2.png")
+
+
+## ----echo=TRUE----------------------------------------------------------------
+animbook <- anim_prep_cat(cat_change, 
+                          id = id, 
+                          values = qnt, 
+                          time = time, 
+                          color = gp, 
+                          time_dependent = FALSE)
+
+head(animbook$data, 10)
+str(animbook)
+
+
+## ----echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+p <- wallaby_plot(object = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-             shade_palette = RColorBrewer::brewer.pal(9, "Set1"),
+             shade_palette = c("#737373", "#969696", "#BDBDBD","#D9D9D9","#D9D9D9","#D9D9D9"),
              rendering = "ggplot",
              subset = "top",
              relation = "one_many",
              total_point = NULL)
 
-
-## ---- out.width="70%"---------------------------------------------------------
-# funnel web plot
-funnel_web_plot(object = animbook,
-                palette = RColorBrewer::brewer.pal(9, "Set1"),
-                rendering = "ggplot")
+p
 
 
-## -----------------------------------------------------------------------------
-# animate <- anim_prep_cat(d_w_change, id = id, values = qnt, time = time, color = gp, time_dependent = FALSE)
-# 
-# p <- wallaby_plot(animate)
-# 
-# p2 <- anim_animate(p)
-# 
-# gganimate::anim_save("figures/dwchange.gif", p2)
+## ----eval=FALSE---------------------------------------------------------------
+#> p2 <- anim_animate(p)
+#> 
+#> gganimate::anim_save("figures/catchange.gif", p2)
 
 
-## -----------------------------------------------------------------------------
-# knitr::include_graphics("figures/dwchange.gif")
+## ----catchange-figure, fig.cap = "Animate visualization using example data.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+knitr::include_graphics("figures/animation-example.png")
 
 
-## ----dwchange-gif, out.extra="class = 'gif'", fig.cap = "Something", eval=knitr::is_html_output()----
-#> knitr::include_graphics("figures/dwchange.gif")
+## ----catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data.", eval=knitr::is_html_output()----
+#> knitr::include_graphics("figures/catchange.gif")
 
 
-## -----------------------------------------------------------------------------
-# raw_data <- read_csv("data-raw/osiris2021-sample1000.csv")
+## ----echo=TRUE----------------------------------------------------------------
+data <- osiris |> 
+  filter(country %in% c("US", "JP"))
 
-# filter the data with sales record in selected period (2009 - 2018)
+label <- c("Top 25%", "25-50", "50-75", "75-100", "Not listed")
 
-# data <- raw_data |>
-#   filter(year >= 2000 & year < 2020,
-#         country %in% c("US", "JP", "CN")) |>
-#   select(year, country, ID, sales) |>
-#   filter(!is.na(sales) & sales != 0)
-# 
-# country <- data |>
-#   select(ID, country) |>
-#   distinct()
-# 
-# # complete the data using complete function for the missing year
-# complete_data <- data |>
-#   select(-country) |>
-#   tidyr::complete(year, ID) |>
-#   left_join(country) |>
-#   mutate(ID = as.factor(ID),
-#         year = as.integer(year))
-# 
-# label <- c("Top 25%", "25-50", "50-75", "75-100", "Not listed")
-# 
-# animbook <- anim_prep(osiris, ID, sales, year, label = label, ngroup = 4, color = country, time_dependent = FALSE)
-# 
-# ptop <- wallaby_plot(animbook, subset = "bottom", relation = "many_one", total_point = 500)
-# 
-# ptop2 <- anim_animate(ptop)
-# 
-# gganimate::animate(ptop2)
-# 
-# pbottom <- wallaby_plot(osiris, subset = "bottom", relation = "one_many", total_point = 500)
-# 
-# pbottom2 <- anim_animate(pbottom)
-# 
-# gganimate::animate(pbottom2)
-# 
-# gganimate::anim_save("inst/new_visualisation/exit.gif", ptop2, height = 8,
-#                      width = 9, units = "in", res = 150)
-# 
-# gganimate::anim_save("inst/new_visualisation/enter.gif", pbottom2, height = 8,
-#                      width = 9, units = "in", res = 150)
+accounting <- anim_prep(data, 
+                      id = ID, 
+                      values = sales, 
+                      time = year, 
+                      label = label, 
+                      ngroup = 4, 
+                      color = country, 
+                      time_dependent = FALSE)
+
+p <- wallaby_plot(accounting,
+                  group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+                  shade_palette = c("#737373", "#969696", "#BDBDBD","#D9D9D9","#D9D9D9","#D9D9D9"),
+                  subset = "bottom",
+                  relation = "many_one",
+                  height = 1,
+                  size = 2,
+                  width = 100,
+                  total_point = 1000)
+
+p2 <- anim_animate(p)
 
 
-## -----------------------------------------------------------------------------
-# object <- anim_prep_cat(data = aeles,
-#                         id = id,
-#                         values = party,
-#                         time = year,
-#                         color = gender,
-#                         order = NULL,
-#                         time_dependent = FALSE)
-# 
-# # subset can be either "top", "bottom" or values in the data
-# # many_one not working yet
-# 
-# p <- wallaby_plot(object = object,
-#                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-#                   shade_palette = RColorBrewer::brewer.pal(9, "Set1"),
-#                   rendering = "ggplot",
-#                   subset = "top",
-#                   relation = "one_many",
-#                   height = 1,
-#                   size = 3,
-#                   width = 100,
-#                   total_point = 1000)
-# 
-# p2 <- anim_animate(p)
-# 
-# gganimate::animate(p2)
+## ----eval=FALSE---------------------------------------------------------------
+#> gganimate::anim_save("figures/exit.gif", p2, height = 8, fps = 30,
+#>                      nframes = 400, width = 9, units = "in", res = 150)
+
+
+## ----osiris-figure, fig.cap = "The animate visualization shows the companies that exited the market.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+knitr::include_graphics("figures/animation-exit.png")
+
+
+## ----osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the companies that exited the market.", eval=knitr::is_html_output()----
+#> knitr::include_graphics("figures/exit.gif")
+
+
+## ----echo=TRUE----------------------------------------------------------------
+voter <- anim_prep_cat(data = aeles,
+                       id = id,
+                       values = party,
+                       time = year,
+                       color = gender,
+                       order = NULL,
+                       time_dependent = FALSE)
+
+p_voter <- wallaby_plot(object = voter,
+                  group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+                  shade_palette = c("#737373", "#969696", "#BDBDBD","#D9D9D9","#D9D9D9","#D9D9D9"),
+                  rendering = "ggplot",
+                  subset = "top",
+                  relation = "one_many",
+                  height = 1,
+                  size = 2,
+                  width = 100,
+                  total_point = 1000)
+
+p2_voter <- anim_animate(p_voter)
+
+
+## ----eval=FALSE---------------------------------------------------------------
+#> gganimate::anim_save("figures/voter.gif", p2_voter, height = 8, fps = 30,
+#>                      nframes = 400, width = 9, units = "in", res = 150)
+
+
+## ----voter-figure, fig.cap = "The animate visualization shows how does the top party perform in keeping the old  voters for different genders.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+knitr::include_graphics("figures/animation-voter.png")
+
+
+## ----voter-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows how does the top party perform in keeping the old  voters for different genders.", eval=knitr::is_html_output()----
+#> knitr::include_graphics("figures/voter.gif")
 
