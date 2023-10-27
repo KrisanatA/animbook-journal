@@ -17,7 +17,6 @@ output:
     self_contained: yes
     toc: no
 bibliography: animbook-journal.bib
-
 ---
 
 ```{r setup, include=FALSE}
@@ -32,20 +31,22 @@ library(tidyverse)
 
 # Introduction
 
-The concept of "zombie companies" began to attract attention when @zombie_companies_2008 reported on their proliferation in Japan. Zombie companies are defined as those with an interest coverage ratio of less than one for a period of more than three years, that is, companies taking space in the market but adding no life to the economy. We would detect their presence by a drop in performance, which is a movement pattern in their relative ranking over time. Generally, studying movement patterns is interesting for many problems, including rocket ship startups that rapidly perform well, or in politics, to study voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
+The concept of "zombie companies" began to attract attention when @zombie_companies_2008 reported on their proliferation in Japan. Zombie companies are those with an interest coverage ratio of less than one for a period of more than three years, that is, companies taking space in the market but adding no life to the economy. We would detect their presence by a drop in performance, which is a movement pattern in their relative ranking over time. Generally, studying movement patterns is interesting for many problems, including rocket ship startups that rapidly perform well, or in politics, to study voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
 
 The New York Times provided a possible solution in the article titled "Extensive data show punishing reach of racism for black boys" (@the_new_york_time) to tell the story of how racism appears to inhibit socioeconomic change. This animation is the motivation for the new visualization presented here, to be applied generally.
   
-With an advancement in technology, this results in an increase in both the size and complexity of the data. It requires an experienced hand to convey the right messages from the data. However, as shown in The New York Times article (@the_new_york_time), the animation is not only created just for eye-catching graphics. Animation can be used as a tool that helps communicate complex data, enhancing the narrative and keeping it engaged for the audience.
+The challenge in producing an animation like that in New York Times article animation is the transformation of the data, and connection with elements of the plot that will be animated. The complexities include standardizing starting times of the temporal variable, allowing for the user to choose the number of categories, standardizing distributions and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.
   
-  The challenge in reproducing the New York Times article animation was the amount of code required. Additionally, the business data may or may not have the same information as the one in the article. These considerations establish the objective for creating the R package that could generalize the animation to a wider range of data.
-  
-  The structure of this paper will consist of both the visualization design and software design. The first section will explain the animation in The New York Times article and why it might be relevant to the problems. Secondly, what is the expected data to be input into the plot, and how it is processed. The third section is about the animation tools, followed by the section on package and visualization design. The last two sections explore the usage of the R package and the application to other types of data.
+The structure of this paper is as follows. Section @NYT explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format, and how it is processed. Following this, is an explanation of available the animation tools, and how they are employed for this problem.  A  section on the functions of the package and how the visualization is designed, demonstrate how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
 
 
-# Explanation of the New York Times visualization
+# Explanation of the New York Times visualization {#NYT}
 
-The flow chart featured in one of the New York Times articles unveils the issue of income disparities between black and white children who were raised in families with comparable income according to the @race. This visualization reveals that, compared to white children, black children are more likely to drop down to the lower-income group, given that they both grew up in wealthy families.
+```{r nyt, fig.cap="Screenshot of the New York Times animation, that is the motivation for this visualization package.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
+knitr::include_graphics("figures/NYT.jpg")
+```
+
+The interactive chart featured in the New York Times article (Figure \@ref(fig:nyt)) unveils the issue of income disparities between black and white children who were raised in families with comparable income according to the @race. This visualization reveals that, compared to white children, black children are more likely to drop down to the lower-income group, given that they both grew up in wealthy families.
 
   In the visualization, each observation is initially classified into one group at the start and potentially transitions into either the same group or a different group. This dynamics visualization constructs questions on the broader use of this visualization to other types of data. The potential use of this visualization on accounting data is to convey a message, as reported by the @oecd_report, that the concept of zombie companies is not unique to Japan alone. It is also present in the United States, which has a faster metabolize rate (more new listings and exits) relative to Japan.
   
@@ -424,6 +425,8 @@ From the animation, it is clear that individuals who identified their gender as 
 # Summary
 
 Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of `animbook`, the feature to have different speed for each observation have not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further.
+
+# Acknowledgements {-}
 
 This paper is based on the 0.0.0.9 version of the `animbook` package. This version is available on [GitHub](https://github.com/KrisanatA/animbook).
 
