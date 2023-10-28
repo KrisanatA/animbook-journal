@@ -10,6 +10,10 @@ library(animbook)
 library(tidyverse)
 
 
+## ----nyt, fig.cap="Screenshot of the New York Times animation, that is the motivation for this visualization package.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+knitr::include_graphics("figures/NYT.png")
+
+
 ## ----data-diagram, fig.cap="The diagram shows what are the expected data forms.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
 knitr::include_graphics("figures/data-diagram.png")
 
@@ -28,38 +32,35 @@ knitr::include_graphics("figures/sine-shade.png")
 
 
 ## -----------------------------------------------------------------------------
-dbl_change |> 
+original <- dbl_change |> 
   filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
   reframe(id, time, values, gp) |> 
   arrange(gp, id)
 
-
-## -----------------------------------------------------------------------------
 rank <- anim_prep(dbl_change, id, values, time, color = gp) 
 
-rank$data |> 
+rank_data <- rank$data |> 
   filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
-  rename(gp = color) |> 
+  rename(gp = color,
+         rank = qtile) |> 
   select(-frame) |> 
   arrange(gp, id)
 
-
-## -----------------------------------------------------------------------------
 absolute <- anim_prep(dbl_change, id, values, time, color = gp, scaling = "absolute") 
 
-absolute$data |> 
+absolute_data <- absolute$data |> 
   filter(id %in% c(1, 14, 21, 100, 106, 148)) |>  
-  rename(gp = color) |> 
+  rename(gp = color,
+         absolute = qtile) |> 
   select(-frame) |> 
   arrange(gp, id)
 
-
-## -----------------------------------------------------------------------------
 rank_group <- anim_prep(dbl_change, id, values, time, color = gp, group_scaling = gp) 
 
-rank_group$data |> 
+rank_group_data <- rank_group$data |> 
   filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
-  rename(gp = group) |> 
+  rename(gp = group,
+         rank_group = qtile) |> 
   select(-c(frame, color)) |> 
   arrange(gp, id)
 
@@ -67,11 +68,21 @@ rank_group$data |>
 ## -----------------------------------------------------------------------------
 absolute_group <- anim_prep(dbl_change, id, values, time, color = gp, group_scaling = gp, scaling = "absolute") 
 
-absolute_group$data |> 
+absolute_group_data <- absolute_group$data |> 
   filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
-  rename(gp = group) |> 
+  rename(gp = group,
+         absolute_group = qtile) |> 
   select(-c(frame, color)) |> 
   arrange(gp, id)
+
+
+## -----------------------------------------------------------------------------
+original |> 
+  left_join(rank_data, by = c("id", "time", "gp")) |> 
+  left_join(rank_group_data, by = c("id", "time", "gp")) |> 
+  left_join(absolute_data, by = c("id", "time", "gp")) |> 
+  left_join(absolute_group_data, by = c("id", "time", "gp")) |> 
+  reframe(id, time, gp, values, rank, rank_group, absolute, absolute_group)
 
 
 ## ----shade-algorithm, fig.show="hold", out.width="50%", fig.cap="The plot shows how does the algorithm work."----
@@ -94,7 +105,8 @@ str(animbook)
 ## ----echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
 p <- wallaby_plot(object = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-             shade_palette = c("#737373", "#969696", "#BDBDBD","#D9D9D9","#D9D9D9","#D9D9D9"),
+             shade_palette = c("#737373", "#969696", "#BDBDBD",
+                               "#D9D9D9","#D9D9D9","#D9D9D9"),
              rendering = "ggplot",
              subset = "top",
              relation = "one_many",
@@ -106,7 +118,8 @@ p
 ## ----eval=FALSE---------------------------------------------------------------
 #> p2 <- anim_animate(p)
 #> 
-#> gganimate::anim_save("figures/catchange.gif", p2)
+#> gganimate::anim_save("figures/catchange.gif", p2, height = 8, fps = 30,
+#>                      nframes = 400, width = 9, units = "in", res = 150)
 
 
 ## ----catchange-figure, fig.cap = "Animate visualization using example data.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
@@ -134,7 +147,8 @@ accounting <- anim_prep(data,
 
 p <- wallaby_plot(accounting,
                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-                  shade_palette = c("#737373", "#969696", "#BDBDBD","#D9D9D9","#D9D9D9","#D9D9D9"),
+                  shade_palette = c("#737373", "#969696", "#BDBDBD",
+                                    "#D9D9D9","#D9D9D9","#D9D9D9"),
                   subset = "bottom",
                   relation = "many_one",
                   height = 1,
@@ -150,11 +164,11 @@ p2 <- anim_animate(p)
 #>                      nframes = 400, width = 9, units = "in", res = 150)
 
 
-## ----osiris-figure, fig.cap = "The animate visualization shows the companies that exited the market.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+## ----osiris-figure, fig.cap = "The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/animation-exit.png")
 
 
-## ----osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the companies that exited the market.", eval=knitr::is_html_output()----
+## ----osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", eval=knitr::is_html_output()----
 #> knitr::include_graphics("figures/exit.gif")
 
 
@@ -169,7 +183,8 @@ voter <- anim_prep_cat(data = aeles,
 
 p_voter <- wallaby_plot(object = voter,
                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-                  shade_palette = c("#737373", "#969696", "#BDBDBD","#D9D9D9","#D9D9D9","#D9D9D9"),
+                  shade_palette = c("#737373", "#969696", "#BDBDBD",
+                                    "#D9D9D9","#D9D9D9","#D9D9D9"),
                   rendering = "ggplot",
                   subset = "top",
                   relation = "one_many",
@@ -186,10 +201,10 @@ p2_voter <- anim_animate(p_voter)
 #>                      nframes = 400, width = 9, units = "in", res = 150)
 
 
-## ----voter-figure, fig.cap = "The animate visualization shows how does the top party perform in keeping the old  voters for different genders.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+## ----voter-figure, fig.cap = "The animate visualization shows how does the top party perform in keeping the old voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/animation-voter.png")
 
 
-## ----voter-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows how does the top party perform in keeping the old  voters for different genders.", eval=knitr::is_html_output()----
+## ----voter-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows how does the top party perform in keeping the old  voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", eval=knitr::is_html_output()----
 #> knitr::include_graphics("figures/voter.gif")
 

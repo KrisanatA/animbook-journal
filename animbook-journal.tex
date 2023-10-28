@@ -11,20 +11,27 @@ An abstract of less than 150 words.
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
 
-The concept of ``zombie companies'' began to attract attention when an article on the proliferation of zombie companies (Caballero, Hoshi, and Kashyap (2008)). The ``zombie companies'' are generally defined as companies with an interest coverage ratio of less than one for a period of more than three years. These companies are taking space in the market but adding no life to the economy. There could be other movement patterns, beyond zombies, that are interesting, such as companies that suddenly become very successful, or in politics voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
+The concept of ``zombie companies'' began to attract attention when Caballero, Hoshi, and Kashyap (2008) reported on their proliferation in Japan. Zombie companies are those with an interest coverage ratio of less than one for a period of more than three years, that is, companies taking space in the market but adding no life to the economy. We would detect their presence by a drop in performance, which is a movement pattern in their relative ranking over time. Generally, studying movement patterns is interesting for many problems, including rocket ship startups that rapidly perform well, or in politics, to study voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
 
-The New York Times provided a possible solution in the article ``Extensive data show punishing reach of racism for black boys'' (Badger et al. (2018)) to tell the story of how racism appears to inhibit socioeconomic change. This approach can be adapted to address the zombie problem by capturing the movement between groups over a specific period.
+The New York Times provided a possible solution in the article titled ``Extensive data show punishing reach of racism for black boys'' (Badger et al. (2018)) to tell the story of how racism appears to inhibit socioeconomic change. This animation is the motivation for the new visualization presented here, to be applied generally.
 
-With an advancement in technology, this results in an increase in both the size and complexity of the data. It requires an experienced hand to convey the right messages from the data. However, as shown in The New York Times article (Badger et al. (2018)), the animation is not only created just for eye-catching graphics. Animation can be used as a tool that helps communicate complex data, enhancing the narrative and keeping it engaged for the audience.
+The challenge in producing an animation like that in New York Times article animation is the transformation of the data, and connection with elements of the plot that will be animated. The complexities include standardizing starting times of the temporal variable, allowing for the user to choose the number of categories, standardizing distributions and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.
 
-The challenge in reproducing the New York Times article animation was the amount of code required. Additionally, the business data may or may not have the same information as the one in the article. These considerations establish the objective for creating the R package that could generalize the animation to a wider range of data.
+The structure of this paper is as follows. The section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools, and how they are employed for this problem. A section on the functions of the package and how the visualization is designed, demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
 
-The structure of this paper will consist of both the visualization design and software design. The first section will explain the animation in The New York Times article and why it might be relevant to the problems. Secondly, what is the expected data to be input into the plot, and how it is processed. The third section is about the animation tools, followed by the section on package and visualization design. The last two sections explore the usage of the R package and the application to other types of data.
+\hypertarget{NYT}{%
+\section{Explanation of the New York Times visualization}\label{NYT}}
 
-\hypertarget{explanation-of-the-new-york-times-visualization}{%
-\section{Explanation of the New York Times visualization}\label{explanation-of-the-new-york-times-visualization}}
+\begin{figure}
 
-The flow chart featured in one of the New York Times articles unveils the issue of income disparities between black and white children who were raised in families with comparable income according to the Chetty et al. (2020). This visualization reveals that, compared to white children, black children are more likely to drop down to the lower-income group, given that they both grew up in wealthy families.
+{\centering \includegraphics[width=1\linewidth]{figures/NYT} 
+
+}
+
+\caption{Screenshot of the New York Times animation, that is the motivation for this visualization package.}\label{fig:nyt}
+\end{figure}
+
+The interactive chart featured in the New York Times article (Figure \ref{fig:nyt}) unveils the issue of income disparities between black and white children who were raised in families with comparable income according to the Chetty et al. (2020). This visualization reveals that, compared to white children, black children are more likely to drop down to the lower-income group, given that they both grew up in wealthy families.
 
 In the visualization, each observation is initially classified into one group at the start and potentially transitions into either the same group or a different group. This dynamics visualization constructs questions on the broader use of this visualization to other types of data. The potential use of this visualization on accounting data is to convey a message, as reported by the McGowan, Andrews, and Millot (2017), that the concept of zombie companies is not unique to Japan alone. It is also present in the United States, which has a faster metabolize rate (more new listings and exits) relative to Japan.
 
@@ -63,7 +70,7 @@ This transformation may not be necessary if it already exists in the categorized
 \caption{The diagram shows how the animation is done using the successive pictures.}\label{fig:animation-diagram}
 \end{figure}
 
-The principle underlying the animation is called persistence of vision (Webster (2005)). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \ref{fig:animation-diagram}. There are multiple ways to create an animation in the R environment (R Core Team (2021)), including packages like \texttt{gganimate} and \texttt{plot}.
+The principle underlying the animation is called persistence of vision (Webster (2005)). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \ref{fig:animation-diagram}. There are multiple ways to create an animation in the R environment (R Core Team (2021)), including packages like \texttt{gganimate} and \texttt{Plotly}.
 
 The \texttt{gganimate} package (Pedersen and Robinson (2020)) is an extension from the \texttt{ggplot2} package (Wickham (2016)) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of \texttt{transition\_*()} functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. The output from the \texttt{gganimate} can be rendered or saved in multiple formats. This includes \texttt{gifski\_renderer()} from the \texttt{gifski} package (Ooms (2023b)) to save the animation in GIF format or \texttt{av\_renderer()} from the \texttt{av} package (Ooms (2023a)) to save it into a video file format.
 
@@ -78,7 +85,7 @@ Plotly is a graphing library that provides tools for creating an interactive plo
 \caption{The diagram shows how the frames were used in the animated plot.}\label{fig:animated-diagram}
 \end{figure}
 
-In the context of data, as shown in Figure \ref{fig:animated-diagram}, observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the \texttt{gganimate} package, the interpolation is achieved using the \texttt{tweenr} package (Pedersen (2022)), while in \texttt{plotly}, it utilizes d3.interpolate (Bostock (2012)).
+In the context of data, as shown in Figure \ref{fig:animated-diagram}, observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the \texttt{gganimate} package (Pedersen and Robinson (2020)), the interpolation is achieved using the \texttt{tweenr} package (Pedersen (2022)), while in \texttt{plotly}, it utilizes d3.interpolate (Bostock (2012)).
 
 Figure \ref{fig:animated-diagram} demonstrates how the frame variables are applied in an animated plot. The frame variable within the animated data structure allows the animation function to determine the position of observations on the plot at any given frame.
 
@@ -120,132 +127,40 @@ In designing the package for reproducing the New York Times animated plot, the p
 
 From Figure \ref{fig:data-diagram}, there is a need to map numerical value to a category. One way to handle this is by ranking the sales and grouping the rankings into quantiles. In some cases, this may not be the best option. When the observation is moved up by quantile, one is bound to move down. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different demographics, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data.
 
-Original data:
-
 \begin{verbatim}
-#> # A tibble: 12 x 4
-#>    id     time values gp   
-#>    <fct> <int>  <dbl> <fct>
-#>  1 1      2020  4255. X    
-#>  2 1      2023  3357. X    
-#>  3 14     2020  6763. X    
-#>  4 14     2023  1197. X    
-#>  5 100    2020  6864. X    
-#>  6 100    2023  2321. X    
-#>  7 21     2020   698. Y    
-#>  8 21     2023  3970. Y    
-#>  9 106    2020  4110. Y    
-#> 10 106    2023  2866. Y    
-#> 11 148    2020  7174. Y    
-#> 12 148    2023  4217. Y
+#> # A tibble: 12 x 8
+#>    id     time gp    values  rank rank_group absolute absolute_group
+#>    <fct> <int> <fct>  <dbl> <int>      <int>    <int>          <int>
+#>  1 1      2020 X      4255.     3          3        3              3
+#>  2 1      2023 X      3357.     2          2        4              4
+#>  3 14     2020 X      6763.     2          2        2              2
+#>  4 14     2023 X      1197.     4          5        5              5
+#>  5 100    2020 X      6864.     2          2        2              2
+#>  6 100    2023 X      2321.     3          3        4              4
+#>  7 21     2020 Y       698.     5          5        5              5
+#>  8 21     2023 Y      3970.     2          2        4              3
+#>  9 106    2020 Y      4110.     3          3        3              3
+#> 10 106    2023 Y      2866.     3          3        4              4
+#> 11 148    2020 Y      7174.     2          2        2              2
+#> 12 148    2023 Y      4217.     1          1        3              3
 \end{verbatim}
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
 \tightlist
 \item
-  Ranking by year.
-\end{enumerate}
-
-\begin{verbatim}
-#> # A tibble: 12 x 4
-#>    id     time qtile gp   
-#>    <fct> <int> <int> <fct>
-#>  1 1      2020     3 X    
-#>  2 1      2023     2 X    
-#>  3 14     2020     2 X    
-#>  4 14     2023     4 X    
-#>  5 100    2020     2 X    
-#>  6 100    2023     3 X    
-#>  7 21     2020     5 Y    
-#>  8 21     2023     2 Y    
-#>  9 106    2020     3 Y    
-#> 10 106    2023     3 Y    
-#> 11 148    2020     2 Y    
-#> 12 148    2023     1 Y
-\end{verbatim}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{1}
-\tightlist
+  Ranking by year. (rank)
 \item
-  Fix bins relative to absolute values by year.
-\end{enumerate}
-
-\begin{verbatim}
-#> # A tibble: 12 x 4
-#>    id     time qtile gp   
-#>    <fct> <int> <int> <fct>
-#>  1 1      2020     3 X    
-#>  2 1      2023     4 X    
-#>  3 14     2020     2 X    
-#>  4 14     2023     5 X    
-#>  5 100    2020     2 X    
-#>  6 100    2023     4 X    
-#>  7 21     2020     5 Y    
-#>  8 21     2023     4 Y    
-#>  9 106    2020     3 Y    
-#> 10 106    2023     4 Y    
-#> 11 148    2020     2 Y    
-#> 12 148    2023     3 Y
-\end{verbatim}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{2}
-\tightlist
+  Ranking by year within a group. (rank\_group)
 \item
-  Ranking by year within a group.
-\end{enumerate}
-
-\begin{verbatim}
-#> # A tibble: 12 x 4
-#>    id     time qtile gp   
-#>    <fct> <int> <int> <fct>
-#>  1 1      2020     3 X    
-#>  2 1      2023     2 X    
-#>  3 14     2020     2 X    
-#>  4 14     2023     5 X    
-#>  5 100    2020     2 X    
-#>  6 100    2023     3 X    
-#>  7 21     2020     5 Y    
-#>  8 21     2023     2 Y    
-#>  9 106    2020     3 Y    
-#> 10 106    2023     3 Y    
-#> 11 148    2020     2 Y    
-#> 12 148    2023     1 Y
-\end{verbatim}
-
-\begin{enumerate}
-\def\labelenumi{\arabic{enumi}.}
-\setcounter{enumi}{3}
-\tightlist
+  Fix bins relative to absolute values by year. (absolute)
 \item
-  Fix bins relative to absolute values by year within a group.
+  Fix bins relative to absolute values by year within a group. (absolute\_group)
 \end{enumerate}
 
-\begin{verbatim}
-#> # A tibble: 12 x 4
-#>    id     time qtile gp   
-#>    <fct> <int> <int> <fct>
-#>  1 1      2020     3 X    
-#>  2 1      2023     4 X    
-#>  3 14     2020     2 X    
-#>  4 14     2023     5 X    
-#>  5 100    2020     2 X    
-#>  6 100    2023     4 X    
-#>  7 21     2020     5 Y    
-#>  8 21     2023     3 Y    
-#>  9 106    2020     3 Y    
-#> 10 106    2023     4 Y    
-#> 11 148    2020     2 Y    
-#> 12 148    2023     3 Y
-\end{verbatim}
+For the first and second scaling methods, group splitting is executed using the \texttt{quantiles()} and \texttt{cut()} functions. The \texttt{quantile} function from the \texttt{stats} R package (R Core Team (2013)) takes a numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the \texttt{quantile} function is then used as the \texttt{breaks} argument for the cut function that is part of the base R packages.
 
-For the first and third scaling methods, group splitting is executed using the \texttt{quantiles()} and \texttt{cut()} functions. The \texttt{quantile} function from the \texttt{stats} R package (R Core Team (2013)) takes a numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the \texttt{quantile} function is then used as the \texttt{breaks} argument for the cut function that is part of the base R packages.
-
-In contrast, the second and fourth scaling methods calculate the quantile based on the absolute values scales. The default approach is to break the group equally using the \texttt{seq()} function. The \texttt{seq()} function takes input values from the minimum and maximum values and increments by equal steps depending on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so.
+In contrast, the third and fourth scaling methods calculate the quantile based on the absolute values scales. The default approach is to break the group equally using the \texttt{seq()} function. The \texttt{seq()} function takes input values from the minimum and maximum values and increments by equal steps depending on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so.
 
 These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning the frame to each individual observation, ensuring that each ID does not contain repeat frame values. It lets the \texttt{gganimate} or \texttt{plotly} to perceive where the observation would be on the plot at a given frame as seen in the \ref{fig:animated-diagram}.
 
@@ -253,9 +168,10 @@ The frame variable is assigned by sorting the data based on the ID and time usin
 
 All of the pre-processing steps mentioned above are completed using the \texttt{anim\_prep()} or \texttt{anim\_prep\_cat()} function, depending on the stages of the data structure. The \texttt{anim\_prep()} function is used for raw data format, while the \texttt{anim\_prep\_cat()} function is for categorized data format. There are additional arguments that facilitate the users for more customization.
 
-For the \texttt{anim\_prep()} function, the arguments are as follows:
+In the \texttt{anim\_prep()} and \texttt{anim\_prep\_cat()}, there are required arguments that need to be specified. The lists are as follows:
 
 \begin{itemize}
+\tightlist
 \item
   data: A data frame containing the data to be prepared for visualization.
 \item
@@ -264,8 +180,12 @@ For the \texttt{anim\_prep()} function, the arguments are as follows:
   values: The column name that contains the numeric values to be visualized.
 \item
   time: The column name represents the time variable.
-\item
-  label: A vector of labels to be used for the y-axis in the visualization.
+\end{itemize}
+
+As shown previously, there are a total of four different scaling for the \texttt{anim\_prep()} function. Both the use can customization of these scaling can be set using the following arguments:
+
+\begin{itemize}
+\tightlist
 \item
   ngroup: The number of groups or categories to create for scaling values.
 \item
@@ -273,29 +193,23 @@ For the \texttt{anim\_prep()} function, the arguments are as follows:
 \item
   group\_scaling: The column name that represents the grouping variable.
 \item
-  color: The column name to be used in ggplot2::aes() for the plot function.
-\item
-  time\_dependent: Logical. Should the visualization be time-dependent? Default is TRUE.
-\item
   scaling: The scaling method to be used; ``rank'' or ``absolute.''
-\item
-  runif\_min: The minimum value for random addition to frame numbers.
-\item
-  runif\_max: The maximum value for random addition to frame numbers.
+\end{itemize}
 
-  For the \texttt{anim\_prep\_cat()} function, the arguments are as follows:
-\item
-  data: A data frame containing the data to be prepared for visualization.
-\item
-  id: The column name that represents the unique identifier variable.
-\item
-  values: The column name that contains the numeric values to be visualized.
-\item
-  time: The column name represents the time variable.
-\item
-  label: A vector of labels to be used for the y-axis in the visualization.
+For the \texttt{anim\_prep\_cat()} function, the arguments that allowed the user to order the category are by using this argument:
+
+\begin{itemize}
+\tightlist
 \item
   order: A vector of order for sorting the category values.
+\end{itemize}
+
+Then, for further customization regarding how the final visualization looks. The following arguments can be adjusted:
+
+\begin{itemize}
+\tightlist
+\item
+  label: A vector of labels to be used for the y-axis in the visualization.
 \item
   color: The column name to be used in ggplot2::aes() for the plot function.
 \item
@@ -353,7 +267,9 @@ It is necessary to save the plot as a \texttt{ggplot} object before passing it t
 \hypertarget{example-usage}{%
 \subsection{Example usage}\label{example-usage}}
 
-Step 1: Prepare the data
+In this section, the package usage will be demonstrated using the \texttt{cat\_change} dataset included in this package. This dataset is simulated data that has changed from category A to E between two time points. Since this data is already in the categorized data structure, the \texttt{anim\_prep\_cat()} function is utilized.
+
+The output produced from this package is referred to as the \texttt{animbook} object. This contained a list of data and settings that hold prepared data for visualization, along with a list of settings used in the plot function.
 
 \begin{verbatim}
 animbook <- anim_prep_cat(cat_change, 
@@ -370,16 +286,16 @@ head(animbook$data, 10)
 #> # A tibble: 10 x 5
 #>    id     time qtile frame color
 #>    <fct> <int> <dbl> <dbl> <fct>
-#>  1 1      2020     5    37 X    
-#>  2 1      2023     5    38 X    
-#>  3 2      2020     5    42 X    
-#>  4 2      2023     5    43 X    
-#>  5 3      2020     5     9 X    
-#>  6 3      2023     5    10 X    
-#>  7 4      2020     5    27 X    
-#>  8 4      2023     5    28 X    
-#>  9 5      2020     5    20 X    
-#> 10 5      2023     5    21 X
+#>  1 1      2020     5    10 X    
+#>  2 1      2023     5    11 X    
+#>  3 2      2020     5    44 X    
+#>  4 2      2023     5    45 X    
+#>  5 3      2020     5    11 X    
+#>  6 3      2023     5    12 X    
+#>  7 4      2020     5    21 X    
+#>  8 4      2023     5    22 X    
+#>  9 5      2020     5     6 X    
+#> 10 5      2023     5     7 X
 \end{verbatim}
 
 \begin{verbatim}
@@ -392,7 +308,7 @@ str(animbook)
 #>   ..$ id   : Factor w/ 200 levels "1","2","3","4",..: 1 1 2 2 3 3 4 4 5 5 ...
 #>   ..$ time : int [1:400] 2020 2023 2020 2023 2020 2023 2020 2023 2020 2023 ...
 #>   ..$ qtile: num [1:400] 5 5 5 5 5 5 5 5 5 5 ...
-#>   ..$ frame: num [1:400] 37 38 42 43 9 10 27 28 20 21 ...
+#>   ..$ frame: num [1:400] 10 11 44 45 11 12 21 22 6 7 ...
 #>   ..$ color: Factor w/ 2 levels "X","Y": 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ settings:List of 7
 #>   ..$ gap           : num 0.1
@@ -405,12 +321,13 @@ str(animbook)
 #>  - attr(*, "class")= chr "animbook"
 \end{verbatim}
 
-Step 2: Plotting the data
+To obtain a \texttt{ggplot} object for the animation function, the \texttt{wallaby\_plot} is used. For further customization, the \texttt{shade\_palette}, \texttt{subset}, and \texttt{relation} arguments are applied to define the final appearance of the animation.
 
 \begin{verbatim}
 p <- wallaby_plot(object = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-             shade_palette = c("#737373", "#969696", "#BDBDBD","#D9D9D9","#D9D9D9","#D9D9D9"),
+             shade_palette = c("#737373", "#969696", "#BDBDBD",
+                               "#D9D9D9","#D9D9D9","#D9D9D9"),
              rendering = "ggplot",
              subset = "top",
              relation = "one_many",
@@ -419,9 +336,9 @@ p <- wallaby_plot(object = animbook,
 p
 \end{verbatim}
 
-\begin{center}\includegraphics[width=1\linewidth]{animbook-journal_files/figure-latex/unnamed-chunk-8-1} \end{center}
+\begin{center}\includegraphics[width=1\linewidth]{animbook-journal_files/figure-latex/unnamed-chunk-6-1} \end{center}
 
-Step 3: Animating the plot
+Once the \texttt{ggplot} object is obtained, the \texttt{anim\_animate()} function can be used to transform it into a \texttt{gganimate} object. This then can be passed onto the \texttt{gganimate::animate()} function for rendering.
 
 \begin{verbatim}
 p2 <- anim_animate(p)
@@ -437,6 +354,8 @@ gganimate::animate(p2)
 
 \caption{Animate visualization using example data.}\label{fig:catchange-figure}
 \end{figure}
+
+This is an example of how the users can apply the three-step process in creating an animation plot using the \texttt{animbook} package.
 
 \hypertarget{application}{%
 \section{Application}\label{application}}
@@ -467,7 +386,8 @@ accounting <- anim_prep(data,
 
 p <- wallaby_plot(accounting,
                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-                  shade_palette = c("#737373", "#969696", "#BDBDBD","#D9D9D9","#D9D9D9","#D9D9D9"),
+                  shade_palette = c("#737373", "#969696", "#BDBDBD",
+                                    "#D9D9D9","#D9D9D9","#D9D9D9"),
                   subset = "bottom",
                   relation = "many_one",
                   height = 1,
@@ -488,13 +408,13 @@ gganimate::animate(p2)
 
 }
 
-\caption{The animate visualization shows the companies that exited the market.}\label{fig:osiris-figure}
+\caption{The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.}\label{fig:osiris-figure}
 \end{figure}
 
 From the plot, a higher proportion of US companies have exited the market, confirming the OECD report (McGowan, Andrews, and Millot (2017)) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25\% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the top 25\% in 2006, or it could be that Japanese companies in the top 25\% did not delist.
 
-\hypertarget{voter-behaviour}{%
-\subsection{Voter behaviour}\label{voter-behaviour}}
+\hypertarget{voter-behavior}{%
+\subsection{Voter behavior}\label{voter-behavior}}
 
 The Australian Election Study data was collected from ADA Dataverse (McAllister et al. (2023)). The dataset included in the \texttt{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer the question, based on the 2016 Australian election results, how the top party performs in keeping the old voters for different genders.
 
@@ -509,7 +429,8 @@ voter <- anim_prep_cat(data = aeles,
 
 p_voter <- wallaby_plot(object = voter,
                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-                  shade_palette = c("#737373", "#969696", "#BDBDBD","#D9D9D9","#D9D9D9","#D9D9D9"),
+                  shade_palette = c("#737373", "#969696", "#BDBDBD",
+                                    "#D9D9D9","#D9D9D9","#D9D9D9"),
                   rendering = "ggplot",
                   subset = "top",
                   relation = "one_many",
@@ -531,7 +452,7 @@ gganimate::animate(p2_voter)
 
 }
 
-\caption{The animate visualization shows how does the top party perform in keeping the old  voters for different genders.}\label{fig:voter-figure}
+\caption{The animate visualization shows how does the top party perform in keeping the old voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.}\label{fig:voter-figure}
 \end{figure}
 
 From the animation, it is clear that individuals who identified their gender as `others' shifted their votes from the Liberal, the leading party in 2016, to the Greens party. These changes could be due to the Green Party's ``A FAIRER, MORE EQUAL COMMUNITY'' campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals. If the Liberal Party wishes to retain this demographic of voters, they may need to consider implementing a campaign focused on LGBTIQ+ issues.
@@ -539,9 +460,15 @@ From the animation, it is clear that individuals who identified their gender as 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of \texttt{animbook}, the feature to have different speed for each observation have not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further.
+Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of \texttt{animbook}, the feature to have different speed for each observation have not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (Badger et al. (2018)), to compare the demographics at a specific point in time. On top of that, the \texttt{cli} package (Csárdi (2023)) could be used for a more aesthetically pleasing command-line interface.
 
-This paper is based on the 0.0.0.9 version of the \texttt{animbook} package. This version is available on \href{https://github.com/KrisanatA/animbook}{GitHub}.
+\hypertarget{acknowledgements}{%
+\section*{Acknowledgements}\label{acknowledgements}}
+\addcontentsline{toc}{section}{Acknowledgements}
+
+This paper is created using the \texttt{rjtools} packages (O'Hara-Wild et al. (2023)) and is based on the 0.0.0.9 version of the \texttt{animbook} package. This version is available on \href{https://github.com/KrisanatA/animbook}{GitHub}.
+
+I also acknowledge the use of ChatGPT (\url{https://chat.openai.com/}) to paraphrase the sentence.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -556,13 +483,16 @@ Badger, Emily, Claire Cain Miller, Adam Pearce, and Kevin Quealy. 2018. {``Exten
 Bostock, Mike. 2012. {``D3.js - Data-Driven Documents.''} 2012. \url{http://d3js.org/}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-zombie_companies_2008}{}}%
-Caballero, Ricardo J., Takeo Hoshi, and Anil K. Kashyap. 2008. {``Zombie Lending and Depressed Restructuring in Japan.''} \emph{The American Economic Review} 98 (5): 1943--77. \url{http://www.jstor.org/stable/29730158}.
+Caballero, Ricardo J., Takeo Hoshi, and Anil K. Kashyap. 2008. {``Zombie Lending and Depressed Restructuring in {J}apan.''} \emph{The American Economic Review} 98 (5): 1943--77. \url{http://www.jstor.org/stable/29730158}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-race}{}}%
 Chetty, Raj, Nathaniel Hendren, Maggie Jones, and Sonya Porter. 2020. {``Race and Economic Opportunity in the United States: An Intergenerational Perspective*.''} \emph{The Quarterly Journal of Economics} 135 (May): 711--83. \url{https://doi.org/10.1093/qje/qjz042}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-relational}{}}%
 Codd, E. F. 1990. \emph{The Relational Model for Database Management: Version 2}. USA: Addison-Wesley Longman Publishing Co., Inc.
+
+\leavevmode\vadjust pre{\hypertarget{ref-cli}{}}%
+Csárdi, Gábor. 2023. \emph{Cli: Helpers for Developing Command Line Interfaces}. \url{https://CRAN.R-project.org/package=cli}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-mayer_2005}{}}%
 Mayer, Richard E. 2005. {``Cognitive Theory of Multimedia Learning.''} In \emph{The Cambridge Handbook of Multimedia Learning}, edited by RichardEditor Mayer, 31--48. Cambridge Handbooks in Psychology. Cambridge University Press. \url{https://doi.org/10.1017/CBO9780511816819.004}.
@@ -575,6 +505,9 @@ McAllister, Ian, Jill Sheppard, Sarah Cameron, and Jackman Simon. 2023. {``Austr
 
 \leavevmode\vadjust pre{\hypertarget{ref-oecd_report}{}}%
 McGowan, Müge Adalet, Dan Andrews, and Valentine Millot. 2017. {``The Walking Dead?''} no. 1372. https://doi.org/\url{https://doi.org/https://doi.org/10.1787/180d80ad-en}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-rjtools}{}}%
+O'Hara-Wild, Mitchell, Stephanie Kobakian, H. Sherry Zhang, Di Cook, Simon Urbanek, and Christophe Dervieux. 2023. \emph{Rjtools: Preparing, Checking, and Submitting Articles to the 'r Journal'}. \url{https://CRAN.R-project.org/package=rjtools}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-av}{}}%
 Ooms, Jeroen. 2023a. \emph{Av: Working with Audio and Video in r}. \url{https://CRAN.R-project.org/package=av}.
