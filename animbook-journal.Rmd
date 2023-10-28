@@ -1,7 +1,7 @@
 ---
 title: "animbook: Visualizing changes in performance measures and demographic affiliations using animation"
 abstract: >
-  An abstract of less than 150 words.
+  Categorical data has often been presented statically despite its potential to unveil an intriguing movement pattern relevant to the various domains of data, including company ranking quantile in the accounting data and shifts in voter party affiliations. Inspired by the animation in the New York Times article "Extensive data show punishing reach of racism for black boys," this paper aims to develop an R package, animbook, that can generalize the animation to suitably apply to a wider range of data. The package included a function that allowed for the transformation of the data and connection with elements of the plot that would be animated. This results in an animation tool that helps communicate complex data, enhancing the narrative and keeping it engaged for the general audience. 
 draft: true
 author:  
   - name: Krisanat Anukarnsakulchularp
@@ -35,7 +35,7 @@ The concept of "zombie companies" began to attract attention when @zombie_compan
 
 The New York Times provided a possible solution in the article titled "Extensive data show punishing reach of racism for black boys" (@the_new_york_time) to tell the story of how racism appears to inhibit socioeconomic change. This animation is the motivation for the new visualization presented here, to be applied generally.
   
-The challenge in producing an animation like that in New York Times article animation is the transformation of the data, and connection with elements of the plot that will be animated. The complexities include standardizing starting times of the temporal variable, allowing for the user to choose the number of categories, standardizing distributions and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.
+The challenge in producing an animation like that in New York Times article animation is the transformation of the data, and connection with elements of the plot that will be animated. The complexities include standardizing starting times of the temporal variable, allowing for the user to choose the number of categories, standardizing distributions and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.    
   
 The structure of this paper is as follows. The section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools, and how they are employed for this problem. A section on the functions of the package and how the visualization is designed, demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
 

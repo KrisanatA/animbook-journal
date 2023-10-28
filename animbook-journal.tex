@@ -5,7 +5,7 @@
 \maketitle
 
 \abstract{%
-An abstract of less than 150 words.
+Categorical data has often been presented statically despite its potential to unveil an intriguing movement pattern relevant to the various domains of data, including company ranking quantile in the accounting data and shifts in voter party affiliations. Inspired by the animation in the New York Times article ``Extensive data show punishing reach of racism for black boys,'' this paper aims to develop an R package, animbook, that can generalize the animation to suitably apply to a wider range of data. The package included a function that allowed for the transformation of the data and connection with elements of the plot that would be animated. This results in an animation tool that helps communicate complex data, enhancing the narrative and keeping it engaged for the general audience.
 }
 
 \hypertarget{introduction}{%
@@ -292,16 +292,16 @@ head(animbook$data, 10)
 #> # A tibble: 10 x 5
 #>    id     time qtile frame color
 #>    <fct> <int> <dbl> <dbl> <fct>
-#>  1 1      2020     5    10 X    
-#>  2 1      2023     5    11 X    
-#>  3 2      2020     5     5 X    
-#>  4 2      2023     5     6 X    
-#>  5 3      2020     5    11 X    
-#>  6 3      2023     5    12 X    
-#>  7 4      2020     5    39 X    
-#>  8 4      2023     5    40 X    
-#>  9 5      2020     5    10 X    
-#> 10 5      2023     5    11 X
+#>  1 1      2020     5    21 X    
+#>  2 1      2023     5    22 X    
+#>  3 2      2020     5    31 X    
+#>  4 2      2023     5    32 X    
+#>  5 3      2020     5     6 X    
+#>  6 3      2023     5     7 X    
+#>  7 4      2020     5    27 X    
+#>  8 4      2023     5    28 X    
+#>  9 5      2020     5    20 X    
+#> 10 5      2023     5    21 X
 \end{verbatim}
 
 \begin{verbatim}
@@ -314,7 +314,7 @@ str(animbook)
 #>   ..$ id   : Factor w/ 200 levels "1","2","3","4",..: 1 1 2 2 3 3 4 4 5 5 ...
 #>   ..$ time : int [1:400] 2020 2023 2020 2023 2020 2023 2020 2023 2020 2023 ...
 #>   ..$ qtile: num [1:400] 5 5 5 5 5 5 5 5 5 5 ...
-#>   ..$ frame: num [1:400] 10 11 5 6 11 12 39 40 10 11 ...
+#>   ..$ frame: num [1:400] 21 22 31 32 6 7 27 28 20 21 ...
 #>   ..$ color: Factor w/ 2 levels "X","Y": 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ settings:List of 7
 #>   ..$ gap           : num 0.1
