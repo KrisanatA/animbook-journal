@@ -89,14 +89,20 @@ In the context of data, as shown in Figure \ref{fig:animated-diagram}, observati
 
 Figure \ref{fig:animated-diagram} demonstrates how the frame variables are applied in an animated plot. The frame variable within the animated data structure allows the animation function to determine the position of observations on the plot at any given frame.
 
+From Hasler, Kersten, and Sweller (2007), it suggests that having control options for the animation can improve the efficiency of the learning process. Additionally, the length and speed of the animation should also be taken into consideration. According to R. Mayer (2010), the working memory, responsible for selecting and processing information from sensory memory, only holds a processed version of what was presented for generally less than thirty seconds.
+
+In \texttt{gganimate}, the issue of integrating controls can be addressed by setting the \texttt{renderer} argument to be \texttt{av\_renderer()}, which allows the animation output to be in MP4 format. This format provides users with controls for the animation when opened on media applications provided in their systems. As for adjusting the length and speed of the animation, the \texttt{nframes} and \texttt{fps} arguments can be utilized. The \texttt{nframes} dictates the number of frames to be rendered, while \texttt{fps} controls how many frames are displayed in one second. Using these two parameters, the duration of the animation in seconds can be calculated as follows: length = nframes/fps.
+
+In the case of \texttt{plotly}, control integration is already implemented by default. The \texttt{frame} and \texttt{transition} arguments within the \texttt{animation\_opts()} function can be specified to set the length and speed of the animation.
+
 \hypertarget{visualization-design}{%
 \section{Visualization design}\label{visualization-design}}
 
-The animated visualization can be an effective communication tool (Mayer and Moreno (2002); Robertson et al. (2008)). It helps with communicating complex data, enhancing the narrative, and keeping it engaged for the audience. According to Mayer and Moreno (2002), animation can improve learning, especially when the goal is to promote deep understanding.
+The animated visualization can be an effective communication tool (R. E. Mayer and Moreno (2002); Robertson et al. (2008)). It helps with communicating complex data, enhancing the narrative, and keeping it engaged for the audience. According to R. E. Mayer and Moreno (2002), animation can improve learning, especially when the goal is to promote deep understanding.
 
-According to Mayer (2005), designing multimedia requires the designer to understand how people learn. One of the principles in Mayer (2005), Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
+According to R. E. Mayer (2005), designing multimedia requires the designer to understand how people learn. One of the principles in R. E. Mayer (2005), Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
 
-From the New York Times animation, multiple information are shown in the visualization. It includes points in motion, distribution at the end, and proportional counters. However, this could lead to information overload (Mayer (2005)). Therefore, the distribution at the end and proportional counters are excluded. Instead, the new element has been integrated, proportional shaded areas. It displays the proportion of observation within each group.
+From the New York Times animation, multiple information are shown in the visualization. It includes points in motion, distribution at the end, and proportional counters. However, this could lead to information overload (R. E. Mayer (2005)). Therefore, the distribution at the end and proportional counters are excluded. Instead, the new element has been integrated, proportional shaded areas. It displays the proportion of observation within each group.
 
 \begin{figure}
 \includegraphics[width=0.5\linewidth]{figures/sigmoid-shade} \includegraphics[width=0.5\linewidth]{figures/sine-shade} \caption{The plot shows the difference between the sigmoid and sine curves.}\label{fig:proportional-shade}
@@ -288,14 +294,14 @@ head(animbook$data, 10)
 #>    <fct> <int> <dbl> <dbl> <fct>
 #>  1 1      2020     5    10 X    
 #>  2 1      2023     5    11 X    
-#>  3 2      2020     5    44 X    
-#>  4 2      2023     5    45 X    
+#>  3 2      2020     5     5 X    
+#>  4 2      2023     5     6 X    
 #>  5 3      2020     5    11 X    
 #>  6 3      2023     5    12 X    
-#>  7 4      2020     5    21 X    
-#>  8 4      2023     5    22 X    
-#>  9 5      2020     5     6 X    
-#> 10 5      2023     5     7 X
+#>  7 4      2020     5    39 X    
+#>  8 4      2023     5    40 X    
+#>  9 5      2020     5    10 X    
+#> 10 5      2023     5    11 X
 \end{verbatim}
 
 \begin{verbatim}
@@ -308,7 +314,7 @@ str(animbook)
 #>   ..$ id   : Factor w/ 200 levels "1","2","3","4",..: 1 1 2 2 3 3 4 4 5 5 ...
 #>   ..$ time : int [1:400] 2020 2023 2020 2023 2020 2023 2020 2023 2020 2023 ...
 #>   ..$ qtile: num [1:400] 5 5 5 5 5 5 5 5 5 5 ...
-#>   ..$ frame: num [1:400] 10 11 44 45 11 12 21 22 6 7 ...
+#>   ..$ frame: num [1:400] 10 11 5 6 11 12 39 40 10 11 ...
 #>   ..$ color: Factor w/ 2 levels "X","Y": 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ settings:List of 7
 #>   ..$ gap           : num 0.1
@@ -460,7 +466,7 @@ From the animation, it is clear that individuals who identified their gender as 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of \texttt{animbook}, the feature to have different speed for each observation have not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (Badger et al. (2018)), to compare the demographics at a specific point in time. On top of that, the \texttt{cli} package (Csárdi (2023)) could be used for a more aesthetically pleasing command-line interface.
+Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of \texttt{animbook}, the feature to have different speed for each observation have not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. The plotly rendering is also not yet been optimized for use. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (Badger et al. (2018)), to compare the demographics at a specific point in time. On top of that, the \texttt{cli} package (Csárdi (2023)) could be used for a more aesthetically pleasing command-line interface.
 
 \hypertarget{acknowledgements}{%
 \section*{Acknowledgements}\label{acknowledgements}}
@@ -493,6 +499,12 @@ Codd, E. F. 1990. \emph{The Relational Model for Database Management: Version 2}
 
 \leavevmode\vadjust pre{\hypertarget{ref-cli}{}}%
 Csárdi, Gábor. 2023. \emph{Cli: Helpers for Developing Command Line Interfaces}. \url{https://CRAN.R-project.org/package=cli}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-learner-control}{}}%
+Hasler, Béatrice, Bernd Kersten, and John Sweller. 2007. {``Learner Control, Cognitive Load and Instructional Animation. Applied Cognitive Psychology, 21, 713-729.''} \emph{Applied Cognitive Psychology} 21 (September): 713--29. \url{https://doi.org/10.1002/acp.1345}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-mayer-2010}{}}%
+Mayer, Richard. 2010. {``Applying the Science of Learning to Medical Education.''} \emph{Medical Education} 44 (June): 543--49. \url{https://doi.org/10.1111/j.1365-2923.2010.03624.x}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-mayer_2005}{}}%
 Mayer, Richard E. 2005. {``Cognitive Theory of Multimedia Learning.''} In \emph{The Cambridge Handbook of Multimedia Learning}, edited by RichardEditor Mayer, 31--48. Cambridge Handbooks in Psychology. Cambridge University Press. \url{https://doi.org/10.1017/CBO9780511816819.004}.

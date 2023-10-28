@@ -89,6 +89,12 @@ knitr::include_graphics("figures/animated-diagram.png")
   
   Figure \@ref(fig:animated-diagram) demonstrates how the frame variables are applied in an animated plot. The frame variable within the animated data structure allows the animation function to determine the position of observations on the plot at any given frame.
   
+  From @learner-control, it suggests that having control options for the animation can improve the efficiency of the learning process. Additionally, the length and speed of the animation should also be taken into consideration. According to @mayer-2010, the working memory, responsible for selecting and processing information from sensory memory, only holds a processed version of what was presented for generally less than thirty seconds.
+  
+  In `gganimate`, the issue of integrating controls can be addressed by setting the `renderer` argument to be `av_renderer()`, which allows the animation output to be in MP4 format. This format provides users with controls for the animation when opened on media applications provided in their systems. As for adjusting the length and speed of the animation, the `nframes` and `fps` arguments can be utilized. The `nframes` dictates the number of frames to be rendered, while `fps` controls how many frames are displayed in one second. Using these two parameters, the duration of the animation in seconds can be calculated as follows: length = nframes/fps.
+  
+  In the case of `plotly`, control integration is already implemented by default. The `frame` and `transition` arguments within the `animation_opts()` function can be specified to set the length and speed of the animation.
+  
   
 # Visualization design
 
@@ -264,6 +270,8 @@ knitr::include_graphics("figures/sankey-shade-2.png")
 It is necessary to save the plot as a `ggplot` object before passing it to the final function, `anim_animate()`, to animate. This function will automatically detect which rendering method was specified in the previous steps and add the minimum requirement functions accordingly. By default, if the user specifies the rendering as `gganimate`, then it will add the `transition_time()` function from the `gganimate` package (@gganimate). Otherwise, the `animation_opts()` function will be added from the `plotly` package (@plotly).
 
 
+
+
 ## Example usage
 
 In this section, the package usage will be demonstrated using the `cat_change` dataset included in this package. This dataset is simulated data that has changed from category A to E between two time points. Since this data is already in the categorized data structure, the `anim_prep_cat()` function is utilized.
@@ -433,7 +441,7 @@ From the animation, it is clear that individuals who identified their gender as 
 
 # Summary
 
-Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of `animbook`, the feature to have different speed for each observation have not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (@the_new_york_time), to compare the demographics at a specific point in time. On top of that, the `cli` package (@cli) could be used for a more aesthetically pleasing command-line interface.
+Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of `animbook`, the feature to have different speed for each observation have not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. The plotly rendering is also not yet been optimized for use. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (@the_new_york_time), to compare the demographics at a specific point in time. On top of that, the `cli` package (@cli) could be used for a more aesthetically pleasing command-line interface. 
 
 # Acknowledgements {-}
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.23)  28 OCT 2023 13:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.23)  28 OCT 2023 14:39
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -740,86 +740,85 @@ File: figures/animated-diagram.png Graphic file (type png)
 Package pdftex.def Info: figures/animated-diagram.png  used on input line 81.
 (pdftex.def)             Requested size: 398.33858pt x 307.79594pt.
 [3 <./figures/animation-diagram.png>]
-<figures/sigmoid-shade.png, id=110, 722.7pt x 505.89pt>
+<figures/sigmoid-shade.png, id=109, 722.7pt x 505.89pt>
 File: figures/sigmoid-shade.png Graphic file (type png)
 <use figures/sigmoid-shade.png>
-Package pdftex.def Info: figures/sigmoid-shade.png  used on input line 102.
+Package pdftex.def Info: figures/sigmoid-shade.png  used on input line 108.
 (pdftex.def)             Requested size: 199.16928pt x 139.41736pt.
-<figures/sine-shade.png, id=111, 722.7pt x 505.89pt>
+<figures/sine-shade.png, id=110, 722.7pt x 505.89pt>
 File: figures/sine-shade.png Graphic file (type png)
 <use figures/sine-shade.png>
-Package pdftex.def Info: figures/sine-shade.png  used on input line 102.
+Package pdftex.def Info: figures/sine-shade.png  used on input line 108.
 (pdftex.def)             Requested size: 199.16928pt x 139.41736pt.
 
-Overfull \hbox (1.90001pt too wide) in paragraph at lines 102--102
+Overfull \hbox (1.90001pt too wide) in paragraph at lines 108--108
 [][] [] 
  []
 
-[4 <./figures/animated-diagram.png (PNG copy)> <./figures/sigmoid-shade.png> <./figures/sine-shade.png>] [5]
-Overfull \hbox (27.3336pt too wide) in paragraph at lines 169--170
+[4 <./figures/animated-diagram.png (PNG copy)>] [5 <./figures/sigmoid-shade.png> <./figures/sine-shade.png>]
+Overfull \hbox (27.3336pt too wide) in paragraph at lines 175--176
 []\T1/ppl/m/n/9 (-20) All of the pre-processing steps men-tioned above are com-pleted us-ing the \T1/zi4/m/n/9 anim_prep() \T1/ppl/m/n/9 (-20) or \T1/zi4/m/n/9 anim_prep_cat()
  []
 
-LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 176.
+LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 182.
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
-)
-<figures/sankey-shade-1.png, id=133, 722.7pt x 505.89pt>
+) [6]
+<figures/sankey-shade-1.png, id=138, 722.7pt x 505.89pt>
 File: figures/sankey-shade-1.png Graphic file (type png)
 <use figures/sankey-shade-1.png>
-Package pdftex.def Info: figures/sankey-shade-1.png  used on input line 242.
+Package pdftex.def Info: figures/sankey-shade-1.png  used on input line 248.
 (pdftex.def)             Requested size: 199.16928pt x 139.41736pt.
-<figures/sankey-shade-2.png, id=134, 722.7pt x 505.89pt>
+<figures/sankey-shade-2.png, id=139, 722.7pt x 505.89pt>
 File: figures/sankey-shade-2.png Graphic file (type png)
 <use figures/sankey-shade-2.png>
-Package pdftex.def Info: figures/sankey-shade-2.png  used on input line 242.
+Package pdftex.def Info: figures/sankey-shade-2.png  used on input line 248.
 (pdftex.def)             Requested size: 199.16928pt x 139.41736pt.
 
-Overfull \hbox (1.90001pt too wide) in paragraph at lines 242--242
+Overfull \hbox (1.90001pt too wide) in paragraph at lines 248--248
 [][] [] 
  []
 
-[6] [7 <./figures/sankey-shade-1.png> <./figures/sankey-shade-2.png>]
-<animbook-journal_files/figure-latex/unnamed-chunk-6-1.pdf, id=151, 578.16pt x 325.215pt>
+[7 <./figures/sankey-shade-1.png> <./figures/sankey-shade-2.png>] [8]
+<animbook-journal_files/figure-latex/unnamed-chunk-6-1.pdf, id=156, 578.16pt x 325.215pt>
 File: animbook-journal_files/figure-latex/unnamed-chunk-6-1.pdf Graphic file (type pdf)
 <use animbook-journal_files/figure-latex/unnamed-chunk-6-1.pdf>
-Package pdftex.def Info: animbook-journal_files/figure-latex/unnamed-chunk-6-1.pdf  used on input line 339.
+Package pdftex.def Info: animbook-journal_files/figure-latex/unnamed-chunk-6-1.pdf  used on input line 345.
 (pdftex.def)             Requested size: 398.33858pt x 224.0661pt.
-[8]
 <figures/animation-example.png, id=157, 957.5775pt x 961.5925pt>
 File: figures/animation-example.png Graphic file (type png)
 <use figures/animation-example.png>
-Package pdftex.def Info: figures/animation-example.png  used on input line 351.
+Package pdftex.def Info: figures/animation-example.png  used on input line 357.
 (pdftex.def)             Requested size: 398.33858pt x 400.00717pt.
 [9 <./animbook-journal_files/figure-latex/unnamed-chunk-6-1.pdf>] [10 <./figures/animation-example.png>]
 <figures/animation-exit.png, id=178, 2216.28pt x 1973.3725pt>
 File: figures/animation-exit.png Graphic file (type png)
 <use figures/animation-exit.png>
-Package pdftex.def Info: figures/animation-exit.png  used on input line 407.
+Package pdftex.def Info: figures/animation-exit.png  used on input line 413.
 (pdftex.def)             Requested size: 398.33858pt x 354.67984pt.
 [11 <./figures/animation-exit.png>]
 <figures/animation-voter.png, id=186, 2214.2725pt x 1969.3575pt>
 File: figures/animation-voter.png Graphic file (type png)
 <use figures/animation-voter.png>
-Package pdftex.def Info: figures/animation-voter.png  used on input line 451.
+Package pdftex.def Info: figures/animation-voter.png  used on input line 457.
 (pdftex.def)             Requested size: 398.33858pt x 354.25871pt.
-LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 471.
+LaTeX Font Info:    Trying to load font information for OT1+ppl on input line 477.
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ot1ppl.fd
 File: ot1ppl.fd 2001/06/04 font definitions for OT1/ppl.
 )
-LaTeX Font Info:    Trying to load font information for OML+zplm on input line 471.
+LaTeX Font Info:    Trying to load font information for OML+zplm on input line 477.
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/omlzplm.fd
 File: omlzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OML/zplm.
 )
-LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 471.
+LaTeX Font Info:    Trying to load font information for OMS+zplm on input line 477.
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/omszplm.fd
 File: omszplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMS/zplm.
 )
-LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 471.
+LaTeX Font Info:    Trying to load font information for OMX+zplm on input line 477.
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/omxzplm.fd
 File: omxzplm.fd 2002/09/08 Fontinst v1.914 font definitions for OMX/zplm.
 )
-LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 471.
+LaTeX Font Info:    Trying to load font information for OT1+zplm on input line 477.
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ot1zplm.fd
 File: ot1zplm.fd 2002/09/08 Fontinst v1.914 font definitions for OT1/zplm.
 )
@@ -828,39 +827,39 @@ Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 471.
+(Font)              scaled to size 9.37807pt on input line 477.
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msa.cfg
 File: mt-msa.cfg 2006/02/04 v1.1 microtype config. file: AMS symbols (a) (RS)
 )
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 471.
+(Font)              scaled to size 7.29405pt on input line 477.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 471.
+(Font)              scaled to size 5.21004pt on input line 477.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 471.
+(Font)              scaled to size 9.37807pt on input line 477.
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/microtype/mt-msb.cfg
 File: mt-msb.cfg 2005/06/01 v1.0 microtype config. file: AMS symbols (b) (RS)
 )
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 471.
+(Font)              scaled to size 7.29405pt on input line 477.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 471.
+(Font)              scaled to size 5.21004pt on input line 477.
 [12] [13 <./figures/animation-voter.png>]
-Overfull \hbox (3.41628pt too wide) in paragraph at lines 509--511
+Overfull \hbox (3.41628pt too wide) in paragraph at lines 521--523
 []\T1/ppl/m/n/9 (-20) O'Hara-Wild, Mitchell, Stephanie Kobakian, H. Sherry Zhang, Di Cook, Si-mon Ur-banek, and Christophe
  []
 
 
-Overfull \hbox (25.30872pt too wide) in paragraph at lines 518--520
+Overfull \hbox (25.30872pt too wide) in paragraph at lines 530--532
 []\T1/ppl/m/n/9 (-20) ``Osiris.'' n.d. \T1/ppl/m/it/9 (-20) Bvd\T1/ppl/m/n/9 (-20) . Bu-reau van Dijk. [][]$\T1/zi4/m/n/9 https : / / www . bvdinfo . com / en -[] gb / our -[] products / data / international /
  []
 
 No file RJwrapper.bbl.
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 569.
+(Font)              using `T1/zi4/m/n' instead on input line 581.
 
-) [14] (./RJwrapper.aux)
+) [14] [15] (./RJwrapper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-10>
@@ -872,18 +871,18 @@ Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: 39FEDCDDE7099574ED2ACDC58D577A1B;2648.
  ) 
 Here is how much of TeX's memory you used:
- 26711 strings out of 476450
- 490434 string characters out of 5799743
- 1944043 words of memory out of 5000000
+ 26717 strings out of 476450
+ 490504 string characters out of 5799743
+ 1943043 words of memory out of 5000000
  47644 multiletter control sequences out of 15000+600000
- 593335 words of font info for 226 fonts, out of 8000000 for 9000
+ 593490 words of font info for 228 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  117i,12n,131p,1006b,910s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (14 pages, 2250021 bytes).
+Output written on RJwrapper.pdf (15 pages, 2252507 bytes).
 PDF statistics:
- 312 PDF objects out of 1000 (max. 8388607)
- 264 compressed objects within 3 object streams
- 89 named destinations out of 1000 (max. 500000)
+ 321 PDF objects out of 1000 (max. 8388607)
+ 272 compressed objects within 3 object streams
+ 92 named destinations out of 1000 (max. 500000)
  53449 words of extra memory for PDF output out of 61914 (max. 10000000)
 
