@@ -71,21 +71,23 @@ This transformation may not be necessary if it is already provided in the catego
 
 # Animation tools {#animation}
 
-```{r animation-diagram, fig.cap="The diagram shows how the animation is done using the successive pictures.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
+```{r animation-diagram, fig.cap="The diagram shows how the animation is done using the successive pictures. When small changes are seen in quick succession, it will appear as if the objects are in motion.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/animation-diagram.png")
 ```
 
-The principle underlying the animation is called persistence of vision (@animation-mechanic). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \@ref(fig:animation-diagram). There are multiple ways to create an animation in the R environment (@r), including packages like `gganimate` and `Plotly`. 
+ A principle important for designing a useful animation is called persistence of vision (@animation-mechanic). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \@ref(fig:animation-diagram). 
 
-  The `gganimate` package (@gganimate) is an extension from the `ggplot2` package (@ggplot2) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of `transition_*()` functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. The output from the `gganimate` can be rendered or saved in multiple formats. This includes `gifski_renderer()` from the `gifski` package (@gifski) to save the animation in GIF format or `av_renderer()` from the `av` package (@av) to save it into a video file format.
+ There are multiple ways to create an animation in the R environment (@r), including the packages \CRANpkg{gganimate} (@gganimate) and \CRANpkg{plotly} (@plotly). 
 
-  Plotly is a graphing library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the `plotly` package (@plotly), which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, `ggplotly()`, or a standalone function, `plot_ly()`. The conversion is accomplished by taking the elements from the `ggplot` object and then redrawing them using the plotly.js.
+ The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (@ggplot2) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of `transition_*()` functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. The output from the `gganimate` can be rendered or saved in multiple formats. This includes `gifski_renderer()` from the \CRANpkg{gifski} package (@gifski) to save the animation in GIF format or `av_renderer()` from the `av` package (@av) to save it into a video file format.
+
+ The `plotly` software is a graphing library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the \CRANpkg{plotly} package, which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, `ggplotly()`, or a standalone function, `plot_ly()`. The conversion is accomplished by taking the elements from the `ggplot` object and then redrawing them using the plotly.js.
   
-```{r animated-diagram, fig.cap="The diagram shows how the frames were used in the animated plot.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
+```{r animated-diagram, fig.cap="The diagram shows how the frames were used in the animated plot.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/animated-diagram.png")
 ```
   
-  In the context of data, as shown in Figure \@ref(fig:animated-diagram), observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the `gganimate` package (@gganimate), the interpolation is achieved using the `tweenr` package (@tweenr), while in `plotly`, it utilizes d3.interpolate (@d3js).
+  In the context of data, as shown in Figure \@ref(fig:animated-diagram), observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the \CRANpkg{gganimate} package, the interpolation is achieved using the \CRANpkg{tweenr} package (@tweenr), while in \CRANpkg{plotly}, it utilizes d3.interpolate (@d3js).
   
   Figure \@ref(fig:animated-diagram) demonstrates how the frame variables are applied in an animated plot. The frame variable within the animated data structure allows the animation function to determine the position of observations on the plot at any given frame.
   
