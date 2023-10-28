@@ -29,7 +29,7 @@ library(tidyverse)
 ```
 
 
-# Introduction
+# Introduction {#intro}
 
 The concept of "zombie companies" began to attract attention when @zombie_companies_2008 reported on their proliferation in Japan. Zombie companies are those with an interest coverage ratio of less than one for a period of more than three years, that is, companies taking space in the market but adding no life to the economy. We would detect their presence by a drop in performance, which is a movement pattern in their relative ranking over time. Generally, studying movement patterns is interesting for many problems, including rocket ship startups that rapidly perform well, or in politics, to study voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
 
@@ -37,10 +37,10 @@ The New York Times provided a possible solution in the article titled "Extensive
   
 The challenge in producing an animation like that in New York Times article animation is the transformation of the data, and connection with elements of the plot that will be animated. The complexities include standardizing starting times of the temporal variable, allowing for the user to choose the number of categories, standardizing distributions and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.    
   
-The structure of this paper is as follows. The section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools, and how they are employed for this problem. A section on the functions of the package and how the visualization is designed, demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
+The structure of this paper is as follows. The next section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools, and how they are employed for this problem. A section on the functions of the package and how the visualization is designed, demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
 
 
-# Explanation of the New York Times visualization {#NYT}
+# Explanation of the New York Times visualization {#NYTvis}
 
 ```{r nyt, fig.cap="Screenshot of the New York Times animation, that is the motivation for this visualization package.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
 knitr::include_graphics("figures/NYT.png")
@@ -55,11 +55,11 @@ The interactive chart featured in the New York Times article (Figure \@ref(fig:n
   This animation was developed using two software based on JavaScript, D3.js (@d3js), and WebGL (reference). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. For the animation in this paper, the programming language that will be used for recreating and revising the visualization done by The New York Times articles is R (@r).
   
   
-# Data
+# Data {#data}
 
 Before any visualizations can be performed, the users must first understand the data concept known as `tidy data` (@tidy-data). There are three fundamental key principles: each variable forms a column, each observation forms a row, and each type of observational unit forms a table. These three keys are Codd's third normal form (@relational), but phrase in the language of statistics. The tidy data format focuses on a single dataset instead of many connected datasets typically found in a relational database.
 
-```{r data-diagram, fig.cap="The diagram shows what are the expected data forms.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
+```{r data-diagram, fig.cap="The data can be provided in the raw or categorized form, and will be processed into the format needed for the animation.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
 knitr::include_graphics("figures/data-diagram.png")
 ```
   
@@ -69,7 +69,7 @@ knitr::include_graphics("figures/data-diagram.png")
 This transformation may not be necessary if it already exists in the categorized format, as in the case of political data (party affiliation). The last form is animated data, where the frame is assigned to each unique ID.
   
 
-# Animation tools
+# Animation tools {#animation}
 
 ```{r animation-diagram, fig.cap="The diagram shows how the animation is done using the successive pictures.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
 knitr::include_graphics("figures/animation-diagram.png")
@@ -96,7 +96,7 @@ knitr::include_graphics("figures/animated-diagram.png")
   In the case of `plotly`, control integration is already implemented by default. The `frame` and `transition` arguments within the `animation_opts()` function can be specified to set the length and speed of the animation.
   
   
-# Visualization design
+# Visualization design {#design}
 
 The animated visualization can be an effective communication tool (@Mayer_Moreno_2002; @effective-trend). It helps with communicating complex data, enhancing the narrative, and keeping it engaged for the audience. According to @Mayer_Moreno_2002, animation can improve learning, especially when the goal is to promote deep understanding. 
 
@@ -112,7 +112,7 @@ knitr::include_graphics("figures/sine-shade.png")
   As mentioned in the Animation tools section, the paths of observations are getting interpolated. These functions only generate a linear path between points. However, linear paths may not be suitable for creating proportional shading, as they do not accurately represent the proportions. Non-linear curves like the sigmoid curves should be considered instead, as they provide a better display of proportions. These curves are commonly used in multiple Sankey diagrams, but there is a limitation on this shape. The issue is shown in Figure \@ref(fig:proportional-shade). While it does accurately represent the proportion at the beginning and end, as it curves, the shape gets narrower, leading to less accurate proportion representation (@Shaffer_2019).
 
   
-# Software
+# Software {#software}
 
 ## Installation
 
@@ -123,7 +123,7 @@ You can install the development version of animbook from [GitHub](https://github
 devtools::install_github("KrisanatA/animbook")
 ```
 
-## Overviw of functions
+## Overview of functions
 
 In designing the package for reproducing the New York Times animated plot, the package ended up with a three-step process in recreating the animation. The first step is to turn the data into the right format for the plot function. The next stage is to create a ggplot object, which can then be inputted into the animation function. The last step is adding the animation settings to the ggplot object so the user can animate the plot using the `gganimate::animate()` function. The reason for this three-step process is that it allows the user who does not have a lot of experience to reproduce the animation while keeping the customization for an experienced user.
 
