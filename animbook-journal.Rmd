@@ -42,7 +42,7 @@ The structure of this paper is as follows. The next section explains the animati
 
 # Explanation of the New York Times visualization {#NYTvis}
 
-```{r nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package..", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
+```{r nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package..", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/NYT.png")
 ```
 
@@ -357,7 +357,7 @@ str(animbook)
 
   To obtain a `ggplot` object for the animation function, the `wallaby_plot` is used. For further customization, the `shade_palette`, `subset`, and `relation` arguments are applied to define the final appearance of the animation.
 
-```{r, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
+```{r, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 p <- wallaby_plot(object = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
              shade_palette = c("#737373", "#969696", "#BDBDBD",
@@ -529,5 +529,5 @@ Beginning with inspiration from the New York Times articles, this package provid
 
 This paper is created using the \CRANpkg{rjtools} packages (@rjtools) and is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on [GitHub](https://github.com/KrisanatA/animbook).
 
-I also acknowledge the use of ChatGPT (https://chat.openai.com/) to paraphrase the sentence.
+I also acknowledge the use of ChatGPT (https://chat.openai.com/) to improve the text, grammar and spelling.
   
