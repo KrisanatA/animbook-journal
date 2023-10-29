@@ -399,9 +399,13 @@ knitr::include_graphics("figures/catchange.gif")
 
 ## Accounting database: osiris
 
-The accounting Osiris data that will be used in this section was collected from Bureau van Dijk (@bvd). This data set comprises 30,000 rows and 94 variables of information on listed and major unlisted/delisted companies worldwide. The only variables of interest from this data set are ID, year, country, and sales. A subset version of this data set, which only contained variables of interest from 2006 to 2018, is included in this package.
+The accounting Osiris data that will be used in this section was collected from Bureau van Dijk (@bvd). This data set comprises 30,000 rows and 94 variables of information on listed and major unlisted/delisted companies worldwide. The variables of interest from this data set are ID, year, country, and sales. A subset of companies from this data set is used recorded from 2006 to 2018. This sample is included in the package.
 
-  As mentioned in the OECD report (@oecd_report), the United States has a faster metabolize rate relative to Japan company. An animation will be created using the `animbook` package to enhance communication with data. First, filter the countries to include only the United States and Japan. Then, prepare the Osiris data using the `anim_prep` function with the first scaling, which is a ranking method. Next, use the `wallaby_plot` function to create a `ggplot` object and add default settings for `gganimate` rendering.
+  An OECD report (@oecd_report) claims that the United States has a faster metabolic rate relative to Japanese companies. We use the wallaby plot and kangaroo plot animation to explore this. The steps are: 
+  
+- Filter the countries to include only the United States and Japan. 
+- Prepare the data using the `anim_prep` function with the first scaling, which is a ranking method. 
+- Use the `wallaby_plot` and `kangaroo_plot` functions to create `ggplot` objects and add default settings for `gganimate` rendering.
   
 ```{r, echo=TRUE}
 # library(animbook)
@@ -452,29 +456,29 @@ gganimate::animate(p2)
 gganimate::animate(kan_p2)
 ```
 
-```{r osiris-figure, fig.cap = "The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r osiris-figure, fig.cap = "The wallaby plot  visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-exit.png")
 ```
 
 
-```{r osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", eval=knitr::is_html_output()}
+```{r osiris-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/exit.gif")
 ```
 
-```{r kan-osiris-figure, fig.cap = "The animate visualization shows the movement of the companies between the groups from 2006 to 2018. In 2006, there were no Japanese companies in the Top 25\\% group.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r kan-osiris-figure, fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018, for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed, or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/osiris.png")
 ```
 
-```{r kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the movement of the companies between the groups from 2006 to 2018. In 2006, there were no Japanese companies in the Top 25% group.", eval=knitr::is_html_output()}
+```{r kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018, for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed, or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/kan-osiris.gif")
 ```
 
-  From the plot, a higher proportion of US companies have exited the market, confirming the OECD report (@oecd_report) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the Top 25% in 2006, or it could be that Japanese companies who started in the Top 25% in 2006 did not delist. Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`, confirmed that there are non-Japanese companies that start at the Top 25% in 2006.
+  From the plot, a higher proportion of US companies have exited the market, confirming the OECD report (@oecd_report) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the Top 25% in 2006, or it could be that Japanese companies who started in the Top 25% in 2006 were not delisted. Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`, confirmed that there are non-Japanese companies that start at the Top 25% in 2006.
   
 
 ## Voter behavior
 
-The Australian Election Study data was collected from ADA Dataverse (@aeles). The dataset included in the \pkg{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer the question, based on the 2016 Australian election results, how the top party performs in keeping the old voters for different genders.
+The Australian Election Study data was collected from ADA Dataverse (@aeles). The dataset included in the \pkg{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer how the top party performs in keeping the old voters for different genders, relative to the 2016 Australian election results.
   
 ```{r, echo=TRUE}
 voter <- anim_prep_cat(data = aeles,
@@ -509,11 +513,11 @@ gganimate::anim_save("figures/voter.gif", p2_voter, height = 8, fps = 30,
 gganimate::animate(p2_voter)
 ```
 
-```{r voter-figure, fig.cap = "The animate visualization shows how does the top party perform in keeping the old voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r voter-figure, fig.cap = "The wallaby plot visualization shows how does the top party perform in keeping the old voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-voter.png")
 ```
 
-```{r voter-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows how does the top party perform in keeping the old  voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", eval=knitr::is_html_output()}
+```{r voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how does the top party perform in keeping the old  voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/voter.gif")
 ```
 
