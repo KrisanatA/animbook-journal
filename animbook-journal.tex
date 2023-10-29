@@ -8,8 +8,8 @@
 Categorical data has often been presented statically despite its potential to unveil an intriguing movement pattern relevant to the various domains of data, including company ranking quantile in the accounting data and shifts in voter party affiliations. Inspired by the animation in the New York Times article ``Extensive data show punishing reach of racism for black boys,'' this paper aims to develop an R package, animbook, that can generalize the animation to suitably apply to a wider range of data. The package included a function that allowed for the transformation of the data and connection with elements of the plot that would be animated. This results in an animation tool that helps communicate complex data, enhancing the narrative and keeping it engaged for the general audience.
 }
 
-\hypertarget{introduction}{%
-\section{Introduction}\label{introduction}}
+\hypertarget{intro}{%
+\section{Introduction}\label{intro}}
 
 The concept of ``zombie companies'' began to attract attention when Caballero, Hoshi, and Kashyap (2008) reported on their proliferation in Japan. Zombie companies are those with an interest coverage ratio of less than one for a period of more than three years, that is, companies taking space in the market but adding no life to the economy. We would detect their presence by a drop in performance, which is a movement pattern in their relative ranking over time. Generally, studying movement patterns is interesting for many problems, including rocket ship startups that rapidly perform well, or in politics, to study voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
 
@@ -17,10 +17,10 @@ The New York Times provided a possible solution in the article titled ``Extensiv
 
 The challenge in producing an animation like that in New York Times article animation is the transformation of the data, and connection with elements of the plot that will be animated. The complexities include standardizing starting times of the temporal variable, allowing for the user to choose the number of categories, standardizing distributions and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.
 
-The structure of this paper is as follows. The section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools, and how they are employed for this problem. A section on the functions of the package and how the visualization is designed, demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
+The structure of this paper is as follows. The next section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools, and how they are employed for this problem. A section on the functions of the package and how the visualization is designed, demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
 
-\hypertarget{NYT}{%
-\section{Explanation of the New York Times visualization}\label{NYT}}
+\hypertarget{NYTvis}{%
+\section{Explanation of the New York Times visualization}\label{NYTvis}}
 
 \begin{figure}
 
@@ -28,7 +28,7 @@ The structure of this paper is as follows. The section explains the animation in
 
 }
 
-\caption{Screenshot of the New York Times animation, that is the motivation for this visualization package.}\label{fig:nyt}
+\caption{Screenshot of the New York Times animation, which is the motivation for this visualization package..}\label{fig:nyt}
 \end{figure}
 
 The interactive chart featured in the New York Times article (Figure \ref{fig:nyt}) unveils the issue of income disparities between black and white children who were raised in families with comparable income according to the Chetty et al. (2020). This visualization reveals that, compared to white children, black children are more likely to drop down to the lower-income group, given that they both grew up in wealthy families.
@@ -42,24 +42,21 @@ This animation was developed using two software based on JavaScript, D3.js (Bost
 \hypertarget{data}{%
 \section{Data}\label{data}}
 
-Before any visualizations can be performed, the users must first understand the data concept known as \texttt{tidy\ data} (Wickham (2014)). There are three fundamental key principles: each variable forms a column, each observation forms a row, and each type of observational unit forms a table. These three keys are Codd's third normal form (Codd (1990)), but phrase in the language of statistics. The tidy data format focuses on a single dataset instead of many connected datasets typically found in a relational database.
-
 \begin{figure}
 
 {\centering \includegraphics[width=1\linewidth]{figures/data-diagram} 
 
 }
 
-\caption{The diagram shows what are the expected data forms.}\label{fig:data-diagram}
+\caption{The animation expects data with an ID and a time variable, along with a numerical variable (raw form), which is possibly converted to categorical (categorized). The data can be provided in the raw or categorized form and will be processed into the format needed for the animation, where the categorical variable is treated as a quantile and an animation frame variable is created.}\label{fig:data-diagram}
 \end{figure}
 
-In the data structure, there are requirements that must be followed for reproducing the animation. The data must have ID and time variables. These form what we call a unique ID. Also, the values variable can be either a numerical or categorical variable. The type of this variable will determine the stage the data set is in. This format ensures that during the data pre-processing, the R function understands what needs to be done with the data.
+In the data structure, there are requirements that must be followed for reproducing the animation. First, the data set needs to be in the \texttt{tidy\ data} format (Wickham (2014)). The data then must have at least ID and time variables, in addition to the measured variables, which would usually be numeric but can also be categorical as well. The ID variable indicates the individual, which is followed over time, such as the company name. There may also be a grouping variable, such as the country where the company is registered.
 
-Figure \ref{fig:data-diagram} shows which stages the data is in, given the type of values variable. Start with the raw data structure. The values are presented in the numerical format. It is referred to as `raw' because, in the New York Times animation, it is expressed in the categorical format. However, in most cases, the data is in numerical values and requires transformation. The second form is categorized data, as mentioned earlier, which involves transforming numerical into categories.
-This transformation may not be necessary if it already exists in the categorized format, as in the case of political data (party affiliation). The last form is animated data, where the frame is assigned to each unique ID.
+Figure \ref{fig:data-diagram} illustrates the expected format of the data and variables created to prepare it for the animation. We start with the raw data structure. The values are presented in the numerical format, which we call the `raw' form. In most cases, the measured variable will be numerical and require transformation. The second form is categorized data, which involves transforming numerical variables into categories, typically quantiles. This transformation may not be necessary if it is already provided in the categorized format. The last form is animated data, where the frame is assigned to each unique ID.
 
-\hypertarget{animation-tools}{%
-\section{Animation tools}\label{animation-tools}}
+\hypertarget{animation}{%
+\section{Animation tools}\label{animation}}
 
 \begin{figure}
 
@@ -67,14 +64,16 @@ This transformation may not be necessary if it already exists in the categorized
 
 }
 
-\caption{The diagram shows how the animation is done using the successive pictures.}\label{fig:animation-diagram}
+\caption{The diagram shows how the animation is done using the successive pictures. When small changes are seen in quick succession, it will appear as if the objects are in motion.}\label{fig:animation-diagram}
 \end{figure}
 
-The principle underlying the animation is called persistence of vision (Webster (2005)). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \ref{fig:animation-diagram}. There are multiple ways to create an animation in the R environment (R Core Team (2021)), including packages like \texttt{gganimate} and \texttt{Plotly}.
+A principle important for designing a useful animation is called persistence of vision (Webster (2005)). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \ref{fig:animation-diagram}.
 
-The \texttt{gganimate} package (Pedersen and Robinson (2020)) is an extension from the \texttt{ggplot2} package (Wickham (2016)) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of \texttt{transition\_*()} functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. The output from the \texttt{gganimate} can be rendered or saved in multiple formats. This includes \texttt{gifski\_renderer()} from the \texttt{gifski} package (Ooms (2023b)) to save the animation in GIF format or \texttt{av\_renderer()} from the \texttt{av} package (Ooms (2023a)) to save it into a video file format.
+There are multiple ways to create an animation in the R environment (R Core Team (2021)), including the packages \CRANpkg{gganimate} (Pedersen and Robinson (2020)) and \CRANpkg{plotly} (Sievert (2020)).
 
-Plotly is a graphing library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the \texttt{plotly} package (Sievert (2020)), which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, \texttt{ggplotly()}, or a standalone function, \texttt{plot\_ly()}. The conversion is accomplished by taking the elements from the \texttt{ggplot} object and then redrawing them using the plotly.js.
+The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (Wickham (2016)) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of \texttt{transition\_*()} functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. This includes \texttt{gifski\_renderer()} from the \CRANpkg{gifski} package \{Ooms (2023b)\} to save animation in GIF format or \texttt{av\_renderer()} from the \CRANpkg{av} package \{Ooms (2023a)\} to save it into a video file format.
+
+The \texttt{plotly} software is a graphic library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the \CRANpkg{plotly} package, which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, \texttt{ggplotly()}, or a standalone function, \texttt{plot\_ly()}. The conversion is accomplished by taking the elements from the \texttt{ggplot} object and then redrawing them using the plotly.js.
 
 \begin{figure}
 
@@ -82,33 +81,33 @@ Plotly is a graphing library that provides tools for creating an interactive plo
 
 }
 
-\caption{The diagram shows how the frames were used in the animated plot.}\label{fig:animated-diagram}
+\caption{The diagram shows how the frames were used in the animated plot. Frame one is depicted in blue, and frame two is represented in red. Each blue component is mapped exclusively to the Frame 1 plot, while all the second-frame elements are excluded, and vice versa.}\label{fig:animated-diagram}
 \end{figure}
 
-In the context of data, as shown in Figure \ref{fig:animated-diagram}, observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the \texttt{gganimate} package (Pedersen and Robinson (2020)), the interpolation is achieved using the \texttt{tweenr} package (Pedersen (2022)), while in \texttt{plotly}, it utilizes d3.interpolate (Bostock (2012)).
+In the context of data, as shown in Figure \ref{fig:animated-diagram}, observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the \CRANpkg{gganimate} package, the interpolation is achieved using the \CRANpkg{tweenr} package (Pedersen (2022)), while in \CRANpkg{plotly}, it utilizes d3.interpolate (Bostock (2012)).
 
 Figure \ref{fig:animated-diagram} demonstrates how the frame variables are applied in an animated plot. The frame variable within the animated data structure allows the animation function to determine the position of observations on the plot at any given frame.
 
 From Hasler, Kersten, and Sweller (2007), it suggests that having control options for the animation can improve the efficiency of the learning process. Additionally, the length and speed of the animation should also be taken into consideration. According to R. Mayer (2010), the working memory, responsible for selecting and processing information from sensory memory, only holds a processed version of what was presented for generally less than thirty seconds.
 
-In \texttt{gganimate}, the issue of integrating controls can be addressed by setting the \texttt{renderer} argument to be \texttt{av\_renderer()}, which allows the animation output to be in MP4 format. This format provides users with controls for the animation when opened on media applications provided in their systems. As for adjusting the length and speed of the animation, the \texttt{nframes} and \texttt{fps} arguments can be utilized. The \texttt{nframes} dictates the number of frames to be rendered, while \texttt{fps} controls how many frames are displayed in one second. Using these two parameters, the duration of the animation in seconds can be calculated as follows: length = nframes/fps.
+In \CRANpkg{gganimate}, the issue of integrating controls can be addressed by setting the \texttt{renderer} argument to be \texttt{av\_renderer()}, which allows the animation output to be in media applications provided in their systems. As for adjusting the length and speed of the animation, the \texttt{nframes} and \texttt{fps} arguments can be utilized. The \texttt{nframes} dictates the number of frames to be rendered, while \texttt{fps} controls how many frames are displayed in one second. Using these two parameters, the duration of the animation in seconds can be calculated as follows: length = nframes/fps.
 
-In the case of \texttt{plotly}, control integration is already implemented by default. The \texttt{frame} and \texttt{transition} arguments within the \texttt{animation\_opts()} function can be specified to set the length and speed of the animation.
+In the case of \CRANpkg{plotly}, control integration is already implemented by default. The \texttt{frame} and \texttt{transition} arguments within the \texttt{animation\_opts()} function can be specified to set the length and speed of the animation.
 
-\hypertarget{visualization-design}{%
-\section{Visualization design}\label{visualization-design}}
+\hypertarget{design}{%
+\section{Visualization design}\label{design}}
 
 The animated visualization can be an effective communication tool (R. E. Mayer and Moreno (2002); Robertson et al. (2008)). It helps with communicating complex data, enhancing the narrative, and keeping it engaged for the audience. According to R. E. Mayer and Moreno (2002), animation can improve learning, especially when the goal is to promote deep understanding.
 
-According to R. E. Mayer (2005), designing multimedia requires the designer to understand how people learn. One of the principles in R. E. Mayer (2005), Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
-
-From the New York Times animation, multiple information are shown in the visualization. It includes points in motion, distribution at the end, and proportional counters. However, this could lead to information overload (R. E. Mayer (2005)). Therefore, the distribution at the end and proportional counters are excluded. Instead, the new element has been integrated, proportional shaded areas. It displays the proportion of observation within each group.
+R. E. Mayer (2005) states that designing multimedia requires the designer to understand how people learn. One of the principles in R. E. Mayer (2005), Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
 
 \begin{figure}
-\includegraphics[width=0.5\linewidth]{figures/sigmoid-shade} \includegraphics[width=0.5\linewidth]{figures/sine-shade} \caption{The plot shows the difference between the sigmoid and sine curves.}\label{fig:proportional-shade}
+\includegraphics[width=0.5\linewidth]{figures/sigmoid-shade} \includegraphics[width=0.5\linewidth]{figures/sine-shade} \caption{The plot shows the difference between the sigmoid (shown in the left figure) and the sine curve (shown in the right figure). In the sigmoid, as the curve progresses, it becomes narrower, resulting in a less accurate representation of proportions compared to the sine curve.}\label{fig:proportional-shade}
 \end{figure}
 
-As mentioned in the Animation tools section, the paths of observations are getting interpolated. These functions only generate a linear path between points. However, linear paths may not be suitable for creating proportional shading, as they do not accurately represent the proportions. Non-linear curves like the sigmoid curves should be considered instead, as they provide a better display of proportions. These curves are commonly used in multiple Sankey diagrams, but there is a limitation on this shape. The issue is shown in Figure \ref{fig:proportional-shade}. While it does accurately represent the proportion at the beginning and end, as it curves, the shape gets narrower, leading to less accurate proportion representation (Shaffer (2019)).
+In the animation, the proportional shaded area has been incorporated to facilitate a quick grasp of the proportion information. It displays the proportion of observation within each group. The design also needs to account for situations where the visualization lacks an adequate number of data points. In such cases, it can be challenging to visually discern the movement pattern of the subgroup, requiring the implementation of observation interpolation.
+
+As mentioned in the Animation tools section, the paths of observations are getting interpolated. These functions only generate a linear path between points. However, linear paths may not be suitable for creating proportional shading, as they do not accurately represent the proportions. Non-linear curves like the sigmoid curves should be considered instead, as they provide a better display of proportions. These curves are commonly used in multiple Sankey diagrams, but there is a limitation on this shape. The issue is shown in Figure \ref{fig:proportional-shade}. While it does accurately represent the proportion at the beginning and end, as it curves, the shape gets narrower, leading to less accurate proportion representation (Shaffer (2019))
 
 \hypertarget{software}{%
 \section{Software}\label{software}}
@@ -116,22 +115,22 @@ As mentioned in the Animation tools section, the paths of observations are getti
 \hypertarget{installation}{%
 \subsection{Installation}\label{installation}}
 
-You can install the development version of animbook from \href{https://github.com/KrisanatA/animbook}{GitHub} with:
+The development version of \pkg{animbook} can be installed from \href{https://github.com/KrisanatA/animbook}{GitHub} with:
 
 \begin{verbatim}
 # install.packages("devtools")
 devtools::install_github("KrisanatA/animbook")
 \end{verbatim}
 
-\hypertarget{overviw-of-functions}{%
-\subsection{Overviw of functions}\label{overviw-of-functions}}
+\hypertarget{overview-of-functions}{%
+\subsection{Overview of functions}\label{overview-of-functions}}
 
-In designing the package for reproducing the New York Times animated plot, the package ended up with a three-step process in recreating the animation. The first step is to turn the data into the right format for the plot function. The next stage is to create a ggplot object, which can then be inputted into the animation function. The last step is adding the animation settings to the ggplot object so the user can animate the plot using the \texttt{gganimate::animate()} function. The reason for this three-step process is that it allows the user who does not have a lot of experience to reproduce the animation while keeping the customization for an experienced user.
+In designing the \pkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data to the animated data structure as seen in \ref{fig:data-diagram}. The second stage is creating a \texttt{ggplot} object, which can be subsequently passed into the animation function. The final step involves transforming the \texttt{ggplot} to a \texttt{gganimate} object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
 
 \hypertarget{data-preprocessing}{%
 \subsubsection{Data preprocessing}\label{data-preprocessing}}
 
-From Figure \ref{fig:data-diagram}, there is a need to map numerical value to a category. One way to handle this is by ranking the sales and grouping the rankings into quantiles. In some cases, this may not be the best option. When the observation is moved up by quantile, one is bound to move down. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different demographics, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data.
+From Figure \ref{fig:data-diagram}, there is a need to map numerical value to a category. One way to handle this is by ranking the sales and grouping the rankings into quantiles. In some cases, this may not be the best option. When the observation is moved up by quantile, one is bound to move down. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different groups, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data.
 
 \begin{verbatim}
 #> # A tibble: 12 x 8
@@ -164,67 +163,93 @@ From Figure \ref{fig:data-diagram}, there is a need to map numerical value to a 
   Fix bins relative to absolute values by year within a group. (absolute\_group)
 \end{enumerate}
 
-For the first and second scaling methods, group splitting is executed using the \texttt{quantiles()} and \texttt{cut()} functions. The \texttt{quantile} function from the \texttt{stats} R package (R Core Team (2013)) takes a numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the \texttt{quantile} function is then used as the \texttt{breaks} argument for the cut function that is part of the base R packages.
+For the first and second scaling methods, group splitting is executed using the \texttt{quantiles()} and \texttt{cut()} functions. The \texttt{quantile()} function from the \CRANpkg{stats} package (R Core Team (2013)) takes a numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the \texttt{quantile()} function is then used as the \texttt{breaks} argument for the \texttt{cut()} function that is part of the base R packages (R Core Team (2021)).
 
-In contrast, the third and fourth scaling methods calculate the quantile based on the absolute values scales. The default approach is to break the group equally using the \texttt{seq()} function. The \texttt{seq()} function takes input values from the minimum and maximum values and increments by equal steps depending on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so.
+In contrast, the third and fourth scaling methods calculate the quantile based on the absolute values scales. To avoid varying values scales among groups, the variables are first normalized to a range between 0 and 1. The default approach then breaks the group equally using the \texttt{seq()} function. The \texttt{seq()} function takes input values from 0 to 1 and increments by equal steps depending on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so.
 
-These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning the frame to each individual observation, ensuring that each ID does not contain repeat frame values. It lets the \texttt{gganimate} or \texttt{plotly} to perceive where the observation would be on the plot at a given frame as seen in the \ref{fig:animated-diagram}.
+These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning the frame to each individual observation, ensuring that each ID does not contain repeat frame values. It lets the \CRANpkg{gganimate} or \CRANpkg{plotly} perceive where the observation would be on the plot at a given frame, as seen in Figure \ref{fig:animated-diagram}.
 
-The frame variable is assigned by sorting the data based on the ID and time using the \texttt{arrange()} function, followed by applying the \texttt{group\_by()} function on the ID, allowing the \texttt{row\_number()} function to be performed within each group. The functions mentioned in this paragraph are from the \texttt{dplyr} packages (Wickham et al. (2023)).
+The frame variable is assigned by sorting the data based on the ID and time using the \texttt{arrange()} function, followed by applying the \texttt{group\_by()} function on the ID, allowing the \texttt{row\_number()} function to be performed within each group. The functions mentioned in this paragraph are from the \CRANpkg{dplyr} package (Wickham et al. (2023)).
 
-All of the pre-processing steps mentioned above are completed using the \texttt{anim\_prep()} or \texttt{anim\_prep\_cat()} function, depending on the stages of the data structure. The \texttt{anim\_prep()} function is used for raw data format, while the \texttt{anim\_prep\_cat()} function is for categorized data format. There are additional arguments that facilitate the users for more customization.
+All of the pre-processing steps mentioned above are completed using the \texttt{anim\_prep()} or \texttt{anim\_prep\_cat()} function, depending on the stages of the data structure. The \texttt{anim\_prep()} function is used for raw data format, while the \texttt{anim\_prep\_cat()} function is for categorized data format. There are additional arguments that allow users for more customization.
 
-In the \texttt{anim\_prep()} and \texttt{anim\_prep\_cat()}, there are required arguments that need to be specified. The lists are as follows:
+\begin{table}
 
-\begin{itemize}
-\tightlist
-\item
-  data: A data frame containing the data to be prepared for visualization.
-\item
-  id: The column name that represents the unique identifier variable.
-\item
-  values: The column name that contains the numeric values to be visualized.
-\item
-  time: The column name represents the time variable.
-\end{itemize}
+\caption{\label{tab:tbl-required}The required argument for the prep function.}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+Argument & Description\\
+\hline
+data & A data frame containing the data to be prepared for visualization.\\
+\hline
+id & The column name that represents the unique identifier variable.\\
+\hline
+values & The column name that contains the numeric values to be visualized.\\
+\hline
+time & The column name represents the time variable.\\
+\hline
+\end{tabular}
+\end{table}
 
-As shown previously, there are a total of four different scaling for the \texttt{anim\_prep()} function. Both the use can customization of these scaling can be set using the following arguments:
+\begin{table}
 
-\begin{itemize}
-\tightlist
-\item
-  ngroup: The number of groups or categories to create for scaling values.
-\item
-  breaks: A vector of breaks for creating bins.
-\item
-  group\_scaling: The column name that represents the grouping variable.
-\item
-  scaling: The scaling method to be used; ``rank'' or ``absolute.''
-\end{itemize}
+\caption{\label{tab:tbl-animprep}The argument in the anim\_prep for customized the data scaling.}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+Argument & Description\\
+\hline
+ngroup & The number of groups or categories to create for scaling values.\\
+\hline
+breaks & A vector of breaks for creating bins.\\
+\hline
+group\_scaling & The column name that represents the grouping variable.\\
+\hline
+\end{tabular}
+\end{table}
 
-For the \texttt{anim\_prep\_cat()} function, the arguments that allowed the user to order the category are by using this argument:
+\begin{table}
 
-\begin{itemize}
-\tightlist
-\item
-  order: A vector of order for sorting the category values.
-\end{itemize}
+\caption{\label{tab:tbl-animprepcat}The argument in the anim\_prep\_cat for customized the order of the category.}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+Argument & Description\\
+\hline
+order & A vector of order for sorting the category values.\\
+\hline
+\end{tabular}
+\end{table}
 
-Then, for further customization regarding how the final visualization looks. The following arguments can be adjusted:
+\begin{table}
 
-\begin{itemize}
-\tightlist
-\item
-  label: A vector of labels to be used for the y-axis in the visualization.
-\item
-  color: The column name to be used in ggplot2::aes() for the plot function.
-\item
-  time\_dependent: Logical. Should the visualization be time-dependent? Default is TRUE.
-\item
-  runif\_min: The minimum value for random addition to frame numbers.
-\item
-  runif\_max: The maximum value for random addition to frame numbers.
-\end{itemize}
+\caption{\label{tab:tbl-visual}The additional argument for customizing the aesthetics of the visualization.}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+Argument & Description\\
+\hline
+label & A vector of labels to be used for the y-axis in the visualization.\\
+\hline
+color & The column name to be used in ggplot2::aes() for the plot function.\\
+\hline
+time\_dependent & Logical. Should the visualization be time-dependent? Default is TRUE.\\
+\hline
+runif\_min & The minimum value for random addition to frame numbers.\\
+\hline
+runif\_max & The maximum value for random addition to frame numbers.\\
+\hline
+\end{tabular}
+\end{table}
+
+In the \texttt{anim\_prep()} and \texttt{anim\_prep\_cat()}, there are required arguments that need to be specified. The lists are in the Table \ref{tab:tbl-required}.
+
+As shown previously, there are a total of four different scaling for the \texttt{anim\_prep()} function. Both the use can customization of these scaling can be set using the following arguments in Table \ref{tab:tbl-animprep}.
+
+For the \texttt{anim\_prep\_cat()} function, the arguments that allowed the user to order the category are by using this argument in Table \ref{tab:tbl-animprepcat}.
+
+Then, for further customization regarding how the final visualization looks. The following arguments in Table \ref{tab:tbl-visual} can be adjusted.
 
 \hypertarget{plotting-function}{%
 \subsubsection{Plotting function}\label{plotting-function}}
@@ -232,43 +257,64 @@ Then, for further customization regarding how the final visualization looks. The
 Once the data is prepared. The next step is to create the \texttt{ggplot} object as a basis for the animation. There are three plots available in this package. Two of the plots could be used for the animation, and another plot is used as a static visualization. All of the plots have an internal function that converts the standard data format into the required structure for each plotting function.
 
 \begin{itemize}
+\tightlist
 \item
   \texttt{kangaroo\_plot()}: plots the observation's movement over time.
 \item
   \texttt{wallaby\_plot()}: the subset plot of the \texttt{kangaroo\_plot} with the time limit to only start and end.
 \item
   \texttt{funnel\_web\_plot()}: the faceted static plot by time variable.
-
-  The main focus of this paper will be on the \texttt{wallaby\_plot()}, which draws inspiration from the New York Times animation and combines the knowledge gained from the previous sections in creating the visualization.
-
-  The \texttt{wallaby\_data()} function is responsible for performing data manipulation and formatting tasks on the original object. It includes creating additional data components for labeling and shading. This function also responds by interpolating the non-linear path. It performs this task by mapping the \texttt{sine()} function provided in this package to each observation using the \texttt{map()} function from the \texttt{purrr} package (Wickham and Henry (2023)). The frame is recalculated using the same method mentioned in the data preprocessing section. The \texttt{sankey\_shade()} function is called to generate the proportional shaded data.
 \end{itemize}
 
+The main focus of this paper will be on the \texttt{wallaby\_plot()}, which draws inspiration from the New York Times animation and combines the knowledge gained from the previous sections in creating the visualization.
+
+The \texttt{wallaby\_data()} function is responsible for performing data manipulation and formatting tasks on the original object. It includes creating additional data components for labeling and shading. This function also responds by interpolating the non-linear path. It performs this task by mapping the \texttt{sine()} function provided in this package to each observation using the \texttt{map()} function from the \CRANpkg{purrr} package (Wickham and Henry (2023)). The frame is recalculated using the same method mentioned in the data preprocessing section. The \texttt{sankey\_shade()} function is called to generate the proportional shaded data.
+
 \begin{figure}
-\includegraphics[width=0.5\linewidth]{figures/sankey-shade-1} \includegraphics[width=0.5\linewidth]{figures/sankey-shade-2} \caption{The plot shows how does the algorithm work.}\label{fig:shade-algorithm}
+\includegraphics[width=0.5\linewidth]{figures/sankey-shade-1} \includegraphics[width=0.5\linewidth]{figures/sankey-shade-2} \caption{The plot shows how the algorithm for the sankey\_shade() function works. The left figure represents the initial step of the algorithm, which calculates all the corner points. The right figure demonstrates the subsequent step, where points in-between the left and right are interpolated using the sine() function.}\label{fig:shade-algorithm}
 \end{figure}
 
-The algorithm behind the \texttt{sankey\_shade()} function is illustrated in Figure \ref{fig:shade-algorithm}. It started by calculating the corner points for all of the shaded areas. Then, use the \texttt{sine()} function to interpolate the point between the left and right.
+The algorithm behind the \texttt{sankey\_shade()} function for generating the proportional shaded data is illustrated in Figure \ref{fig:shade-algorithm}. It started by calculating the corner points for all of the shaded areas. Then, use the \texttt{sine()} function to interpolate the point between the left and right.
 
-Now that the data are in the right format for the wallaby's plot, the \texttt{geom\_point()} function is used for plotting the observations, \texttt{geom\_polygon()} is used for creating the proportional shaded areas, and \texttt{geom\_text()} is used for creating labels. These three functions are from the \texttt{ggplot2} package (Wickham (2016)). During this process, the aesthetics mapping will be different depending on the rendering tool to be used, which can be either \texttt{gganimate} or \texttt{plotly}. The difference between the two rendering tools is that for \texttt{plotly}, the \texttt{ids} and \texttt{frame} arguments need to be specified during the creation of the \texttt{ggplot} object.
+Now that the data are in the right format for the wallaby's plot, the \texttt{geom\_point()} function is used for plotting the observations, \texttt{geom\_polygon()} is used for creating the proportional shaded areas, and \texttt{geom\_text()} is used for creating labels. These three functions are from the \CRANpkg{ggplot2} package. During this process, the aesthetics mapping will be different depending on the rendering tool to be used, which can be either \texttt{gganimate} or \texttt{plotly}. The difference between the two rendering tools is that for \texttt{plotly}, the \texttt{ids} and \texttt{frame} arguments need to be specified during the creation of the \texttt{ggplot} object.
 
-The arguments for Wallaby's plot are as follows.
-- object: The animbook object returned from the prep function.
-- group\_palette: The vector of the palette used by the function to supply the color to each group.
-- shade\_palette: The vector of the palette used by the function to supply the color to the shaded area.
-- rendering: The choice of method used to create and display the plot, either gganimate or plotly.
-- subset: A character string specifying the variable used for subsetting the data. The ``top'' and ``bottom'' strings can also be used in this argument.
-- relation: The choice of relationship for the values to display on the plot, either ``one\_many.'' or ``many\_one.''
-- total\_point: The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.
-- height: The proportion of the area occupied by the observations in the shaded areas.
-- width: The distance between the first and last observation in the animation.
-- size: The point size.
-- alpha: The opacity of the proportional shaded areas.
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-8}The arguments for the wallaby\_plot function.}
+\centering
+\begin{tabular}[t]{l|>{\raggedright\arraybackslash}p{30em}}
+\hline
+Argument & Description\\
+\hline
+object & The animbook object returned from the prep function.\\
+\hline
+group\_palette & The vector of the palette used by the function to supply the color to each group.\\
+\hline
+shade\_palette & The vector of the palette used by the function to supply the color to the shaded area.\\
+\hline
+rendering & The choice of method used to create and display the plot, either gganimate or plotly.\\
+\hline
+subset & A character string specifying the variable used for subsetting the data. The "top" and "bottom" strings can also be used in this argument.\\
+\hline
+relation & The choice of relationship for the values to display on the plot, either "one\_many." or "many\_one."\\
+\hline
+total\_point & The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.\\
+\hline
+height & The proportion of the area occupied by the observations in the shaded areas.\\
+\hline
+width & The distance between the first and last observation in the animation.\\
+\hline
+size & The point size.\\
+\hline
+alpha & The opacity of the proportional shaded areas.\\
+\hline
+\end{tabular}
+\end{table}
 
 \hypertarget{animating-function}{%
 \subsubsection{Animating function}\label{animating-function}}
 
-It is necessary to save the plot as a \texttt{ggplot} object before passing it to the final function, \texttt{anim\_animate()}, to animate. This function will automatically detect which rendering method was specified in the previous steps and add the minimum requirement functions accordingly. By default, if the user specifies the rendering as \texttt{gganimate}, then it will add the \texttt{transition\_time()} function from the \texttt{gganimate} package (Pedersen and Robinson (2020)). Otherwise, the \texttt{animation\_opts()} function will be added from the \texttt{plotly} package (Sievert (2020)).
+It is necessary to save the plot as a \texttt{ggplot} object before passing it to the final function, \texttt{anim\_animate()}, to animate. This function will automatically detect which rendering method was specified in the previous steps and add the minimum requirement functions accordingly. By default, if the user specifies the rendering as \texttt{gganimate}, then it will add the \texttt{transition\_time()} function from the \CRANpkg{gganimate} package. Otherwise, the \texttt{animation\_opts()} function will be added from the \CRANpkg{plotly} package.
 
 \hypertarget{example-usage}{%
 \subsection{Example usage}\label{example-usage}}
@@ -292,16 +338,16 @@ head(animbook$data, 10)
 #> # A tibble: 10 x 5
 #>    id     time qtile frame color
 #>    <fct> <int> <dbl> <dbl> <fct>
-#>  1 1      2020     5    21 X    
-#>  2 1      2023     5    22 X    
-#>  3 2      2020     5    31 X    
-#>  4 2      2023     5    32 X    
-#>  5 3      2020     5     6 X    
-#>  6 3      2023     5     7 X    
-#>  7 4      2020     5    27 X    
-#>  8 4      2023     5    28 X    
-#>  9 5      2020     5    20 X    
-#> 10 5      2023     5    21 X
+#>  1 1      2020     5    33 X    
+#>  2 1      2023     5    34 X    
+#>  3 2      2020     5     5 X    
+#>  4 2      2023     5     6 X    
+#>  5 3      2020     5    48 X    
+#>  6 3      2023     5    49 X    
+#>  7 4      2020     5    33 X    
+#>  8 4      2023     5    34 X    
+#>  9 5      2020     5     3 X    
+#> 10 5      2023     5     4 X
 \end{verbatim}
 
 \begin{verbatim}
@@ -314,7 +360,7 @@ str(animbook)
 #>   ..$ id   : Factor w/ 200 levels "1","2","3","4",..: 1 1 2 2 3 3 4 4 5 5 ...
 #>   ..$ time : int [1:400] 2020 2023 2020 2023 2020 2023 2020 2023 2020 2023 ...
 #>   ..$ qtile: num [1:400] 5 5 5 5 5 5 5 5 5 5 ...
-#>   ..$ frame: num [1:400] 21 22 31 32 6 7 27 28 20 21 ...
+#>   ..$ frame: num [1:400] 33 34 5 6 48 49 33 34 3 4 ...
 #>   ..$ color: Factor w/ 2 levels "X","Y": 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ settings:List of 7
 #>   ..$ gap           : num 0.1
@@ -342,9 +388,9 @@ p <- wallaby_plot(object = animbook,
 p
 \end{verbatim}
 
-\begin{center}\includegraphics[width=1\linewidth]{animbook-journal_files/figure-latex/unnamed-chunk-6-1} \end{center}
+\begin{center}\includegraphics[width=1\linewidth]{animbook-journal_files/figure-latex/unnamed-chunk-10-1} \end{center}
 
-Once the \texttt{ggplot} object is obtained, the \texttt{anim\_animate()} function can be used to transform it into a \texttt{gganimate} object. This then can be passed onto the \texttt{gganimate::animate()} function for rendering.
+Once the \texttt{ggplot} object is obtained, the \texttt{anim\_animate()} function can be used to transform it into a \texttt{gganimate} object. This then can be passed onto the \texttt{animate()} function from the \CRANpkg{gganimate} for rendering.
 
 \begin{verbatim}
 p2 <- anim_animate(p)
@@ -358,7 +404,7 @@ gganimate::animate(p2)
 
 }
 
-\caption{Animate visualization using example data.}\label{fig:catchange-figure}
+\caption{Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.}\label{fig:catchange-figure}
 \end{figure}
 
 This is an example of how the users can apply the three-step process in creating an animation plot using the \texttt{animbook} package.
@@ -371,11 +417,12 @@ This is an example of how the users can apply the three-step process in creating
 
 The accounting Osiris data that will be used in this section was collected from Bureau van Dijk ({``Osiris''} (n.d.)). This data set comprises 30,000 rows and 94 variables of information on listed and major unlisted/delisted companies worldwide. The only variables of interest from this data set are ID, year, country, and sales. A subset version of this data set, which only contained variables of interest from 2006 to 2018, is included in this package.
 
-As mentioned in the OECD report (McGowan, Andrews, and Millot (2017)), the United States has a faster metabolize rate relative to Japan company. An animation will be created using the \texttt{animbook} package to enhance communication with data.
-
-First, filter the countries to include only the United States and Japan. Then, prepare the Osiris data using the \texttt{anim\_prep} function with the first scaling, which is a ranking method. Next, use the \texttt{wallaby\_plot} function to create a \texttt{ggplot} object and add default settings for \texttt{gganimate} rendering.
+As mentioned in the OECD report (McGowan, Andrews, and Millot (2017)), the United States has a faster metabolize rate relative to Japan company. An animation will be created using the \texttt{animbook} package to enhance communication with data. First, filter the countries to include only the United States and Japan. Then, prepare the Osiris data using the \texttt{anim\_prep} function with the first scaling, which is a ranking method. Next, use the \texttt{wallaby\_plot} function to create a \texttt{ggplot} object and add default settings for \texttt{gganimate} rendering.
 
 \begin{verbatim}
+# library(animbook)
+# library(dplyr)
+
 data <- osiris |> 
   filter(country %in% c("US", "JP"))
 
@@ -401,11 +448,16 @@ p <- wallaby_plot(accounting,
                   width = 100,
                   total_point = 1000)
 
+kan_p <- kangaroo_plot(accounting)
+
 p2 <- anim_animate(p)
+kan_p2 <- anim_animate(kan_p)
 \end{verbatim}
 
 \begin{verbatim}
 gganimate::animate(p2)
+
+gganimate::animate(kan_p2)
 \end{verbatim}
 
 \begin{figure}
@@ -417,12 +469,21 @@ gganimate::animate(p2)
 \caption{The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.}\label{fig:osiris-figure}
 \end{figure}
 
-From the plot, a higher proportion of US companies have exited the market, confirming the OECD report (McGowan, Andrews, and Millot (2017)) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25\% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the top 25\% in 2006, or it could be that Japanese companies in the top 25\% did not delist.
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{figures/osiris} 
+
+}
+
+\caption{The animate visualization shows the movement of the companies between the groups from 2006 to 2018. In 2006, there were no Japanese companies in the Top 25\% group.}\label{fig:kan-osiris-figure}
+\end{figure}
+
+From the plot, a higher proportion of US companies have exited the market, confirming the OECD report (McGowan, Andrews, and Millot (2017)) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25\% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the Top 25\% in 2006, or it could be that Japanese companies who started in the Top 25\% in 2006 did not delist. Figure \ref{fig:kan-osiris-figure}, confirmed that there are non-Japanese companies that start at the Top 25\% in 2006.
 
 \hypertarget{voter-behavior}{%
 \subsection{Voter behavior}\label{voter-behavior}}
 
-The Australian Election Study data was collected from ADA Dataverse (McAllister et al. (2023)). The dataset included in the \texttt{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer the question, based on the 2016 Australian election results, how the top party performs in keeping the old voters for different genders.
+The Australian Election Study data was collected from ADA Dataverse (McAllister et al. (2023)). The dataset included in the \pkg{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer the question, based on the 2016 Australian election results, how the top party performs in keeping the old voters for different genders.
 
 \begin{verbatim}
 voter <- anim_prep_cat(data = aeles,
@@ -461,18 +522,18 @@ gganimate::animate(p2_voter)
 \caption{The animate visualization shows how does the top party perform in keeping the old voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.}\label{fig:voter-figure}
 \end{figure}
 
-From the animation, it is clear that individuals who identified their gender as `others' shifted their votes from the Liberal, the leading party in 2016, to the Greens party. These changes could be due to the Green Party's ``A FAIRER, MORE EQUAL COMMUNITY'' campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals. If the Liberal Party wishes to retain this demographic of voters, they may need to consider implementing a campaign focused on LGBTIQ+ issues.
+From Figure \ref{fig:voter-figure}, it is clear that individuals who identified their gender as `others' shifted their votes from the Liberal, the leading party in 2016, to the Greens party. These changes could be due to the Green Party's ``A FAIRER, MORE EQUAL COMMUNITY'' campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals. If the Liberal Party wishes to retain this demographic of voters, they may need to consider implementing a campaign focused on LGBTIQ+ issues.
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of \texttt{animbook}, the feature to have different speed for each observation have not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. The plotly rendering is also not yet been optimized for use. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (Badger et al. (2018)), to compare the demographics at a specific point in time. On top of that, the \texttt{cli} package (Csárdi (2023)) could be used for a more aesthetically pleasing command-line interface.
+Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of \pkg{animbook}, the feature to have different speeds for each observation has not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. The plotly rendering is also not yet been optimized for use. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (Badger et al. (2018)), to compare the demographics at a specific point in time. On top of that, the \CRANpkg{cli} package (Csárdi (2023)) could be used for a more aesthetically pleasing command-line interface.
 
 \hypertarget{acknowledgements}{%
 \section*{Acknowledgements}\label{acknowledgements}}
 \addcontentsline{toc}{section}{Acknowledgements}
 
-This paper is created using the \texttt{rjtools} packages (O'Hara-Wild et al. (2023)) and is based on the 0.0.0.9 version of the \texttt{animbook} package. This version is available on \href{https://github.com/KrisanatA/animbook}{GitHub}.
+This paper is created using the \CRANpkg{rjtools} packages (O'Hara-Wild et al. (2023)) and is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on \href{https://github.com/KrisanatA/animbook}{GitHub}.
 
 I also acknowledge the use of ChatGPT (\url{https://chat.openai.com/}) to paraphrase the sentence.
 
@@ -493,9 +554,6 @@ Caballero, Ricardo J., Takeo Hoshi, and Anil K. Kashyap. 2008. {``Zombie Lending
 
 \leavevmode\vadjust pre{\hypertarget{ref-race}{}}%
 Chetty, Raj, Nathaniel Hendren, Maggie Jones, and Sonya Porter. 2020. {``Race and Economic Opportunity in the United States: An Intergenerational Perspective*.''} \emph{The Quarterly Journal of Economics} 135 (May): 711--83. \url{https://doi.org/10.1093/qje/qjz042}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-relational}{}}%
-Codd, E. F. 1990. \emph{The Relational Model for Database Management: Version 2}. USA: Addison-Wesley Longman Publishing Co., Inc.
 
 \leavevmode\vadjust pre{\hypertarget{ref-cli}{}}%
 Csárdi, Gábor. 2023. \emph{Cli: Helpers for Developing Command Line Interfaces}. \url{https://CRAN.R-project.org/package=cli}.

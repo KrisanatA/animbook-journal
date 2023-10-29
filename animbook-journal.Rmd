@@ -42,7 +42,7 @@ The structure of this paper is as follows. The next section explains the animati
 
 # Explanation of the New York Times visualization {#NYTvis}
 
-```{r nyt, fig.cap="Screenshot of the New York Times animation, that is the motivation for this visualization package.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
+```{r nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package..", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"}
 knitr::include_graphics("figures/NYT.png")
 ```
 
@@ -57,17 +57,14 @@ The interactive chart featured in the New York Times article (Figure \@ref(fig:n
   
 # Data {#data}
 
-Before any visualizations can be performed, the users must first understand the data concept known as `tidy data` (@tidy-data). There are three fundamental key principles: each variable forms a column, each observation forms a row, and each type of observational unit forms a table. These three keys are Codd's third normal form (@relational), but phrase in the language of statistics. The tidy data format focuses on a single dataset instead of many connected datasets typically found in a relational database.
-
-```{r data-diagram, fig.cap="The animation expects data with an ID and a time variable, along with a numerical variable (raw form), which is possibly converted to categorical (categorized). The data can be provided in the raw or categorized form, and will be processed into the format needed for the animation where the categorical variable is treated as a quantile and an animation frame variable is created.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
+```{r data-diagram, fig.cap="The animation expects data with an ID and a time variable, along with a numerical variable (raw form), which is possibly converted to categorical (categorized). The data can be provided in the raw or categorized form and will be processed into the format needed for the animation, where the categorical variable is treated as a quantile and an animation frame variable is created.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/data-diagram.png")
 ```
-  
-  In the data structure, there are requirements that must be followed for reproducing the animation. The data must have at least ID and time variables, in addition to the measured variable which would usually be numeric, but may be categorical.  The ID variable indicates the individual which is followed over time, such as the company name. There may also be a grouping variable, such as country where the company is registered. <!--These form what we call a unique ID. Also, the values variable can be either a numerical or categorical variable. The type of this variable will determine the stage the data set is in. This format ensures that during the data pre-processing, the R function understands what needs to be done with the data.-->
-  
-  Figure \@ref(fig:data-diagram) illustrates the expected format of the data and variables created to prepare it for the animation. We start with the raw data structure. The values are presented in the numerical format, which we call the 'raw' form. <!--because, in the New York Times animation, it is expressed in the categorical format.--> In most cases, the measured variable will be numerical and require transformation. The second form is categorized data, which involves transforming numerical variable into categories, typically quantiles. 
-This transformation may not be necessary if it is already provided in the categorized format. The last form is animated data, where the frame is assigned to each unique ID.
-  
+
+In the data structure, there are requirements that must be followed for reproducing the animation. First, the data set needs to be in the `tidy data` format (@tidy-data). The data then must have at least ID and time variables, in addition to the measured variables, which would usually be numeric but can also be categorical as well. The ID variable indicates the individual, which is followed over time, such as the company name. There may also be a grouping variable, such as the country where the company is registered.
+
+  Figure \@ref(fig:data-diagram) illustrates the expected format of the data and variables created to prepare it for the animation. We start with the raw data structure. The values are presented in the numerical format, which we call the 'raw' form. In most cases, the measured variable will be numerical and require transformation. The second form is categorized data, which involves transforming numerical variables into categories, typically quantiles. This transformation may not be necessary if it is already provided in the categorized format. The last form is animated data, where the frame is assigned to each unique ID.
+
 
 # Animation tools {#animation}
 
@@ -75,50 +72,50 @@ This transformation may not be necessary if it is already provided in the catego
 knitr::include_graphics("figures/animation-diagram.png")
 ```
 
- A principle important for designing a useful animation is called persistence of vision (@animation-mechanic). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \@ref(fig:animation-diagram). 
+A principle important for designing a useful animation is called persistence of vision (@animation-mechanic). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \@ref(fig:animation-diagram).
 
- There are multiple ways to create an animation in the R environment (@r), including the packages \CRANpkg{gganimate} (@gganimate) and \CRANpkg{plotly} (@plotly). 
-
- The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (@ggplot2) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of `transition_*()` functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. The output from the `gganimate` can be rendered or saved in multiple formats. This includes `gifski_renderer()` from the \CRANpkg{gifski} package (@gifski) to save the animation in GIF format or `av_renderer()` from the `av` package (@av) to save it into a video file format.
-
- The `plotly` software is a graphing library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the \CRANpkg{plotly} package, which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, `ggplotly()`, or a standalone function, `plot_ly()`. The conversion is accomplished by taking the elements from the `ggplot` object and then redrawing them using the plotly.js.
+  There are multiple ways to create an animation in the R environment (@r), including the packages \CRANpkg{gganimate} (@gganimate) and \CRANpkg{plotly} (@plotly).
   
-```{r animated-diagram, fig.cap="The diagram shows how the frames were used in the animated plot.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
+  The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (@ggplot2) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of `transition_*()` functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. This includes `gifski_renderer()` from the \CRANpkg{gifski} package {@gifski} to save animation in GIF format or `av_renderer()` from the \CRANpkg{av} package {@av} to save it into a video file format.
+  
+  The `plotly` software is a graphic library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the \CRANpkg{plotly} package, which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, `ggplotly()`, or a standalone function, `plot_ly()`. The conversion is accomplished by taking the elements from the `ggplot` object and then redrawing them using the plotly.js.
+  
+```{r animated-diagram, fig.cap="The diagram shows how the frames were used in the animated plot. Frame one is depicted in blue, and frame two is represented in red. Each blue component is mapped exclusively to the Frame 1 plot, while all the second-frame elements are excluded, and vice versa.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/animated-diagram.png")
 ```
-  
+
   In the context of data, as shown in Figure \@ref(fig:animated-diagram), observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the \CRANpkg{gganimate} package, the interpolation is achieved using the \CRANpkg{tweenr} package (@tweenr), while in \CRANpkg{plotly}, it utilizes d3.interpolate (@d3js).
   
   Figure \@ref(fig:animated-diagram) demonstrates how the frame variables are applied in an animated plot. The frame variable within the animated data structure allows the animation function to determine the position of observations on the plot at any given frame.
   
   From @learner-control, it suggests that having control options for the animation can improve the efficiency of the learning process. Additionally, the length and speed of the animation should also be taken into consideration. According to @mayer-2010, the working memory, responsible for selecting and processing information from sensory memory, only holds a processed version of what was presented for generally less than thirty seconds.
   
-  In `gganimate`, the issue of integrating controls can be addressed by setting the `renderer` argument to be `av_renderer()`, which allows the animation output to be in MP4 format. This format provides users with controls for the animation when opened on media applications provided in their systems. As for adjusting the length and speed of the animation, the `nframes` and `fps` arguments can be utilized. The `nframes` dictates the number of frames to be rendered, while `fps` controls how many frames are displayed in one second. Using these two parameters, the duration of the animation in seconds can be calculated as follows: length = nframes/fps.
+  In \CRANpkg{gganimate}, the issue of integrating controls can be addressed by setting the `renderer` argument to be `av_renderer()`, which allows the animation output to be in media applications provided in their systems. As for adjusting the length and speed of the animation, the `nframes` and `fps` arguments can be utilized. The `nframes` dictates the number of frames to be rendered, while `fps` controls how many frames are displayed in one second. Using these two parameters, the duration of the animation in seconds can be calculated as follows: length = nframes/fps.
   
-  In the case of `plotly`, control integration is already implemented by default. The `frame` and `transition` arguments within the `animation_opts()` function can be specified to set the length and speed of the animation.
+  In the case of \CRANpkg{plotly}, control integration is already implemented by default. The `frame` and `transition` arguments within the `animation_opts()` function can be specified to set the length and speed of the animation.
   
-  
+
 # Visualization design {#design}
 
-The animated visualization can be an effective communication tool (@Mayer_Moreno_2002; @effective-trend). It helps with communicating complex data, enhancing the narrative, and keeping it engaged for the audience. According to @Mayer_Moreno_2002, animation can improve learning, especially when the goal is to promote deep understanding. 
+The animated visualization can be an effective communication tool (@Mayer_Moreno_2002; @effective-trend). It helps with communicating complex data, enhancing the narrative, and keeping it engaged for the audience. According to @Mayer_Moreno_2002, animation can improve learning, especially when the goal is to promote deep understanding.
 
-  According to @mayer_2005, designing multimedia requires the designer to understand how people learn. One of the principles in @mayer_2005, Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
+  @mayer_2005 states that designing multimedia requires the designer to understand how people learn. One of the principles in @mayer_2005, Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
   
-  From the New York Times animation, multiple information are shown in the visualization. It includes points in motion, distribution at the end, and proportional counters. However, this could lead to information overload (@mayer_2005). Therefore, the distribution at the end and proportional counters are excluded. Instead, the new element has been integrated, proportional shaded areas. It displays the proportion of observation within each group.
-  
-```{r proportional-shade, fig.show="hold", out.width="50%", fig.cap="The plot shows the difference between the sigmoid and sine curves."}
+```{r proportional-shade, fig.show="hold", out.width="50%", fig.cap="The plot shows the difference between the sigmoid (shown in the left figure) and the sine curve (shown in the right figure). In the sigmoid, as the curve progresses, it becomes narrower, resulting in a less accurate representation of proportions compared to the sine curve."}
 knitr::include_graphics("figures/sigmoid-shade.png")
 knitr::include_graphics("figures/sine-shade.png")
 ```
-  
-  As mentioned in the Animation tools section, the paths of observations are getting interpolated. These functions only generate a linear path between points. However, linear paths may not be suitable for creating proportional shading, as they do not accurately represent the proportions. Non-linear curves like the sigmoid curves should be considered instead, as they provide a better display of proportions. These curves are commonly used in multiple Sankey diagrams, but there is a limitation on this shape. The issue is shown in Figure \@ref(fig:proportional-shade). While it does accurately represent the proportion at the beginning and end, as it curves, the shape gets narrower, leading to less accurate proportion representation (@Shaffer_2019).
 
+  In the animation, the proportional shaded area has been incorporated to facilitate a quick grasp of the proportion information. It displays the proportion of observation within each group. The design also needs to account for situations where the visualization lacks an adequate number of data points. In such cases, it can be challenging to visually discern the movement pattern of the subgroup, requiring the implementation of observation interpolation.
   
+  As mentioned in the Animation tools section, the paths of observations are getting interpolated. These functions only generate a linear path between points. However, linear paths may not be suitable for creating proportional shading, as they do not accurately represent the proportions. Non-linear curves like the sigmoid curves should be considered instead, as they provide a better display of proportions. These curves are commonly used in multiple Sankey diagrams, but there is a limitation on this shape. The issue is shown in Figure \@ref(fig:proportional-shade). While it does accurately represent the proportion at the beginning and end, as it curves, the shape gets narrower, leading to less accurate proportion representation (@Shaffer_2019)
+
+
 # Software {#software}
 
 ## Installation
 
-You can install the development version of animbook from [GitHub](https://github.com/KrisanatA/animbook) with:
+The development version of \pkg{animbook} can be installed from [GitHub](https://github.com/KrisanatA/animbook) with:
 
 ``` r
 # install.packages("devtools")
@@ -127,11 +124,12 @@ devtools::install_github("KrisanatA/animbook")
 
 ## Overview of functions
 
-In designing the package for reproducing the New York Times animated plot, the package ended up with a three-step process in recreating the animation. The first step is to turn the data into the right format for the plot function. The next stage is to create a ggplot object, which can then be inputted into the animation function. The last step is adding the animation settings to the ggplot object so the user can animate the plot using the `gganimate::animate()` function. The reason for this three-step process is that it allows the user who does not have a lot of experience to reproduce the animation while keeping the customization for an experienced user.
+In designing the \pkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data to the animated data structure as seen in \@ref(fig:data-diagram). The second stage is creating a `ggplot` object, which can be subsequently passed into the animation function. The final step involves transforming the `ggplot` to a `gganimate` object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
+
 
 ### Data preprocessing
 
-From Figure \@ref(fig:data-diagram), there is a need to map numerical value to a category. One way to handle this is by ranking the sales and grouping the rankings into quantiles. In some cases, this may not be the best option. When the observation is moved up by quantile, one is bound to move down. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different demographics, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data. 
+From Figure \@ref(fig:data-diagram), there is a need to map numerical value to a category. One way to handle this is by ranking the sales and grouping the rankings into quantiles. In some cases, this may not be the best option. When the observation is moved up by quantile, one is bound to move down. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different groups, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data.
 
 ```{r}
 original <- dbl_change |> 
@@ -165,9 +163,7 @@ rank_group_data <- rank_group$data |>
          rank_group = qtile) |> 
   select(-c(frame, color)) |> 
   arrange(gp, id)
-```
 
-```{r}
 absolute_group <- anim_prep(dbl_change, id, values, time, color = gp, group_scaling = gp, scaling = "absolute") 
 
 absolute_group_data <- absolute_group$data |> 
@@ -176,7 +172,7 @@ absolute_group_data <- absolute_group$data |>
          absolute_group = qtile) |> 
   select(-c(frame, color)) |> 
   arrange(gp, id)
-``` 
+```
 
 ```{r}
 original |> 
@@ -191,87 +187,154 @@ original |>
   2. Ranking by year within a group. (rank_group)
   3. Fix bins relative to absolute values by year. (absolute)
   4. Fix bins relative to absolute values by year within a group. (absolute_group)
+  
+  For the first and second scaling methods, group splitting is executed using the `quantiles()` and `cut()` functions. The `quantile()` function from the \CRANpkg{stats} package (@stats) takes a numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the `quantile()` function is then used as the `breaks` argument for the `cut()` function that is part of the base R packages (@r).
 
+  In contrast, the third and fourth scaling methods calculate the quantile based on the absolute values scales. To avoid varying values scales among groups, the variables are first normalized to a range between 0 and 1. The default approach then breaks the group equally using the `seq()` function. The `seq()` function takes input values from 0 to 1 and increments by equal steps depending on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so.
+  
+  These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning the frame to each individual observation, ensuring that each ID does not contain repeat frame values. It lets the \CRANpkg{gganimate} or \CRANpkg{plotly} perceive where the observation would be on the plot at a given frame, as seen in Figure \@ref(fig:animated-diagram).
+  
+  The frame variable is assigned by sorting the data based on the ID and time using the `arrange()` function, followed by applying the `group_by()` function on the ID, allowing the `row_number()` function to be performed within each group. The functions mentioned in this paragraph are from the \CRANpkg{dplyr} package (@dplyr).
+  
+  All of the pre-processing steps mentioned above are completed using the `anim_prep()` or `anim_prep_cat()` function, depending on the stages of the data structure. The `anim_prep()` function is used for raw data format, while the `anim_prep_cat()` function is for categorized data format. There are additional arguments that allow users for more customization.
+  
+```{r}
+argument <- c("data", "id", "values", "time", "ngroup", "breaks", "group_scaling",
+               "scaling", "order", "label", "color", "time_dependent", "runif_min",
+               "runif_max")
 
-  For the first and second scaling methods, group splitting is executed using the `quantiles()` and `cut()` functions. The `quantile` function from the `stats` R package (@stats) takes a numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the `quantile` function is then used as the `breaks` argument for the cut function that is part of the base R packages.
+description <- c("A data frame containing the data to be prepared for visualization.",
+                 "The column name that represents the unique identifier variable.",
+                 "The column name that contains the numeric values to be visualized.",
+                 "The column name represents the time variable.",
+                 "The number of groups or categories to create for scaling values.",
+                 "A vector of breaks for creating bins.",
+                 "The column name that represents the grouping variable.",
+                 "The scaling method to be used; \"rank\" or \"absolute.\"",
+                 "A vector of order for sorting the category values.",
+                 "A vector of labels to be used for the y-axis in the visualization.",
+                 "The column name to be used in ggplot2::aes() for the plot function.",
+                 "Logical. Should the visualization be time-dependent? Default is TRUE.",
+                 "The minimum value for random addition to frame numbers.",
+                 "The maximum value for random addition to frame numbers.")
 
-  In contrast, the third and fourth scaling methods calculate the quantile based on the absolute values scales. The default approach is to break the group equally using the `seq()` function. The `seq()` function takes input values from the minimum and maximum values and increments by equal steps depending on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so.
+argument_table <- tibble::tibble(Argument = argument,
+                         Description = description)
+```
   
-  These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning the frame to each individual observation, ensuring that each ID does not contain repeat frame values. It lets the `gganimate` or `plotly` to perceive where the observation would be on the plot at a given frame as seen in the \@ref(fig:animated-diagram).
+```{r tbl-required}
+argument_table |> 
+  filter(argument %in% c("data", "id", "values", "time")) |> 
+  knitr::kable(caption = "The required argument for the prep function.")
+```
   
-  The frame variable is assigned by sorting the data based on the ID and time using the `arrange()` function, followed by applying the `group_by()` function on the ID, allowing the `row_number()` function to be performed within each group. The functions mentioned in this paragraph are from the `dplyr` packages (@dplyr).
-  
-  All of the pre-processing steps mentioned above are completed using the `anim_prep()` or `anim_prep_cat()` function, depending on the stages of the data structure. The `anim_prep()` function is used for raw data format, while the `anim_prep_cat()` function is for categorized data format. There are additional arguments that facilitate the users for more customization.
-  
-  In the `anim_prep()` and `anim_prep_cat()`, there are required arguments that need to be specified. The lists are as follows:
-  
-  - data: A data frame containing the data to be prepared for visualization.
-  - id: The column name that represents the unique identifier variable.
-  - values: The column name that contains the numeric values to be visualized.
-  - time: The column name represents the time variable.
-  
-  As shown previously, there are a total of four different scaling for the `anim_prep()` function. Both the use can customization of these scaling can be set using the following arguments:
-  
-  - ngroup:	The number of groups or categories to create for scaling values.
-  - breaks: A vector of breaks for creating bins.
-  - group_scaling: The column name that represents the grouping variable.
-  - scaling: The scaling method to be used; "rank" or "absolute."
-  
-  For the `anim_prep_cat()` function, the arguments that allowed the user to order the category are by using this argument:
-  
-  - order: A vector of order for sorting the category values.
-  
-  Then, for further customization regarding how the final visualization looks. The following arguments can be adjusted:
-  
-  - label: A vector of labels to be used for the y-axis in the visualization.
-  - color: The column name to be used in ggplot2::aes() for the plot function.
-  - time_dependent: Logical. Should the visualization be time-dependent? Default is TRUE.
-  - runif_min: The minimum value for random addition to frame numbers.
-  - runif_max: The maximum value for random addition to frame numbers.
+```{r tbl-animprep}
+argument_table |> 
+  filter(argument %in% c("ngroup", "breaks", "group_scaling", "scaline")) |> 
+  knitr::kable(caption = "The argument in the anim\\_prep for customized the data scaling.")
+```
 
+```{r tbl-animprepcat}
+argument_table |> 
+  filter(argument %in% c("order")) |> 
+  knitr::kable(caption = "The argument in the anim\\_prep\\_cat for customized the order of the category.")
+```
+
+```{r tbl-visual}
+argument_table |> 
+  filter(argument %in% c("label", "color", "time_dependent", 
+                         "runif_min", "runif_max")) |> 
+  knitr::kable(caption = "The additional argument for customizing the aesthetics of the visualization.")
+```
+
+  
+  In the `anim_prep()` and `anim_prep_cat()`, there are required arguments that need to be specified. The lists are in the Table \@ref(tab:tbl-required).
+  
+  As shown previously, there are a total of four different scaling for the `anim_prep()` function. Both the use can customization of these scaling can be set using the following arguments in Table \@ref(tab:tbl-animprep).
+  
+  For the `anim_prep_cat()` function, the arguments that allowed the user to order the category are by using this argument in Table \@ref(tab:tbl-animprepcat).
+  
+  Then, for further customization regarding how the final visualization looks. The following arguments in Table \@ref(tab:tbl-visual) can be adjusted.
+  
 
 ### Plotting function
 
-Once the data is prepared. The next step is to create the `ggplot` object as a basis for the animation. There are three plots available in this package. Two of the plots could be used for the animation, and another plot is used as a static visualization. All of the plots have an internal function that converts the standard data format into the required structure for each plotting function. 
+Once the data is prepared. The next step is to create the `ggplot` object as a basis for the animation. There are three plots available in this package. Two of the plots could be used for the animation, and another plot is used as a static visualization. All of the plots have an internal function that converts the standard data format into the required structure for each plotting function.
 
-- `kangaroo_plot()`: plots the observation's movement over time.
-- `wallaby_plot()`: the subset plot of the `kangaroo_plot` with the time limit to only start and end.
-- `funnel_web_plot()`: the faceted static plot by time variable.
-
+  - `kangaroo_plot()`: plots the observation's movement over time.
+  - `wallaby_plot()`: the subset plot of the `kangaroo_plot` with the time limit to only start and end.
+  - `funnel_web_plot()`: the faceted static plot by time variable.
 
   The main focus of this paper will be on the `wallaby_plot()`, which draws inspiration from the New York Times animation and combines the knowledge gained from the previous sections in creating the visualization.
 
-  The `wallaby_data()` function is responsible for performing data manipulation and formatting tasks on the original object. It includes creating additional data components for labeling and shading. This function also responds by interpolating the non-linear path. It performs this task by mapping the `sine()` function provided in this package to each observation using the `map()` function from the `purrr` package (@purrr). The frame is recalculated using the same method mentioned in the data preprocessing section. The `sankey_shade()` function is called to generate the proportional shaded data.
-
+  The `wallaby_data()` function is responsible for performing data manipulation and formatting tasks on the original object. It includes creating additional data components for labeling and shading. This function also responds by interpolating the non-linear path. It performs this task by mapping the `sine()` function provided in this package to each observation using the `map()` function from the \CRANpkg{purrr} package (@purrr). The frame is recalculated using the same method mentioned in the data preprocessing section. The `sankey_shade()` function is called to generate the proportional shaded data.
   
-```{r shade-algorithm, fig.show="hold", out.width="50%", fig.cap="The plot shows how does the algorithm work."}
+```{r shade-algorithm, fig.show="hold", out.width="50%", fig.cap="The plot shows how the algorithm for the sankey\\_shade() function works. The left figure represents the initial step of the algorithm, which calculates all the corner points. The right figure demonstrates the subsequent step, where points in-between the left and right are interpolated using the sine() function."}
 knitr::include_graphics("figures/sankey-shade-1.png")
 knitr::include_graphics("figures/sankey-shade-2.png")
 ```
   
-  The algorithm behind the `sankey_shade()` function is illustrated in Figure \@ref(fig:shade-algorithm). It started by calculating the corner points for all of the shaded areas. Then, use the `sine()` function to interpolate the point between the left and right. 
+  The algorithm behind the `sankey_shade()` function for generating the proportional shaded data is illustrated in Figure \@ref(fig:shade-algorithm). It started by calculating the corner points for all of the shaded areas. Then, use the `sine()` function to interpolate the point between the left and right.
   
-  Now that the data are in the right format for the wallaby's plot, the `geom_point()` function is used for plotting the observations, `geom_polygon()` is used for creating the proportional shaded areas, and `geom_text()` is used for creating labels. These three functions are from the `ggplot2` package (@ggplot2). During this process, the aesthetics mapping will be different depending on the rendering tool to be used, which can be either `gganimate` or `plotly`. The difference between the two rendering tools is that for `plotly`, the `ids` and `frame` arguments need to be specified during the creation of the `ggplot` object.
+  Now that the data are in the right format for the wallaby's plot, the `geom_point()` function is used for plotting the observations, `geom_polygon()` is used for creating the proportional shaded areas, and `geom_text()` is used for creating labels. These three functions are from the \CRANpkg{ggplot2} package. During this process, the aesthetics mapping will be different depending on the rendering tool to be used, which can be either `gganimate` or `plotly`. The difference between the two rendering tools is that for `plotly`, the `ids` and `frame` arguments need to be specified during the creation of the `ggplot` object.
   
-  The arguments for Wallaby's plot are as follows.
-  - object: The animbook object returned from the prep function.
-  - group_palette: The vector of the palette used by the function to supply the color to each group.
-  - shade_palette: The vector of the palette used by the function to supply the color to the shaded area.
-  - rendering: The choice of method used to create and display the plot, either gganimate or plotly.
-  - subset: A character string specifying the variable used for subsetting the data. The "top" and "bottom" strings can also be used in this argument.
-  - relation: The choice of relationship for the values to display on the plot, either "one_many." or "many_one."
-  - total_point: The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.
-  - height: The proportion of the area occupied by the observations in the shaded areas.
-  - width: The distance between the first and last observation in the animation.
-  - size: The point size.
-  - alpha: The opacity of the proportional shaded areas.
-  
+```{r, eval=knitr::is_html_output()}
+argument2 <- c("object", "group_palette", "shade_palette", "rendering",
+               "subset", "relation", "total_point", "height", "width", "size",
+               "alpha")
+
+description2 <- c("The animbook object returned from the prep function.",
+                  "The vector of the palette used by the function to supply the color to each group.",
+                  "The vector of the palette used by the function to supply the color to the shaded area.",
+                  "The choice of method used to create and display the plot, either gganimate or plotly.",
+                  "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument.",
+                  "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one.\"",
+                  "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
+                  "The proportion of the area occupied by the observations in the shaded areas.",
+                  "The distance between the first and last observation in the animation.",
+                  "The point size.",
+                  "The opacity of the proportional shaded areas.")
+
+argument_table2 <- tibble::tibble(Argument = argument2,
+                                  Description = description2)
+```
+
+```{r, eval=knitr::is_html_output()}
+argument_table2 |> 
+  knitr::kable(caption = "The arguments for the wallaby\\_plot function.")
+```
+
+```{r, eval=knitr::is_latex_output()}
+argument2 <- c("object", "group_palette", "shade_palette", "rendering",
+               "subset", "relation", "total_point", "height", "width", "size",
+               "alpha")
+
+description2 <- c("The animbook object returned from the prep function.",
+                  "The vector of the palette used by the function to supply the color to each group.",
+                  "The vector of the palette used by the function to supply the color to the shaded area.",
+                  "The choice of method used to create and display the plot, either gganimate or plotly.",
+                  "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument.",
+                  "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one.\"",
+                  "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
+                  "The proportion of the area occupied by the observations in the shaded areas.",
+                  "The distance between the first and last observation in the animation.",
+                  "The point size.",
+                  "The opacity of the proportional shaded areas.")
+
+argument_table2 <- tibble::tibble(Argument = argument2,
+                                  Description = description2)
+```
+
+```{r, eval=knitr::is_latex_output()}
+argument_table2 |> 
+  kableExtra::kable(caption = "The arguments for the wallaby\\_plot function.", format = "latex") |> 
+  kableExtra::column_spec(2, width = "30em")
+```
+
 
 ### Animating function
 
-It is necessary to save the plot as a `ggplot` object before passing it to the final function, `anim_animate()`, to animate. This function will automatically detect which rendering method was specified in the previous steps and add the minimum requirement functions accordingly. By default, if the user specifies the rendering as `gganimate`, then it will add the `transition_time()` function from the `gganimate` package (@gganimate). Otherwise, the `animation_opts()` function will be added from the `plotly` package (@plotly).
-
-
+It is necessary to save the plot as a `ggplot` object before passing it to the final function, `anim_animate()`, to animate. This function will automatically detect which rendering method was specified in the previous steps and add the minimum requirement functions accordingly. By default, if the user specifies the rendering as `gganimate`, then it will add the `transition_time()` function from the \CRANpkg{gganimate} package. Otherwise, the `animation_opts()` function will be added from the \CRANpkg{plotly} package.
 
 
 ## Example usage
@@ -279,7 +342,7 @@ It is necessary to save the plot as a `ggplot` object before passing it to the f
 In this section, the package usage will be demonstrated using the `cat_change` dataset included in this package. This dataset is simulated data that has changed from category A to E between two time points. Since this data is already in the categorized data structure, the `anim_prep_cat()` function is utilized.
 
   The output produced from this package is referred to as the `animbook` object. This contained a list of data and settings that hold prepared data for visualization, along with a list of settings used in the plot function.
-
+  
 ```{r, echo=TRUE}
 animbook <- anim_prep_cat(cat_change, 
                           id = id, 
@@ -307,8 +370,8 @@ p <- wallaby_plot(object = animbook,
 p
 ```
   
-  Once the `ggplot` object is obtained, the `anim_animate()` function can be used to transform it into a `gganimate` object. This then can be passed onto the `gganimate::animate()` function for rendering.
-
+  Once the `ggplot` object is obtained, the `anim_animate()` function can be used to transform it into a `gganimate` object. This then can be passed onto the `animate()` function from the \CRANpkg{gganimate} for rendering.
+  
 ```{r, eval=FALSE}
 p2 <- anim_animate(p)
 
@@ -321,30 +384,29 @@ p2 <- anim_animate(p)
 
 gganimate::animate(p2)
 ```
-
-```{r catchange-figure, fig.cap = "Animate visualization using example data.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r catchange-figure, fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-example.png")
 ```
 
-
-```{r catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data.", eval=knitr::is_html_output()}
+```{r catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/catchange.gif")
 ```
 
   This is an example of how the users can apply the three-step process in creating an animation plot using the `animbook` package. 
-
-
+  
+  
 # Application
 
 ## Accounting database: osiris
 
 The accounting Osiris data that will be used in this section was collected from Bureau van Dijk (@bvd). This data set comprises 30,000 rows and 94 variables of information on listed and major unlisted/delisted companies worldwide. The only variables of interest from this data set are ID, year, country, and sales. A subset version of this data set, which only contained variables of interest from 2006 to 2018, is included in this package.
 
-  As mentioned in the OECD report (@oecd_report), the United States has a faster metabolize rate relative to Japan company. An animation will be created using the `animbook` package to enhance communication with data.
-
-  First, filter the countries to include only the United States and Japan. Then, prepare the Osiris data using the `anim_prep` function with the first scaling, which is a ranking method. Next, use the `wallaby_plot` function to create a `ggplot` object and add default settings for `gganimate` rendering.
-
+  As mentioned in the OECD report (@oecd_report), the United States has a faster metabolize rate relative to Japan company. An animation will be created using the `animbook` package to enhance communication with data. First, filter the countries to include only the United States and Japan. Then, prepare the Osiris data using the `anim_prep` function with the first scaling, which is a ranking method. Next, use the `wallaby_plot` function to create a `ggplot` object and add default settings for `gganimate` rendering.
+  
 ```{r, echo=TRUE}
+# library(animbook)
+# library(dplyr)
+
 data <- osiris |> 
   filter(country %in% c("US", "JP"))
 
@@ -370,33 +432,50 @@ p <- wallaby_plot(accounting,
                   width = 100,
                   total_point = 1000)
 
-p2 <- anim_animate(p)
-```
+kan_p <- kangaroo_plot(accounting)
 
+p2 <- anim_animate(p)
+kan_p2 <- anim_animate(kan_p)
+```
+  
 ```{r, eval=FALSE}
 gganimate::anim_save("figures/exit.gif", p2, height = 8, fps = 30,
+                     nframes = 400, width = 9, units = "in", res = 150)
+
+gganimate::anim_save("figures/kan-osiris.gif", kan_p2, height = 8, fps = 10,
                      nframes = 400, width = 9, units = "in", res = 150)
 ```
 
 ``` r
 gganimate::animate(p2)
+
+gganimate::animate(kan_p2)
 ```
 
 ```{r osiris-figure, fig.cap = "The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-exit.png")
 ```
 
+
 ```{r osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/exit.gif")
 ```
 
-From the plot, a higher proportion of US companies have exited the market, confirming the OECD report (@oecd_report) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the top 25% in 2006, or it could be that Japanese companies in the top 25% did not delist.
+```{r kan-osiris-figure, fig.cap = "The animate visualization shows the movement of the companies between the groups from 2006 to 2018. In 2006, there were no Japanese companies in the Top 25\\% group.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+knitr::include_graphics("figures/osiris.png")
+```
 
+```{r kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the movement of the companies between the groups from 2006 to 2018. In 2006, there were no Japanese companies in the Top 25% group.", eval=knitr::is_html_output()}
+knitr::include_graphics("figures/kan-osiris.gif")
+```
+
+  From the plot, a higher proportion of US companies have exited the market, confirming the OECD report (@oecd_report) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the Top 25% in 2006, or it could be that Japanese companies who started in the Top 25% in 2006 did not delist. Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`, confirmed that there are non-Japanese companies that start at the Top 25% in 2006.
+  
 
 ## Voter behavior
 
-The Australian Election Study data was collected from ADA Dataverse (@aeles). The dataset included in the `animbook` package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer the question, based on the 2016 Australian election results, how the top party performs in keeping the old voters for different genders.
-
+The Australian Election Study data was collected from ADA Dataverse (@aeles). The dataset included in the \pkg{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer the question, based on the 2016 Australian election results, how the top party performs in keeping the old voters for different genders.
+  
 ```{r, echo=TRUE}
 voter <- anim_prep_cat(data = aeles,
                        id = id,
@@ -438,15 +517,17 @@ knitr::include_graphics("figures/animation-voter.png")
 knitr::include_graphics("figures/voter.gif")
 ```
 
-From the animation, it is clear that individuals who identified their gender as 'others' shifted their votes from the Liberal, the leading party in 2016, to the Greens party. These changes could be due to the Green Party's "A FAIRER, MORE EQUAL COMMUNITY" campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals. If the Liberal Party wishes to retain this demographic of voters, they may need to consider implementing a campaign focused on LGBTIQ+ issues.
-
-
+From Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:voter-figure}','\\@ref(fig:voter-gif)'))`, it is clear that individuals who identified their gender as 'others' shifted their votes from the Liberal, the leading party in 2016, to the Greens party. These changes could be due to the Green Party's "A FAIRER, MORE EQUAL COMMUNITY" campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals. If the Liberal Party wishes to retain this demographic of voters, they may need to consider implementing a campaign focused on LGBTIQ+ issues.  
+  
+  
 # Summary
 
-Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of `animbook`, the feature to have different speed for each observation have not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. The plotly rendering is also not yet been optimized for use. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (@the_new_york_time), to compare the demographics at a specific point in time. On top of that, the `cli` package (@cli) could be used for a more aesthetically pleasing command-line interface. 
+Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of \pkg{animbook}, the feature to have different speeds for each observation has not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. The plotly rendering is also not yet been optimized for use. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (@the_new_york_time), to compare the demographics at a specific point in time. On top of that, the \CRANpkg{cli} package (@cli) could be used for a more aesthetically pleasing command-line interface.
+
 
 # Acknowledgements {-}
 
-This paper is created using the `rjtools` packages (@rjtools) and is based on the 0.0.0.9 version of the `animbook` package. This version is available on [GitHub](https://github.com/KrisanatA/animbook).
+This paper is created using the \CRANpkg{rjtools} packages (@rjtools) and is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on [GitHub](https://github.com/KrisanatA/animbook).
 
 I also acknowledge the use of ChatGPT (https://chat.openai.com/) to paraphrase the sentence.
+  

@@ -10,23 +10,23 @@ library(animbook)
 library(tidyverse)
 
 
-## ----nyt, fig.cap="Screenshot of the New York Times animation, that is the motivation for this visualization package.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+## ----nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package..", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
 knitr::include_graphics("figures/NYT.png")
 
 
-## ----data-diagram, fig.cap="The diagram shows what are the expected data forms.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+## ----data-diagram, fig.cap="The animation expects data with an ID and a time variable, along with a numerical variable (raw form), which is possibly converted to categorical (categorized). The data can be provided in the raw or categorized form and will be processed into the format needed for the animation, where the categorical variable is treated as a quantile and an animation frame variable is created.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"----
 knitr::include_graphics("figures/data-diagram.png")
 
 
-## ----animation-diagram, fig.cap="The diagram shows how the animation is done using the successive pictures.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+## ----animation-diagram, fig.cap="The diagram shows how the animation is done using the successive pictures. When small changes are seen in quick succession, it will appear as if the objects are in motion.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"----
 knitr::include_graphics("figures/animation-diagram.png")
 
 
-## ----animated-diagram, fig.cap="The diagram shows how the frames were used in the animated plot.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+## ----animated-diagram, fig.cap="The diagram shows how the frames were used in the animated plot. Frame one is depicted in blue, and frame two is represented in red. Each blue component is mapped exclusively to the Frame 1 plot, while all the second-frame elements are excluded, and vice versa.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"----
 knitr::include_graphics("figures/animated-diagram.png")
 
 
-## ----proportional-shade, fig.show="hold", out.width="50%", fig.cap="The plot shows the difference between the sigmoid and sine curves."----
+## ----proportional-shade, fig.show="hold", out.width="50%", fig.cap="The plot shows the difference between the sigmoid (shown in the left figure) and the sine curve (shown in the right figure). In the sigmoid, as the curve progresses, it becomes narrower, resulting in a less accurate representation of proportions compared to the sine curve."----
 knitr::include_graphics("figures/sigmoid-shade.png")
 knitr::include_graphics("figures/sine-shade.png")
 
@@ -64,8 +64,6 @@ rank_group_data <- rank_group$data |>
   select(-c(frame, color)) |> 
   arrange(gp, id)
 
-
-## -----------------------------------------------------------------------------
 absolute_group <- anim_prep(dbl_change, id, values, time, color = gp, group_scaling = gp, scaling = "absolute") 
 
 absolute_group_data <- absolute_group$data |> 
@@ -85,9 +83,111 @@ original |>
   reframe(id, time, gp, values, rank, rank_group, absolute, absolute_group)
 
 
-## ----shade-algorithm, fig.show="hold", out.width="50%", fig.cap="The plot shows how does the algorithm work."----
+## -----------------------------------------------------------------------------
+argument <- c("data", "id", "values", "time", "ngroup", "breaks", "group_scaling",
+               "scaling", "order", "label", "color", "time_dependent", "runif_min",
+               "runif_max")
+
+description <- c("A data frame containing the data to be prepared for visualization.",
+                 "The column name that represents the unique identifier variable.",
+                 "The column name that contains the numeric values to be visualized.",
+                 "The column name represents the time variable.",
+                 "The number of groups or categories to create for scaling values.",
+                 "A vector of breaks for creating bins.",
+                 "The column name that represents the grouping variable.",
+                 "The scaling method to be used; \"rank\" or \"absolute.\"",
+                 "A vector of order for sorting the category values.",
+                 "A vector of labels to be used for the y-axis in the visualization.",
+                 "The column name to be used in ggplot2::aes() for the plot function.",
+                 "Logical. Should the visualization be time-dependent? Default is TRUE.",
+                 "The minimum value for random addition to frame numbers.",
+                 "The maximum value for random addition to frame numbers.")
+
+argument_table <- tibble::tibble(Argument = argument,
+                         Description = description)
+
+
+## ----tbl-required-------------------------------------------------------------
+argument_table |> 
+  filter(argument %in% c("data", "id", "values", "time")) |> 
+  knitr::kable(caption = "The required argument for the prep function.")
+
+
+## ----tbl-animprep-------------------------------------------------------------
+argument_table |> 
+  filter(argument %in% c("ngroup", "breaks", "group_scaling", "scaline")) |> 
+  knitr::kable(caption = "The argument in the anim\\_prep for customized the data scaling.")
+
+
+## ----tbl-animprepcat----------------------------------------------------------
+argument_table |> 
+  filter(argument %in% c("order")) |> 
+  knitr::kable(caption = "The argument in the anim\\_prep\\_cat for customized the order of the category.")
+
+
+## ----tbl-visual---------------------------------------------------------------
+argument_table |> 
+  filter(argument %in% c("label", "color", "time_dependent", 
+                         "runif_min", "runif_max")) |> 
+  knitr::kable(caption = "The additional argument for customizing the aesthetics of the visualization.")
+
+
+## ----shade-algorithm, fig.show="hold", out.width="50%", fig.cap="The plot shows how the algorithm for the sankey\\_shade() function works. The left figure represents the initial step of the algorithm, which calculates all the corner points. The right figure demonstrates the subsequent step, where points in-between the left and right are interpolated using the sine() function."----
 knitr::include_graphics("figures/sankey-shade-1.png")
 knitr::include_graphics("figures/sankey-shade-2.png")
+
+
+## ----eval=knitr::is_html_output()---------------------------------------------
+#> argument2 <- c("object", "group_palette", "shade_palette", "rendering",
+#>                "subset", "relation", "total_point", "height", "width", "size",
+#>                "alpha")
+#> 
+#> description2 <- c("The animbook object returned from the prep function.",
+#>                   "The vector of the palette used by the function to supply the color to each group.",
+#>                   "The vector of the palette used by the function to supply the color to the shaded area.",
+#>                   "The choice of method used to create and display the plot, either gganimate or plotly.",
+#>                   "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument.",
+#>                   "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one.\"",
+#>                   "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
+#>                   "The proportion of the area occupied by the observations in the shaded areas.",
+#>                   "The distance between the first and last observation in the animation.",
+#>                   "The point size.",
+#>                   "The opacity of the proportional shaded areas.")
+#> 
+#> argument_table2 <- tibble::tibble(Argument = argument2,
+#>                                   Description = description2)
+
+
+## ----eval=knitr::is_html_output()---------------------------------------------
+#> argument_table2 |>
+#>   knitr::kable(caption = "The arguments for the wallaby\\_plot function.")
+
+
+## ----eval=knitr::is_latex_output()--------------------------------------------
+argument2 <- c("object", "group_palette", "shade_palette", "rendering",
+               "subset", "relation", "total_point", "height", "width", "size",
+               "alpha")
+
+description2 <- c("The animbook object returned from the prep function.",
+                  "The vector of the palette used by the function to supply the color to each group.",
+                  "The vector of the palette used by the function to supply the color to the shaded area.",
+                  "The choice of method used to create and display the plot, either gganimate or plotly.",
+                  "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument.",
+                  "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one.\"",
+                  "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
+                  "The proportion of the area occupied by the observations in the shaded areas.",
+                  "The distance between the first and last observation in the animation.",
+                  "The point size.",
+                  "The opacity of the proportional shaded areas.")
+
+argument_table2 <- tibble::tibble(Argument = argument2,
+                                  Description = description2)
+
+
+## ----eval=knitr::is_latex_output()--------------------------------------------
+argument_table2 |> 
+  kableExtra::kable(caption = "The arguments for the wallaby\\_plot function.", format = "latex") |> 
+  kableExtra::column_spec(2, width = "30em")
 
 
 ## ----echo=TRUE----------------------------------------------------------------
@@ -122,15 +222,18 @@ p
 #>                      nframes = 400, width = 9, units = "in", res = 150)
 
 
-## ----catchange-figure, fig.cap = "Animate visualization using example data.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+## ----catchange-figure, fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/animation-example.png")
 
 
-## ----catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data.", eval=knitr::is_html_output()----
+## ----catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.", eval=knitr::is_html_output()----
 #> knitr::include_graphics("figures/catchange.gif")
 
 
 ## ----echo=TRUE----------------------------------------------------------------
+# library(animbook)
+# library(dplyr)
+
 data <- osiris |> 
   filter(country %in% c("US", "JP"))
 
@@ -156,11 +259,17 @@ p <- wallaby_plot(accounting,
                   width = 100,
                   total_point = 1000)
 
+kan_p <- kangaroo_plot(accounting)
+
 p2 <- anim_animate(p)
+kan_p2 <- anim_animate(kan_p)
 
 
 ## ----eval=FALSE---------------------------------------------------------------
 #> gganimate::anim_save("figures/exit.gif", p2, height = 8, fps = 30,
+#>                      nframes = 400, width = 9, units = "in", res = 150)
+#> 
+#> gganimate::anim_save("figures/kan-osiris.gif", kan_p2, height = 8, fps = 10,
 #>                      nframes = 400, width = 9, units = "in", res = 150)
 
 
@@ -170,6 +279,14 @@ knitr::include_graphics("figures/animation-exit.png")
 
 ## ----osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", eval=knitr::is_html_output()----
 #> knitr::include_graphics("figures/exit.gif")
+
+
+## ----kan-osiris-figure, fig.cap = "The animate visualization shows the movement of the companies between the groups from 2006 to 2018. In 2006, there were no Japanese companies in the Top 25\\% group.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+knitr::include_graphics("figures/osiris.png")
+
+
+## ----kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the movement of the companies between the groups from 2006 to 2018. In 2006, there were no Japanese companies in the Top 25% group.", eval=knitr::is_html_output()----
+#> knitr::include_graphics("figures/kan-osiris.gif")
 
 
 ## ----echo=TRUE----------------------------------------------------------------
