@@ -10,7 +10,7 @@ library(animbook)
 library(tidyverse)
 
 
-## ----nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package..", fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+## ----nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"----
 knitr::include_graphics("figures/NYT.png")
 
 
@@ -202,7 +202,7 @@ head(animbook$data, 10)
 str(animbook)
 
 
-## ----echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-page"----
+## ----echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body"----
 p <- wallaby_plot(object = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
              shade_palette = c("#737373", "#969696", "#BDBDBD",
@@ -248,6 +248,8 @@ accounting <- anim_prep(data,
                       color = country, 
                       time_dependent = FALSE)
 
+kan_p <- kangaroo_plot(accounting)
+
 p <- wallaby_plot(accounting,
                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
                   shade_palette = c("#737373", "#969696", "#BDBDBD",
@@ -259,10 +261,9 @@ p <- wallaby_plot(accounting,
                   width = 100,
                   total_point = 1000)
 
-kan_p <- kangaroo_plot(accounting)
+kan_p2 <- anim_animate(kan_p)
 
 p2 <- anim_animate(p)
-kan_p2 <- anim_animate(kan_p)
 
 
 ## ----eval=FALSE---------------------------------------------------------------
@@ -273,20 +274,20 @@ kan_p2 <- anim_animate(kan_p)
 #>                      nframes = 400, width = 9, units = "in", res = 150)
 
 
-## ----osiris-figure, fig.cap = "The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
-knitr::include_graphics("figures/animation-exit.png")
-
-
-## ----osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", eval=knitr::is_html_output()----
-#> knitr::include_graphics("figures/exit.gif")
-
-
-## ----kan-osiris-figure, fig.cap = "The animate visualization shows the movement of the companies between the groups from 2006 to 2018. In 2006, there were no Japanese companies in the Top 25\\% group.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+## ----kan-osiris-figure, fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/osiris.png")
 
 
-## ----kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows the movement of the companies between the groups from 2006 to 2018. In 2006, there were no Japanese companies in the Top 25% group.", eval=knitr::is_html_output()----
+## ----kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", eval=knitr::is_html_output()----
 #> knitr::include_graphics("figures/kan-osiris.gif")
+
+
+## ----osiris-figure, fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+knitr::include_graphics("figures/animation-exit.png")
+
+
+## ----osiris-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", eval=knitr::is_html_output()----
+#> knitr::include_graphics("figures/exit.gif")
 
 
 ## ----echo=TRUE----------------------------------------------------------------
@@ -299,14 +300,14 @@ voter <- anim_prep_cat(data = aeles,
                        time_dependent = FALSE)
 
 p_voter <- wallaby_plot(object = voter,
-                  group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+                  group_palette = c("pink", "blue", "red"),
                   shade_palette = c("#737373", "#969696", "#BDBDBD",
                                     "#D9D9D9","#D9D9D9","#D9D9D9"),
                   rendering = "ggplot",
                   subset = "top",
                   relation = "one_many",
                   height = 1,
-                  size = 2,
+                  size = 2.5,
                   width = 100,
                   total_point = 1000)
 
@@ -318,10 +319,10 @@ p2_voter <- anim_animate(p_voter)
 #>                      nframes = 400, width = 9, units = "in", res = 150)
 
 
-## ----voter-figure, fig.cap = "The animate visualization shows how does the top party perform in keeping the old voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+## ----voter-figure, fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, individual who identified as others overwhelmingly shifted their party affiliations to the Greens party.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/animation-voter.png")
 
 
-## ----voter-gif, out.extra="class = 'gif'", fig.cap = "The animate visualization shows how does the top party perform in keeping the old  voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", eval=knitr::is_html_output()----
+## ----voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, individual who identified as others overwhelmingly shifted their party affiliations to the Greens party.", eval=knitr::is_html_output()----
 #> knitr::include_graphics("figures/voter.gif")
 

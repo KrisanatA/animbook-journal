@@ -11,6 +11,13 @@ author:
     - Melbourne, Australia
     orcid: 0009-0008-5638-7124
     email:  kanu0003@student.monash.edu
+  - name: Dianne Cook
+    affiliation: Monash University 
+    address: 
+      - Department of Econometrics and Business Statistics
+      - Melbourne, Australia
+    email: dicook@monash.edu
+    orcid: 0000-0002-3813-7155
 type: package
 output: 
   rjtools::rjournal_web_article:
@@ -31,18 +38,19 @@ library(tidyverse)
 
 # Introduction {#intro}
 
-The concept of "zombie companies" began to attract attention when @zombie_companies_2008 reported on their proliferation in Japan. Zombie companies are those with an interest coverage ratio of less than one for a period of more than three years, that is, companies taking space in the market but adding no life to the economy. We would detect their presence by a drop in performance, which is a movement pattern in their relative ranking over time. Generally, studying movement patterns is interesting for many problems, including rocket ship startups that rapidly perform well, or in politics, to study voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
+The concept of "zombie companies" began to attract attention when @zombie_companies_2008 reported on their proliferation in Japan. Zombie companies are those with an interest coverage ratio of less than one for a period of more than three years, that is, companies taking space in the market but adding no life to the economy. We would detect their presence by a drop in performance, which is a movement pattern in their relative ranking over time. Generally, studying movement patterns is interesting for many problems, including rocket ship start-ups that rapidly perform well or in politics, to study voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
 
-The New York Times provided a possible solution in the article titled "Extensive data show punishing reach of racism for black boys" (@the_new_york_time) to tell the story of how racism appears to inhibit socioeconomic change. This animation is the motivation for the new visualization presented here, to be applied generally.
+  The New York Times provided a possible solution in the article titled "Extensive data show punishing reach of racism for black boys" (@the_new_york_time) to tell the story of how racism appears to inhibit socioeconomic change. This animation is the motivation for the new visualization presented here to be applied generally.
   
-The challenge in producing an animation like that in New York Times article animation is the transformation of the data, and connection with elements of the plot that will be animated. The complexities include standardizing starting times of the temporal variable, allowing for the user to choose the number of categories, standardizing distributions and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.    
+  The challenge in producing an animation like that in the New York Times article animation is the transformation of the data and connection with elements of the plot that will be animated. The complexities include allowing the user to choose the number of categories, standardizing distributions, and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.    
   
-The structure of this paper is as follows. The next section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools, and how they are employed for this problem. A section on the functions of the package and how the visualization is designed, demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
+  The structure of this paper is as follows. The next section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools and how they are employed for this problem. A section on the functions of the package and how the visualization is designed demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
+
 
 
 # Explanation of the New York Times visualization {#NYTvis}
 
-```{r nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package..", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
+```{r nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/NYT.png")
 ```
 
@@ -108,7 +116,7 @@ knitr::include_graphics("figures/sine-shade.png")
 
   In the animation, the proportional shaded area has been incorporated to facilitate a quick grasp of the proportion information. It displays the proportion of observation within each group. The design also needs to account for situations where the visualization lacks an adequate number of data points. In such cases, it can be challenging to visually discern the movement pattern of the subgroup, requiring the implementation of observation interpolation.
   
-  The paths of observations need to be interpolated to create small changes in the position of points to produce the appearance of motion, as mentioned in the Animation tools section. These interpolate functions in \CRANpkg{gganimate} and \CRANpkg{plotly} only generate a linear path between points. However, linear paths are visually less appealing than non-linear paths.  <!-- Non-linear curves like the sigmoid curves are considered instead, as they provide a better display of proportions.--> Sigmoid curves are commonly used in Sankey diagrams, however, @Shaffer_2019 argues that a sine curve more accurately represents proportion throughout the path. This is illustrated in Figure \@ref(fig:proportional-shade). The sigmoid accurately represents the proportion at the beginning and end, as it curves, the shape gets narrower, leading to less accurate proportion representation than the sine curve.
+  The paths of observations need to be interpolated to create small changes in the position of points to produce the appearance of motion, as mentioned in the Animation tools section. These interpolate functions in \CRANpkg{gganimate} and \CRANpkg{plotly} only generate a linear path between points. However, linear paths are visually less appealing than non-linear paths. Sigmoid curves are commonly used in Sankey diagrams (@Hvitfeldt_2018). However, @Shaffer_2019 argues that a sine curve more accurately represents proportion throughout the path. This is illustrated in Figure \@ref(fig:proportional-shade). The sigmoid accurately represents the proportion at the beginning and end, but as it curves, the shape gets narrower, leading to a less accurate proportion representation than the sine curve.
 
 
 # Software {#software}
@@ -425,6 +433,8 @@ accounting <- anim_prep(data,
                       color = country, 
                       time_dependent = FALSE)
 
+kan_p <- kangaroo_plot(accounting)
+
 p <- wallaby_plot(accounting,
                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
                   shade_palette = c("#737373", "#969696", "#BDBDBD",
@@ -436,10 +446,9 @@ p <- wallaby_plot(accounting,
                   width = 100,
                   total_point = 1000)
 
-kan_p <- kangaroo_plot(accounting)
+kan_p2 <- anim_animate(kan_p)
 
 p2 <- anim_animate(p)
-kan_p2 <- anim_animate(kan_p)
 ```
   
 ```{r, eval=FALSE}
@@ -451,34 +460,33 @@ gganimate::anim_save("figures/kan-osiris.gif", kan_p2, height = 8, fps = 10,
 ```
 
 ``` r
-gganimate::animate(p2)
-
 gganimate::animate(kan_p2)
+
+gganimate::animate(p2)
 ```
 
-```{r osiris-figure, fig.cap = "The wallaby plot  visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
-knitr::include_graphics("figures/animation-exit.png")
-```
-
-
-```{r osiris-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group compared to Japanese companies.", eval=knitr::is_html_output()}
-knitr::include_graphics("figures/exit.gif")
-```
-
-```{r kan-osiris-figure, fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018, for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed, or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r kan-osiris-figure, fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/osiris.png")
 ```
 
-```{r kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018, for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed, or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", eval=knitr::is_html_output()}
+```{r kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/kan-osiris.gif")
 ```
 
-  From the kangaroo plot, a higher proportion of US companies have exited the market, confirming the OECD report (@oecd_report) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the Top 25% in 2006, or it could be that Japanese companies who started in the Top 25% in 2006 were not delisted. Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`, confirmed that there are non-Japanese companies that start at the Top 25% in 2006.
+```{r osiris-figure, fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+knitr::include_graphics("figures/animation-exit.png")
+```
+
+```{r osiris-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", eval=knitr::is_html_output()}
+knitr::include_graphics("figures/exit.gif")
+```
   
+  From the kangaroo plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`), most companies are staying in the same quantile group, with only a small number moving upward or downward. Most of the movement is made by American companies, supporting the OECD report (@oecd_report) that the United States has a higher turnover rate compared to Japan. To emphasize this point, the wallaby plot can be utilized (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`), this reinforces that there are more American companies de-listed compared to Japanese companies. There could be various reasons for this trend, such as the absence of Japanese companies in the Top 25% in 2006 or the possibility that Japanese companies who started in the Top 25% in 2006 were not de-listed.
+
 
 ## Voter behavior
 
-The Australian Election Study data was collected from ADA Dataverse (@aeles). The dataset included in the \pkg{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer how the top party performs in keeping the old voters for different genders, relative to the 2016 Australian election results.
+The Australian Election Study data was collected from ADA Dataverse (@aeles). The dataset included in the \pkg{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer how the top party performs in keeping the old voters for different genders relative to the 2016 Australian election results.
   
 ```{r, echo=TRUE}
 voter <- anim_prep_cat(data = aeles,
@@ -490,14 +498,14 @@ voter <- anim_prep_cat(data = aeles,
                        time_dependent = FALSE)
 
 p_voter <- wallaby_plot(object = voter,
-                  group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+                  group_palette = c("pink", "blue", "red"),
                   shade_palette = c("#737373", "#969696", "#BDBDBD",
                                     "#D9D9D9","#D9D9D9","#D9D9D9"),
                   rendering = "ggplot",
                   subset = "top",
                   relation = "one_many",
                   height = 1,
-                  size = 2,
+                  size = 2.5,
                   width = 100,
                   total_point = 1000)
 
@@ -513,15 +521,17 @@ gganimate::anim_save("figures/voter.gif", p2_voter, height = 8, fps = 30,
 gganimate::animate(p2_voter)
 ```
 
-```{r voter-figure, fig.cap = "The wallaby plot visualization shows how does the top party perform in keeping the old voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r voter-figure, fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, individual who identified as others overwhelmingly shifted their party affiliations to the Greens party.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-voter.png")
 ```
 
-```{r voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how does the top party perform in keeping the old  voters for different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party.", eval=knitr::is_html_output()}
+```{r voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, individual who identified as others overwhelmingly shifted their party affiliations to the Greens party.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/voter.gif")
 ```
 
-From Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:voter-figure}','\\@ref(fig:voter-gif)'))`, it is clear that individuals who identified their gender as 'others' shifted their votes from the Liberal, the leading party in 2016, to the Greens party. These changes could be due to the Green Party's "A FAIRER, MORE EQUAL COMMUNITY" campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals. If the Liberal Party wishes to retain this demographic of voters, they may need to consider implementing a campaign focused on LGBTIQ+ issues.  
+  From Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:voter-figure}','\\@ref(fig:voter-gif)'))`, it reveals an intriguing pattern where individuals who identified their gender as 'others' have shifted their voting preference from the Liberal Party, the leading party in 2006, to the Greens Party. This change in behavior could be linked to the Green Party's "A FAIRER, MORE EQUAL COMMUNITY" campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals.
+  
+  Liberal Party analysts may find it worthwhile to delve into this topic further, considering both the benefits and drawbacks. If the Liberal Party wishes to retain this demographic of voters, they may need to consider implementing a campaign focused on LGBTIQ+ issues. However, this may also lead to a further defection of conservative voters.
   
   
 # Summary
