@@ -97,7 +97,7 @@ knitr::include_graphics("figures/animated-diagram.png")
 
 # Visualization design {#design}
 
-The animated visualization can be an effective communication tool (@Mayer_Moreno_2002; @effective-trend). It helps with communicating complex data, enhancing the narrative, and keeping it engaged for the audience. According to @Mayer_Moreno_2002, animation can improve learning, especially when the goal is to promote deep understanding.
+The animated visualization can be an effective communication tool (@Mayer_Moreno_2002; @effective-trend). It helps with communicating changing data values, enhancing the narrative, and keeping it engaging for the audience. According to @Mayer_Moreno_2002, animation can improve learning, especially when the goal is to promote deep understanding.
 
   @mayer_2005 states that designing multimedia requires the designer to understand how people learn. One of the principles in @mayer_2005, Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
   
@@ -108,7 +108,7 @@ knitr::include_graphics("figures/sine-shade.png")
 
   In the animation, the proportional shaded area has been incorporated to facilitate a quick grasp of the proportion information. It displays the proportion of observation within each group. The design also needs to account for situations where the visualization lacks an adequate number of data points. In such cases, it can be challenging to visually discern the movement pattern of the subgroup, requiring the implementation of observation interpolation.
   
-  As mentioned in the Animation tools section, the paths of observations are getting interpolated. These functions only generate a linear path between points. However, linear paths may not be suitable for creating proportional shading, as they do not accurately represent the proportions. Non-linear curves like the sigmoid curves should be considered instead, as they provide a better display of proportions. These curves are commonly used in multiple Sankey diagrams, but there is a limitation on this shape. The issue is shown in Figure \@ref(fig:proportional-shade). While it does accurately represent the proportion at the beginning and end, as it curves, the shape gets narrower, leading to less accurate proportion representation (@Shaffer_2019)
+  The paths of observations need to be interpolated to create small changes in the position of points to produce the appearance of motion, as mentioned in the Animation tools section. These interpolate functions in \CRANpkg{gganimate} and \CRANpkg{plotly} only generate a linear path between points. However, linear paths are visually less appealing than non-linear paths.  <!-- Non-linear curves like the sigmoid curves are considered instead, as they provide a better display of proportions.--> Sigmoid curves are commonly used in Sankey diagrams, however, @Shaffer_2019 argues that a sine curve more accurately represents proportion throughout the path. This is illustrated in Figure \@ref(fig:proportional-shade). The sigmoid accurately represents the proportion at the beginning and end, as it curves, the shape gets narrower, leading to less accurate proportion representation than the sine curve.
 
 
 # Software {#software}
