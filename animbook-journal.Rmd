@@ -473,7 +473,7 @@ knitr::include_graphics("figures/osiris.png")
 knitr::include_graphics("figures/kan-osiris.gif")
 ```
 
-  From the plot, a higher proportion of US companies have exited the market, confirming the OECD report (@oecd_report) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the Top 25% in 2006, or it could be that Japanese companies who started in the Top 25% in 2006 were not delisted. Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`, confirmed that there are non-Japanese companies that start at the Top 25% in 2006.
+  From the kangaroo plot, a higher proportion of US companies have exited the market, confirming the OECD report (@oecd_report) that the United States has a higher turnover rate than Japan. An interesting finding is that all of the top 25% of companies that exited the market are only from the United States. It may be due to the absence of Japanese companies in the Top 25% in 2006, or it could be that Japanese companies who started in the Top 25% in 2006 were not delisted. Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`, confirmed that there are non-Japanese companies that start at the Top 25% in 2006.
   
 
 ## Voter behavior
