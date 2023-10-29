@@ -1,7 +1,7 @@
 ---
 title: "animbook: Visualizing changes in performance measures and demographic affiliations using animation"
 abstract: >
-  Categorical data has often been presented statically despite its potential to unveil an intriguing movement pattern relevant to the various domains of data, including company ranking quantile in the accounting data and shifts in voter party affiliations. Inspired by the animation in the New York Times article "Extensive data show punishing reach of racism for black boys," this paper aims to develop an R package, animbook, that can generalize the animation to suitably apply to a wider range of data. The package included a function that allowed for the transformation of the data and connection with elements of the plot that would be animated. This results in an animation tool that helps communicate complex data, enhancing the narrative and keeping it engaged for the general audience. 
+  Performance is often reported in quantiles or ranks, and often repeatedly provided over time. Between elections, voters often switch party preferences, which produces categorical values over time. Inspired by the animation in the New York Times article "Extensive data show punishing reach of racism for black boys,", we provide new visualization functions to generate animations that display this type of data, in an R package called \CRANpkg{animbook}. Functions to pre-process the data and prepare it for the animation,  are provided. The methods will be suitable generally for data where categorical variables are measured over time, and provide a way to engagingly view changes.
 draft: true
 author:  
   - name: Krisanat Anukarnsakulchularp
