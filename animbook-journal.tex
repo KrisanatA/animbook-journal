@@ -37,7 +37,7 @@ In the visualization, each observation is initially classified into one group at
 
 The political data that exhibits the movement of voters switching party affiliations between elections can be a valuable insight into the behavior of the voters. This data could be extended to incorporate demographic information about the voters, providing analysts with a significant insight into voter behavior. This allows them to consolidate effective campaigns for their political party. This also applies to marketing data, where customers shift their product interest to the competitor, providing the marketing analysts with an understanding of both the company's products and the overall market.
 
-This animation was developed using two software based on JavaScript, D3.js (Bostock (2012)), and WebGL (reference). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. For the animation in this paper, the programming language that will be used for recreating and revising the visualization done by The New York Times articles is R (R Core Team (2021)).
+This animation was developed using the software based on JavaScript, D3.js (Bostock (2012)), and WebGL (Mozilla Foundation (2011)). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. For the animation in this paper, the programming language that will be used for recreating and revising the visualization done by The New York Times articles is R (R Core Team (2021)).
 
 \hypertarget{data}{%
 \section{Data}\label{data}}
@@ -71,7 +71,7 @@ A principle important for designing a useful animation is called persistence of 
 
 There are multiple ways to create an animation in the R environment (R Core Team (2021)), including the packages \CRANpkg{gganimate} (Pedersen and Robinson (2020)) and \CRANpkg{plotly} (Sievert (2020)).
 
-The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (Wickham (2016)) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of \texttt{transition\_*()} functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. This includes \texttt{gifski\_renderer()} from the \CRANpkg{gifski} package \{Ooms (2023b)\} to save animation in GIF format or \texttt{av\_renderer()} from the \CRANpkg{av} package \{Ooms (2023a)\} to save it into a video file format.
+The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (Wickham (2016)) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of \texttt{transition\_*()} functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. This includes \texttt{gifski\_renderer()} from the \CRANpkg{gifski} package (Ooms (2023b)) to save animation in GIF format or \texttt{av\_renderer()} from the \CRANpkg{av} package (Ooms (2023a)) to save it into a video file format.
 
 The \texttt{plotly} software is a graphic library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the \CRANpkg{plotly} package, which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, \texttt{ggplotly()}, or a standalone function, \texttt{plot\_ly()}. The conversion is accomplished by taking the elements from the \texttt{ggplot} object and then redrawing them using the plotly.js.
 
@@ -125,7 +125,7 @@ devtools::install_github("KrisanatA/animbook")
 \hypertarget{overview-of-functions}{%
 \subsection{Overview of functions}\label{overview-of-functions}}
 
-In designing the \pkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data to the animated data structure as seen in \ref{fig:data-diagram}. The second stage is creating a \texttt{ggplot} object, which can be subsequently passed into the animation function. The final step involves transforming the \texttt{ggplot} to a \texttt{gganimate} object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
+In designing the \pkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data to the animated data structure as seen in Figure \ref{fig:data-diagram}. The second stage is creating a \texttt{ggplot} object, which can be subsequently passed into the animation function. The final step involves transforming the \texttt{ggplot} to a \texttt{gganimate} object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
 
 \hypertarget{data-preprocessing}{%
 \subsubsection{Data preprocessing}\label{data-preprocessing}}
@@ -205,6 +205,8 @@ ngroup & The number of groups or categories to create for scaling values.\\
 breaks & A vector of breaks for creating bins.\\
 \hline
 group\_scaling & The column name that represents the grouping variable.\\
+\hline
+scaling & The scaling method to be used; "rank" or "absolute."\\
 \hline
 \end{tabular}
 \end{table}
@@ -338,16 +340,16 @@ head(animbook$data, 10)
 #> # A tibble: 10 x 5
 #>    id     time qtile frame color
 #>    <fct> <int> <dbl> <dbl> <fct>
-#>  1 1      2020     5     2 X    
-#>  2 1      2023     5     3 X    
-#>  3 2      2020     5    20 X    
-#>  4 2      2023     5    21 X    
-#>  5 3      2020     5    34 X    
-#>  6 3      2023     5    35 X    
-#>  7 4      2020     5    20 X    
-#>  8 4      2023     5    21 X    
-#>  9 5      2020     5    45 X    
-#> 10 5      2023     5    46 X
+#>  1 1      2020     5    36 X    
+#>  2 1      2023     5    37 X    
+#>  3 2      2020     5    49 X    
+#>  4 2      2023     5    50 X    
+#>  5 3      2020     5    48 X    
+#>  6 3      2023     5    49 X    
+#>  7 4      2020     5    50 X    
+#>  8 4      2023     5    51 X    
+#>  9 5      2020     5    43 X    
+#> 10 5      2023     5    44 X
 \end{verbatim}
 
 \begin{verbatim}
@@ -360,7 +362,7 @@ str(animbook)
 #>   ..$ id   : Factor w/ 200 levels "1","2","3","4",..: 1 1 2 2 3 3 4 4 5 5 ...
 #>   ..$ time : int [1:400] 2020 2023 2020 2023 2020 2023 2020 2023 2020 2023 ...
 #>   ..$ qtile: num [1:400] 5 5 5 5 5 5 5 5 5 5 ...
-#>   ..$ frame: num [1:400] 2 3 20 21 34 35 20 21 45 46 ...
+#>   ..$ frame: num [1:400] 36 37 49 50 48 49 50 51 43 44 ...
 #>   ..$ color: Factor w/ 2 levels "X","Y": 1 1 1 1 1 1 1 1 1 1 ...
 #>  $ settings:List of 7
 #>   ..$ gap           : num 0.1
@@ -546,9 +548,16 @@ Beginning with inspiration from the New York Times articles, this package provid
 \section*{Acknowledgements}\label{acknowledgements}}
 \addcontentsline{toc}{section}{Acknowledgements}
 
-This paper is created using the \CRANpkg{rjtools} packages (O'Hara-Wild et al. (2023)) and is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on \href{https://github.com/KrisanatA/animbook}{GitHub}.
+This paper is created using the \CRANpkg{rjtools} packages (O'Hara-Wild et al. (2023)) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on \href{https://github.com/KrisanatA/animbook}{GitHub}.
+I also acknowledge the use of ChatGPT (\url{https://chat.openai.com/}) to improve the text, grammar, and spelling.
 
-I also acknowledge the use of ChatGPT (\url{https://chat.openai.com/}) to improve the text, grammar and spelling.
+\begin{itemize}
+\tightlist
+\item
+  The presentation for the ETC5543 can be found on \href{https://github.com/KrisanatA/animbook-presentation}{GitHub.}
+\item
+  This paper is contained in the following \href{https://github.com/KrisanatA/animbook-journal}{GitHub repository.}
+\end{itemize}
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -591,6 +600,9 @@ McAllister, Ian, Jill Sheppard, Sarah Cameron, and Jackman Simon. 2023. {``Austr
 
 \leavevmode\vadjust pre{\hypertarget{ref-oecd_report}{}}%
 McGowan, Müge Adalet, Dan Andrews, and Valentine Millot. 2017. {``The Walking Dead?''} no. 1372. https://doi.org/\url{https://doi.org/https://doi.org/10.1787/180d80ad-en}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-webgl}{}}%
+Mozilla Foundation. 2011. {``WebGL.''} Khronos WebGL Working Group. \href{https://www.khronos.org/webgl/}{www.khronos.org/webgl/}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-rjtools}{}}%
 O'Hara-Wild, Mitchell, Stephanie Kobakian, H. Sherry Zhang, Di Cook, Simon Urbanek, and Christophe Dervieux. 2023. \emph{Rjtools: Preparing, Checking, and Submitting Articles to the 'r Journal'}. \url{https://CRAN.R-project.org/package=rjtools}.

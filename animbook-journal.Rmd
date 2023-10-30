@@ -59,7 +59,7 @@ The interactive chart featured in the New York Times article (Figure \@ref(fig:n
   
   The political data that exhibits the movement of voters switching party affiliations between elections can be a valuable insight into the behavior of the voters. This data could be extended to incorporate demographic information about the voters, providing analysts with a significant insight into voter behavior. This allows them to consolidate effective campaigns for their political party. This also applies to marketing data, where customers shift their product interest to the competitor, providing the marketing analysts with an understanding of both the company's products and the overall market.
 
-  This animation was developed using two software based on JavaScript, D3.js (@d3js), and WebGL (reference). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. For the animation in this paper, the programming language that will be used for recreating and revising the visualization done by The New York Times articles is R (@r).
+  This animation was developed using the software based on JavaScript, D3.js (@d3js), and WebGL (@webgl). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. For the animation in this paper, the programming language that will be used for recreating and revising the visualization done by The New York Times articles is R (@r).
   
   
 # Data {#data}
@@ -83,7 +83,7 @@ A principle important for designing a useful animation is called persistence of 
 
   There are multiple ways to create an animation in the R environment (@r), including the packages \CRANpkg{gganimate} (@gganimate) and \CRANpkg{plotly} (@plotly).
   
-  The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (@ggplot2) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of `transition_*()` functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. This includes `gifski_renderer()` from the \CRANpkg{gifski} package {@gifski} to save animation in GIF format or `av_renderer()` from the \CRANpkg{av} package {@av} to save it into a video file format.
+  The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (@ggplot2) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of `transition_*()` functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. This includes `gifski_renderer()` from the \CRANpkg{gifski} package (@gifski) to save animation in GIF format or `av_renderer()` from the \CRANpkg{av} package (@av) to save it into a video file format.
   
   The `plotly` software is a graphic library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the \CRANpkg{plotly} package, which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, `ggplotly()`, or a standalone function, `plot_ly()`. The conversion is accomplished by taking the elements from the `ggplot` object and then redrawing them using the plotly.js.
   
@@ -131,7 +131,7 @@ devtools::install_github("KrisanatA/animbook")
 
 ## Overview of functions
 
-In designing the \pkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data to the animated data structure as seen in \@ref(fig:data-diagram). The second stage is creating a `ggplot` object, which can be subsequently passed into the animation function. The final step involves transforming the `ggplot` to a `gganimate` object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
+In designing the \pkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data to the animated data structure as seen in Figure \@ref(fig:data-diagram). The second stage is creating a `ggplot` object, which can be subsequently passed into the animation function. The final step involves transforming the `ggplot` to a `gganimate` object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
 
 
 ### Data preprocessing
@@ -237,7 +237,7 @@ argument_table |>
   
 ```{r tbl-animprep}
 argument_table |> 
-  filter(argument %in% c("ngroup", "breaks", "group_scaling", "scaline")) |> 
+  filter(argument %in% c("ngroup", "breaks", "group_scaling", "scaling")) |> 
   knitr::kable(caption = "The argument in the anim\\_prep for customized the data scaling.")
 ```
 
@@ -540,7 +540,9 @@ Beginning with inspiration from the New York Times articles, this package provid
 
 # Acknowledgements {-}
 
-This paper is created using the \CRANpkg{rjtools} packages (@rjtools) and is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on [GitHub](https://github.com/KrisanatA/animbook).
+This paper is created using the \CRANpkg{rjtools} packages (@rjtools) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on [GitHub](https://github.com/KrisanatA/animbook). 
+I also acknowledge the use of ChatGPT (https://chat.openai.com/) to improve the text, grammar, and spelling.
 
-I also acknowledge the use of ChatGPT (https://chat.openai.com/) to improve the text, grammar and spelling.
-  
+- The presentation for the ETC5543 can be found on [GitHub.](https://github.com/KrisanatA/animbook-presentation)
+- This paper is contained in the following [GitHub repository.](https://github.com/KrisanatA/animbook-journal)
+

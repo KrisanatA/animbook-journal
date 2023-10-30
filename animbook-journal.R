@@ -115,7 +115,7 @@ argument_table |>
 
 ## ----tbl-animprep-------------------------------------------------------------
 argument_table |> 
-  filter(argument %in% c("ngroup", "breaks", "group_scaling", "scaline")) |> 
+  filter(argument %in% c("ngroup", "breaks", "group_scaling", "scaling")) |> 
   knitr::kable(caption = "The argument in the anim\\_prep for customized the data scaling.")
 
 
