@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.23)  30 OCT 2023 03:35
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.23)  30 OCT 2023 13:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -812,12 +812,12 @@ LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 26
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
 )
-<figures/sankey-shade-1.png, id=165, 722.7pt x 505.89pt>
+<figures/sankey-shade-1.png, id=164, 722.7pt x 505.89pt>
 File: figures/sankey-shade-1.png Graphic file (type png)
 <use figures/sankey-shade-1.png>
 Package pdftex.def Info: figures/sankey-shade-1.png  used on input line 274.
 (pdftex.def)             Requested size: 199.16928pt x 139.41736pt.
-<figures/sankey-shade-2.png, id=166, 722.7pt x 505.89pt>
+<figures/sankey-shade-2.png, id=165, 722.7pt x 505.89pt>
 File: figures/sankey-shade-2.png Graphic file (type png)
 <use figures/sankey-shade-2.png>
 Package pdftex.def Info: figures/sankey-shade-2.png  used on input line 274.
@@ -828,30 +828,30 @@ Overfull \hbox (1.90001pt too wide) in paragraph at lines 274--274
  []
 
 [7 <./figures/sankey-shade-1.png> <./figures/sankey-shade-2.png>] [8]
-<animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf, id=188, 578.16pt x 325.215pt>
+<animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf, id=187, 578.16pt x 325.215pt>
 File: animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
 <use animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf>
 Package pdftex.def Info: animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 391.
 (pdftex.def)             Requested size: 398.33858pt x 224.0661pt.
 [9 <./animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf>]
-<figures/animation-example.png, id=202, 957.5775pt x 961.5925pt>
+<figures/animation-example.png, id=201, 957.5775pt x 961.5925pt>
 File: figures/animation-example.png Graphic file (type png)
 <use figures/animation-example.png>
 Package pdftex.def Info: figures/animation-example.png  used on input line 403.
 (pdftex.def)             Requested size: 398.33858pt x 400.00717pt.
 [10 <./figures/animation-example.png>]
-<figures/osiris.png, id=211, 2694.065pt x 2409.0pt>
+<figures/osiris.png, id=210, 2694.065pt x 2409.0pt>
 File: figures/osiris.png Graphic file (type png)
 <use figures/osiris.png>
 Package pdftex.def Info: figures/osiris.png  used on input line 476.
 (pdftex.def)             Requested size: 398.33858pt x 356.18825pt.
-<figures/animation-exit.png, id=212, 2216.28pt x 1973.3725pt>
+<figures/animation-exit.png, id=211, 2216.28pt x 1973.3725pt>
 File: figures/animation-exit.png Graphic file (type png)
 <use figures/animation-exit.png>
 Package pdftex.def Info: figures/animation-exit.png  used on input line 485.
 (pdftex.def)             Requested size: 398.33858pt x 354.67984pt.
 [11] [12 <./figures/osiris.png>] [13 <./figures/animation-exit.png>]
-<figures/animation-voter.png, id=233, 1991.44pt x 1768.6075pt>
+<figures/animation-voter.png, id=232, 1991.44pt x 1768.6075pt>
 File: figures/animation-voter.png Graphic file (type png)
 <use figures/animation-voter.png>
 Package pdftex.def Info: figures/animation-voter.png  used on input line 529.
@@ -882,10 +882,10 @@ Overfull \hbox (30.22154pt too wide) in paragraph at lines 604--606
 No file RJwrapper.bbl.
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 655.
+(Font)              using `T1/zi4/m/n' instead on input line 652.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 9.18004pt on input line 665.
+(Font)              scaled to size 9.18004pt on input line 662.
 ) [16] (./RJwrapper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
@@ -898,18 +898,18 @@ Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: D14A5CE0005F96DB03A76D4D7A8D5BD8;2653.
  ) 
 Here is how much of TeX's memory you used:
- 26856 strings out of 476450
- 492469 string characters out of 5799743
- 1944043 words of memory out of 5000000
+ 26861 strings out of 476450
+ 492514 string characters out of 5799743
+ 1943043 words of memory out of 5000000
  47709 multiletter control sequences out of 15000+600000
- 602678 words of font info for 292 fonts, out of 8000000 for 9000
+ 602848 words of font info for 296 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  117i,12n,131p,1006b,909s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (16 pages, 2312431 bytes).
+Output written on RJwrapper.pdf (16 pages, 2313350 bytes).
 PDF statistics:
- 372 PDF objects out of 1000 (max. 8388607)
- 319 compressed objects within 4 object streams
- 99 named destinations out of 1000 (max. 500000)
+ 369 PDF objects out of 1000 (max. 8388607)
+ 316 compressed objects within 4 object streams
+ 98 named destinations out of 1000 (max. 500000)
  61134 words of extra memory for PDF output out of 61914 (max. 10000000)
 

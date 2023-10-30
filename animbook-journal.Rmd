@@ -1,7 +1,7 @@
 ---
 title: "animbook: Visualizing changes in performance measures and demographic affiliations using animation"
 abstract: >
-  Performance is often reported in quantiles or ranks, and often repeatedly provided over time. Between elections, voters often switch party preferences, which produces categorical values over time. Inspired by the animation in the New York Times article "Extensive data show punishing reach of racism for black boys,", we provide new visualization functions to generate animations that display this type of data, in an R package called \CRANpkg{animbook}. Functions to pre-process the data and prepare it for the animation,  are provided. The methods will be suitable generally for data where categorical variables are measured over time, and provide a way to engagingly view changes.
+  Performance is often reported in quantiles or ranks and often repeatedly provided over time. Between elections, voters often switch party preferences, which produces categorical values over time. Inspired by the animation in the New York Times article "Extensive data show punishing reach of racism for black boys," we provide new visualization functions to generate animations that display this type of data in an R package called \pkg{animbook}. Functions to pre-process the data and prepare it for the animation are provided. The methods will be suitable generally for data where categorical variables are measured over time, and provide a way to engagingly view changes.
 draft: true
 author:  
   - name: Krisanat Anukarnsakulchularp
@@ -45,7 +45,6 @@ The concept of "zombie companies" began to attract attention when @zombie_compan
   The challenge in producing an animation like that in the New York Times article animation is the transformation of the data and connection with elements of the plot that will be animated. The complexities include allowing the user to choose the number of categories, standardizing distributions, and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.    
   
   The structure of this paper is as follows. The next section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools and how they are employed for this problem. A section on the functions of the package and how the visualization is designed demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
-
 
 
 # Explanation of the New York Times visualization {#NYTvis}
@@ -196,10 +195,10 @@ original |>
   3. Fix bins relative to absolute values by year. (absolute)
   4. Fix bins relative to absolute values by year within a group. (absolute_group)
   
-  For the first and second scaling methods, group splitting is executed using the `quantiles()` and `cut()` functions. The `quantile()` function from the \CRANpkg{stats} package (@stats) takes a numeric vector and outputs the corresponding quantiles to the given probabilities. The output from the `quantile()` function is then used as the `breaks` argument for the `cut()` function that is part of the base R packages (@r).
-
-  In contrast, the third and fourth scaling methods calculate the quantile based on the absolute values scales. To avoid varying values scales among groups, the variables are first normalized to a range between 0 and 1. The default approach then breaks the group equally using the `seq()` function. The `seq()` function takes input values from 0 to 1 and increments by equal steps depending on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so.
+  For the first and second scaling methods, it is necessary to rank the values based on time, and in cases where a group is provided, they are ranked based on both time and groups. To ensure that the rank scales among different groups are the same, the variables are first normalized to a range between 0 and 1. The third and fourth scaling methods also involve a normalization step, but they are based on raw values instead of rank values.
   
+  All of these scaling methods utilized the `cut()` function from the base R package (@r) to split the values into quantiles. The `cut()` function requires the specification of the `breaks` argument. If it is not provided, the prep function in this package defaults to using the `seq()` function, which sets the minimum and maximum values to 0 and 1, respectively, and then increments by equal steps based on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so, noting that the breaks provided need to be between 0 and 1, and the length of the vector needs to be the number of groups plus 1. 
+
   These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning the frame to each individual observation, ensuring that each ID does not contain repeat frame values. It lets the \CRANpkg{gganimate} or \CRANpkg{plotly} perceive where the observation would be on the plot at a given frame, as seen in Figure \@ref(fig:animated-diagram).
   
   The frame variable is assigned by sorting the data based on the ID and time using the `arrange()` function, followed by applying the `group_by()` function on the ID, allowing the `row_number()` function to be performed within each group. The functions mentioned in this paragraph are from the \CRANpkg{dplyr} package (@dplyr).
