@@ -37,40 +37,44 @@ original <- dbl_change |>
   reframe(id, time, values, gp) |> 
   arrange(gp, id)
 
-rank <- anim_prep(dbl_change, id, values, time, color = gp) 
+rank <- anim_prep(dbl_change, id, values, time, group = gp) 
 
-rank_data <- rank$data |> 
+class(rank) <- c("tbl_df", "tbl", "data.frame")
+
+rank_data <- rank |> 
   filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
-  rename(gp = color,
-         rank = qtile) |> 
-  select(-frame) |> 
+  rename(gp = group,
+         rank = qtile) |>  
   arrange(gp, id)
 
-absolute <- anim_prep(dbl_change, id, values, time, color = gp, scaling = "absolute") 
+absolute <- anim_prep(dbl_change, id, values, time, group = gp, scaling = "absolute") 
 
-absolute_data <- absolute$data |> 
+class(absolute) <- c("tbl_df", "tbl", "data.frame")
+
+absolute_data <- absolute |> 
   filter(id %in% c(1, 14, 21, 100, 106, 148)) |>  
-  rename(gp = color,
+  rename(gp = group,
          absolute = qtile) |> 
-  select(-frame) |> 
   arrange(gp, id)
 
-rank_group <- anim_prep(dbl_change, id, values, time, color = gp, group_scaling = gp) 
+rank_group <- anim_prep(dbl_change, id, values, time, group = gp, group_scaling = gp) 
 
-rank_group_data <- rank_group$data |> 
+class(rank_group) <- c("tbl_df", "tbl", "data.frame")
+
+rank_group_data <- rank_group |> 
   filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
   rename(gp = group,
          rank_group = qtile) |> 
-  select(-c(frame, color)) |> 
   arrange(gp, id)
 
-absolute_group <- anim_prep(dbl_change, id, values, time, color = gp, group_scaling = gp, scaling = "absolute") 
+absolute_group <- anim_prep(dbl_change, id, values, time, group = gp, group_scaling = gp, scaling = "absolute") 
 
-absolute_group_data <- absolute_group$data |> 
+class(absolute_group) <- c("tbl_df", "tbl", "data.frame")
+
+absolute_group_data <- absolute_group |> 
   filter(id %in% c(1, 14, 21, 100, 106, 148)) |> 
   rename(gp = group,
          absolute_group = qtile) |> 
-  select(-c(frame, color)) |> 
   arrange(gp, id)
 
 
@@ -84,24 +88,21 @@ original |>
 
 
 ## -----------------------------------------------------------------------------
-argument <- c("data", "id", "values", "time", "ngroup", "breaks", "group_scaling",
-               "scaling", "order", "label", "color", "time_dependent", "runif_min",
-               "runif_max")
+argument <- c("data", "id", "values", "time", "group", "ncat", "breaks", "label",
+              "group_scaling", "scaling", "order", "time_dependent")
 
 description <- c("A data frame containing the data to be prepared for visualization.",
                  "The column name that represents the unique identifier variable.",
                  "The column name that contains the numeric values to be visualized.",
                  "The column name represents the time variable.",
+                 "The column name that distinguishes between the values group.",
                  "The number of groups or categories to create for scaling values.",
                  "A vector of breaks for creating bins.",
+                 "A vector of labels to be used for the y-axis in the visualization.",
                  "The column name that represents the grouping variable.",
                  "The scaling method to be used; \"rank\" or \"absolute.\"",
                  "A vector of order for sorting the category values.",
-                 "A vector of labels to be used for the y-axis in the visualization.",
-                 "The column name to be used in ggplot2::aes() for the plot function.",
-                 "Logical. Should the visualization be time-dependent? Default is TRUE.",
-                 "The minimum value for random addition to frame numbers.",
-                 "The maximum value for random addition to frame numbers.")
+                 "Logical. Should the visualization be time-dependent? Default is TRUE.")
 
 argument_table <- tibble::tibble(Argument = argument,
                          Description = description)
@@ -115,7 +116,7 @@ argument_table |>
 
 ## ----tbl-animprep-------------------------------------------------------------
 argument_table |> 
-  filter(argument %in% c("ngroup", "breaks", "group_scaling", "scaling")) |> 
+  filter(argument %in% c("ncat", "breaks", "group_scaling", "scaling")) |> 
   knitr::kable(caption = "The argument in the anim\\_prep for customized the data scaling.")
 
 
@@ -127,22 +128,21 @@ argument_table |>
 
 ## ----tbl-visual---------------------------------------------------------------
 argument_table |> 
-  filter(argument %in% c("label", "color", "time_dependent", 
-                         "runif_min", "runif_max")) |> 
+  filter(argument %in% c("label", "group", "time_dependent")) |> 
   knitr::kable(caption = "The additional argument for customizing the aesthetics of the visualization.")
 
 
-## ----shade-algorithm, fig.show="hold", out.width="50%", fig.cap="The plot shows how the algorithm for the sankey\\_shade() function works. The left figure represents the initial step of the algorithm, which calculates all the corner points. The right figure demonstrates the subsequent step, where points in-between the left and right are interpolated using the sine() function."----
+## ----shade-algorithm, fig.show="hold", out.width="50%", fig.cap="The plot shows how the algorithm for the proportional\\_shade() function works. The left figure represents the initial step of the algorithm, which calculates all the corner points. The right figure demonstrates the subsequent step, where points in-between the left and right are interpolated using the sine() function."----
 knitr::include_graphics("figures/sankey-shade-1.png")
 knitr::include_graphics("figures/sankey-shade-2.png")
 
 
 ## ----eval=knitr::is_html_output()---------------------------------------------
-#> argument2 <- c("object", "group_palette", "shade_palette", "rendering",
+#> argument2 <- c("data", "group_palette", "shade_palette", "rendering",
 #>                "subset", "relation", "total_point", "height", "width", "size",
 #>                "alpha")
 #> 
-#> description2 <- c("The animbook object returned from the prep function.",
+#> description2 <- c("The categorized data returned from the prep function.",
 #>                   "The vector of the palette used by the function to supply the color to each group.",
 #>                   "The vector of the palette used by the function to supply the color to the shaded area.",
 #>                   "The choice of method used to create and display the plot, either gganimate or plotly.",
@@ -164,11 +164,11 @@ knitr::include_graphics("figures/sankey-shade-2.png")
 
 
 ## ----eval=knitr::is_latex_output()--------------------------------------------
-argument2 <- c("object", "group_palette", "shade_palette", "rendering",
+argument2 <- c("data", "group_palette", "shade_palette", "rendering",
                "subset", "relation", "total_point", "height", "width", "size",
                "alpha")
 
-description2 <- c("The animbook object returned from the prep function.",
+description2 <- c("The categorized data returned from the prep function.",
                   "The vector of the palette used by the function to supply the color to each group.",
                   "The vector of the palette used by the function to supply the color to the shaded area.",
                   "The choice of method used to create and display the plot, either gganimate or plotly.",
@@ -195,19 +195,18 @@ animbook <- anim_prep_cat(cat_change,
                           id = id, 
                           values = qnt, 
                           time = time, 
-                          color = gp, 
-                          time_dependent = FALSE)
+                          group = gp)
 
-head(animbook$data, 10)
+head(animbook, 10)
 str(animbook)
 
 
 ## ----echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body"----
-p <- wallaby_plot(object = animbook,
+p <- wallaby_plot(data = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
              shade_palette = c("#737373", "#969696", "#BDBDBD",
                                "#D9D9D9","#D9D9D9","#D9D9D9"),
-             rendering = "ggplot",
+             rendering = "gganimate",
              subset = "top",
              relation = "one_many",
              total_point = NULL)
@@ -244,9 +243,8 @@ accounting <- anim_prep(data,
                       values = sales, 
                       time = year, 
                       label = label, 
-                      ngroup = 4, 
-                      color = country, 
-                      time_dependent = FALSE)
+                      ncat = 4, 
+                      group = country)
 
 kan_p <- kangaroo_plot(accounting)
 
@@ -295,15 +293,14 @@ voter <- anim_prep_cat(data = aeles,
                        id = id,
                        values = party,
                        time = year,
-                       color = gender,
-                       order = NULL,
-                       time_dependent = FALSE)
+                       group = gender,
+                       order = NULL)
 
-p_voter <- wallaby_plot(object = voter,
+p_voter <- wallaby_plot(data = voter,
                   group_palette = c("pink", "blue", "red"),
                   shade_palette = c("#737373", "#969696", "#BDBDBD",
                                     "#D9D9D9","#D9D9D9","#D9D9D9"),
-                  rendering = "ggplot",
+                  rendering = "gganimate",
                   subset = "top",
                   relation = "one_many",
                   height = 1,

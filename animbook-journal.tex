@@ -125,7 +125,7 @@ devtools::install_github("KrisanatA/animbook")
 \hypertarget{overview-of-functions}{%
 \subsection{Overview of functions}\label{overview-of-functions}}
 
-In designing the \pkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data to the animated data structure as seen in Figure \ref{fig:data-diagram}. The second stage is creating a \texttt{ggplot} object, which can be subsequently passed into the animation function. The final step involves transforming the \texttt{ggplot} to a \texttt{gganimate} object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
+In designing the \pkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data into a categorized data structure, as seen in Figure \ref{fig:data-diagram}. The second stage is creating a \texttt{ggplot} object, which can be subsequently passed into the animation function. During the second stage, an internal function will turn the categorized data into an animated data structure. The final step involves transforming the \texttt{ggplot} to a \texttt{gganimate} object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
 
 \hypertarget{data-preprocessing}{%
 \subsubsection{Data preprocessing}\label{data-preprocessing}}
@@ -167,11 +167,11 @@ For the first and second scaling methods, it is necessary to rank the values bas
 
 All of these scaling methods utilized the \texttt{cut()} function from the base R package (R Core Team (2021)) to split the values into quantiles. The \texttt{cut()} function requires the specification of the \texttt{breaks} argument. If it is not provided, the prep function in this package defaults to using the \texttt{seq()} function, which sets the minimum and maximum values to 0 and 1, respectively, and then increments by equal steps based on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so, noting that the breaks provided need to be between 0 and 1, and the length of the vector needs to be the number of groups plus 1.
 
+All of the pre-processing steps mentioned above are completed using the \texttt{anim\_prep()} or \texttt{anim\_prep\_cat()} function, depending on the stages of the data structure. The \texttt{anim\_prep()} function is used for raw data format, while the \texttt{anim\_prep\_cat()} function is for categorized data format. There are additional arguments that allow users for more customization.
+
 These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning the frame to each individual observation, ensuring that each ID does not contain repeat frame values. It lets the \CRANpkg{gganimate} or \CRANpkg{plotly} perceive where the observation would be on the plot at a given frame, as seen in Figure \ref{fig:animated-diagram}.
 
-The frame variable is assigned by sorting the data based on the ID and time using the \texttt{arrange()} function, followed by applying the \texttt{group\_by()} function on the ID, allowing the \texttt{row\_number()} function to be performed within each group. The functions mentioned in this paragraph are from the \CRANpkg{dplyr} package (Wickham et al. (2023)).
-
-All of the pre-processing steps mentioned above are completed using the \texttt{anim\_prep()} or \texttt{anim\_prep\_cat()} function, depending on the stages of the data structure. The \texttt{anim\_prep()} function is used for raw data format, while the \texttt{anim\_prep\_cat()} function is for categorized data format. There are additional arguments that allow users for more customization.
+The frame variable is assigned by sorting the data based on the ID and time using the \texttt{arrange()} function, followed by applying the \texttt{group\_by()} function on the ID, allowing the \texttt{row\_number()} function to be performed within each group. The functions mentioned in this paragraph are from the \CRANpkg{dplyr} package (Wickham et al. (2023)). These are done by the internal function for each of the plots provided in the packages.
 
 \begin{table}
 
@@ -200,7 +200,7 @@ time & The column name represents the time variable.\\
 \hline
 Argument & Description\\
 \hline
-ngroup & The number of groups or categories to create for scaling values.\\
+ncat & The number of groups or categories to create for scaling values.\\
 \hline
 breaks & A vector of breaks for creating bins.\\
 \hline
@@ -232,15 +232,11 @@ order & A vector of order for sorting the category values.\\
 \hline
 Argument & Description\\
 \hline
+group & The column name that distinguishes between the values group.\\
+\hline
 label & A vector of labels to be used for the y-axis in the visualization.\\
 \hline
-color & The column name to be used in ggplot2::aes() for the plot function.\\
-\hline
 time\_dependent & Logical. Should the visualization be time-dependent? Default is TRUE.\\
-\hline
-runif\_min & The minimum value for random addition to frame numbers.\\
-\hline
-runif\_max & The maximum value for random addition to frame numbers.\\
 \hline
 \end{tabular}
 \end{table}
@@ -256,7 +252,7 @@ Then, for further customization regarding how the final visualization looks. The
 \hypertarget{plotting-function}{%
 \subsubsection{Plotting function}\label{plotting-function}}
 
-Once the data is prepared. The next step is to create the \texttt{ggplot} object as a basis for the animation. There are three plots available in this package. Two of the plots could be used for the animation, and another plot is used as a static visualization. All of the plots have an internal function that converts the standard data format into the required structure for each plotting function.
+Once the data is prepared. The next step is to create the \texttt{ggplot} object as a basis for the animation. There are three plots available in this package. Two of the plots could be used for the animation, and another plot is used as a static visualization. All of the plots have an internal function that converts the categorized data format into the animated structure for each plotting function.
 
 \begin{itemize}
 \tightlist
@@ -270,13 +266,13 @@ Once the data is prepared. The next step is to create the \texttt{ggplot} object
 
 The main focus of this paper will be on the \texttt{wallaby\_plot()}, which draws inspiration from the New York Times animation and combines the knowledge gained from the previous sections in creating the visualization.
 
-The \texttt{wallaby\_data()} function is responsible for performing data manipulation and formatting tasks on the original object. It includes creating additional data components for labeling and shading. This function also responds by interpolating the non-linear path. It performs this task by mapping the \texttt{sine()} function provided in this package to each observation using the \texttt{map()} function from the \CRANpkg{purrr} package (Wickham and Henry (2023)). The frame is recalculated using the same method mentioned in the data preprocessing section. The \texttt{sankey\_shade()} function is called to generate the proportional shaded data.
+The \texttt{wallaby\_data()} function is responsible for performing data manipulation and formatting tasks on the original object. It includes creating additional data components for labeling and shading. This function also responds by interpolating the non-linear path. It performs this task by mapping the \texttt{sine()} function provided in this package to each observation using the \texttt{map()} function from the \CRANpkg{purrr} package (Wickham and Henry (2023)). The frame is recalculated using the same method mentioned in the data preprocessing section. The \texttt{proportional\_shade()} function is called to generate the proportional shaded data.
 
 \begin{figure}
-\includegraphics[width=0.5\linewidth]{figures/sankey-shade-1} \includegraphics[width=0.5\linewidth]{figures/sankey-shade-2} \caption{The plot shows how the algorithm for the sankey\_shade() function works. The left figure represents the initial step of the algorithm, which calculates all the corner points. The right figure demonstrates the subsequent step, where points in-between the left and right are interpolated using the sine() function.}\label{fig:shade-algorithm}
+\includegraphics[width=0.5\linewidth]{figures/sankey-shade-1} \includegraphics[width=0.5\linewidth]{figures/sankey-shade-2} \caption{The plot shows how the algorithm for the proportional\_shade() function works. The left figure represents the initial step of the algorithm, which calculates all the corner points. The right figure demonstrates the subsequent step, where points in-between the left and right are interpolated using the sine() function.}\label{fig:shade-algorithm}
 \end{figure}
 
-The algorithm behind the \texttt{sankey\_shade()} function for generating the proportional shaded data is illustrated in Figure \ref{fig:shade-algorithm}. It started by calculating the corner points for all of the shaded areas. Then, use the \texttt{sine()} function to interpolate the point between the left and right.
+The algorithm behind the \texttt{proportional\_shade()} function for generating the proportional shaded data is illustrated in Figure \ref{fig:shade-algorithm}. It started by calculating the corner points for all of the shaded areas. Then, use the \texttt{sine()} function to interpolate the point between the left and right.
 
 Now that the data are in the right format for the wallaby's plot, the \texttt{geom\_point()} function is used for plotting the observations, \texttt{geom\_polygon()} is used for creating the proportional shaded areas, and \texttt{geom\_text()} is used for creating labels. These three functions are from the \CRANpkg{ggplot2} package. During this process, the aesthetics mapping will be different depending on the rendering tool to be used, which can be either \texttt{gganimate} or \texttt{plotly}. The difference between the two rendering tools is that for \texttt{plotly}, the \texttt{ids} and \texttt{frame} arguments need to be specified during the creation of the \texttt{ggplot} object.
 
@@ -288,7 +284,7 @@ Now that the data are in the right format for the wallaby's plot, the \texttt{ge
 \hline
 Argument & Description\\
 \hline
-object & The animbook object returned from the prep function.\\
+data & The categorized data returned from the prep function.\\
 \hline
 group\_palette & The vector of the palette used by the function to supply the color to each group.\\
 \hline
@@ -321,35 +317,32 @@ It is necessary to save the plot as a \texttt{ggplot} object before passing it t
 \hypertarget{example-usage}{%
 \subsection{Example usage}\label{example-usage}}
 
-In this section, the package usage will be demonstrated using the \texttt{cat\_change} dataset included in this package. This dataset is simulated data that has changed from category A to E between two time points. Since this data is already in the categorized data structure, the \texttt{anim\_prep\_cat()} function is utilized.
-
-The output produced from this package is referred to as the \texttt{animbook} object. This contained a list of data and settings that hold prepared data for visualization, along with a list of settings used in the plot function.
+In this section, the package usage will be demonstrated using the \texttt{cat\_change} dataset included in this package. This dataset is simulated data that has changed from category A to E between two time points. Since this data is already in the categorized data structure, the \texttt{anim\_prep\_cat()} function is utilized. The output produced from this package is referred to as the \texttt{categorized} data.
 
 \begin{verbatim}
 animbook <- anim_prep_cat(cat_change, 
                           id = id, 
                           values = qnt, 
                           time = time, 
-                          color = gp, 
-                          time_dependent = FALSE)
+                          group = gp)
 
-head(animbook$data, 10)
+head(animbook, 10)
 \end{verbatim}
 
 \begin{verbatim}
 #> # A tibble: 10 x 5
-#>    id     time qtile frame color
-#>    <fct> <int> <dbl> <dbl> <fct>
-#>  1 1      2020     5    36 X    
-#>  2 1      2023     5    37 X    
-#>  3 2      2020     5    49 X    
-#>  4 2      2023     5    50 X    
-#>  5 3      2020     5    48 X    
-#>  6 3      2023     5    49 X    
-#>  7 4      2020     5    50 X    
-#>  8 4      2023     5    51 X    
-#>  9 5      2020     5    43 X    
-#> 10 5      2023     5    44 X
+#>    id     time qtile label group
+#>    <fct> <int> <dbl> <chr> <fct>
+#>  1 1      2020     5 A     X    
+#>  2 2      2020     5 A     X    
+#>  3 3      2020     5 A     X    
+#>  4 4      2020     5 A     X    
+#>  5 5      2020     5 A     X    
+#>  6 6      2020     5 A     X    
+#>  7 7      2020     5 A     X    
+#>  8 8      2020     5 A     X    
+#>  9 9      2020     5 A     X    
+#> 10 10     2020     5 A     X
 \end{verbatim}
 
 \begin{verbatim}
@@ -357,32 +350,22 @@ str(animbook)
 \end{verbatim}
 
 \begin{verbatim}
-#> List of 2
-#>  $ data    : tibble [400 x 5] (S3: tbl_df/tbl/data.frame)
-#>   ..$ id   : Factor w/ 200 levels "1","2","3","4",..: 1 1 2 2 3 3 4 4 5 5 ...
-#>   ..$ time : int [1:400] 2020 2023 2020 2023 2020 2023 2020 2023 2020 2023 ...
-#>   ..$ qtile: num [1:400] 5 5 5 5 5 5 5 5 5 5 ...
-#>   ..$ frame: num [1:400] 36 37 49 50 48 49 50 51 43 44 ...
-#>   ..$ color: Factor w/ 2 levels "X","Y": 1 1 1 1 1 1 1 1 1 1 ...
-#>  $ settings:List of 7
-#>   ..$ gap           : num 0.1
-#>   ..$ xbreaks       : int [1:2] 2020 2023
-#>   ..$ label         : chr [1:5] "A" "B" "C" "D" ...
-#>   ..$ order         : chr [1:5] "A" "B" "C" "D" ...
-#>   ..$ time_dependent: logi FALSE
-#>   ..$ runif_min     : num 1
-#>   ..$ runif_max     : num 50
-#>  - attr(*, "class")= chr "animbook"
+#> tibble[,5] (S3: tbl_df/tbl/data.frame/categorized)
+#>  $ id   : Factor w/ 200 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
+#>  $ time : int [1:400] 2020 2020 2020 2020 2020 2020 2020 2020 2020 2020 ...
+#>  $ qtile: num [1:400] 5 5 5 5 5 5 5 5 5 5 ...
+#>  $ label: chr [1:400] "A" "A" "A" "A" ...
+#>  $ group: Factor w/ 2 levels "X","Y": 1 1 1 1 1 1 1 1 1 1 ...
 \end{verbatim}
 
 To obtain a \texttt{ggplot} object for the animation function, the \texttt{wallaby\_plot} is used. For further customization, the \texttt{shade\_palette}, \texttt{subset}, and \texttt{relation} arguments are applied to define the final appearance of the animation.
 
 \begin{verbatim}
-p <- wallaby_plot(object = animbook,
+p <- wallaby_plot(data = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
              shade_palette = c("#737373", "#969696", "#BDBDBD",
                                "#D9D9D9","#D9D9D9","#D9D9D9"),
-             rendering = "ggplot",
+             rendering = "gganimate",
              subset = "top",
              relation = "one_many",
              total_point = NULL)
@@ -445,9 +428,8 @@ accounting <- anim_prep(data,
                       values = sales, 
                       time = year, 
                       label = label, 
-                      ngroup = 4, 
-                      color = country, 
-                      time_dependent = FALSE)
+                      ncat = 4, 
+                      group = country)
 
 kan_p <- kangaroo_plot(accounting)
 
@@ -503,15 +485,14 @@ voter <- anim_prep_cat(data = aeles,
                        id = id,
                        values = party,
                        time = year,
-                       color = gender,
-                       order = NULL,
-                       time_dependent = FALSE)
+                       group = gender,
+                       order = NULL)
 
-p_voter <- wallaby_plot(object = voter,
+p_voter <- wallaby_plot(data = voter,
                   group_palette = c("pink", "blue", "red"),
                   shade_palette = c("#737373", "#969696", "#BDBDBD",
                                     "#D9D9D9","#D9D9D9","#D9D9D9"),
-                  rendering = "ggplot",
+                  rendering = "gganimate",
                   subset = "top",
                   relation = "one_many",
                   height = 1,
