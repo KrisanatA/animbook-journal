@@ -122,7 +122,7 @@ knitr::include_graphics("figures/sine-shade.png")
 
 ## Installation
 
-The development version of \pkg{animbook} can be installed from [GitHub](https://github.com/KrisanatA/animbook) with:
+The development version of \pkg{animbook} can be installed from [https://github.com/KrisanatA/animbook](https://github.com/KrisanatA/animbook) with:
 
 ``` r
 # install.packages("devtools")
@@ -209,60 +209,67 @@ original |>
   
   The frame variable is assigned by sorting the data based on the ID and time using the `arrange()` function, followed by applying the `group_by()` function on the ID, allowing the `row_number()` function to be performed within each group. The functions mentioned in this paragraph are from the \CRANpkg{dplyr} package (@dplyr). These are done by the internal function for each of the plots provided in the packages.
   
-  
 ```{r}
-argument <- c("data", "id", "values", "time", "group", "ncat", "breaks", "label",
-              "group_scaling", "scaling", "order", "time_dependent")
+argument_num <- c("data", "id", "values", "time", "group", "ncat", "breaks", "label", 
+              "group_scaling", "scaling")
 
-description <- c("A data frame containing the data to be prepared for visualization.",
-                 "The column name that represents the unique identifier variable.",
-                 "The column name that contains the numeric values to be visualized.",
-                 "The column name represents the time variable.",
-                 "The column name that distinguishes between the values group.",
-                 "The number of groups or categories to create for scaling values.",
-                 "A vector of breaks for creating bins.",
-                 "A vector of labels to be used for the y-axis in the visualization.",
-                 "The column name that represents the grouping variable.",
-                 "The scaling method to be used; \"rank\" or \"absolute.\"",
-                 "A vector of order for sorting the category values.",
-                 "Logical. Should the visualization be time-dependent? Default is TRUE.")
+description_num <- c("The numerical data to be prepared for visualization.",
+                     "The column name in the data that will be used to identify an individual over time. For example, company name.",
+                     "The column name in the data that will be used for the y-axis (must be numerical).",
+                     "The column name in the data represents the time variable (x-axis).",
+                     "The column name in the data for distinguishes between the values group (for example, country). In the visualization, this will be used as a color argument.",
+                     "The number of categories to create for scaling values. The default for this function is 5 categories.",
+                     "A vector of breaks for creating bins. If this is not provided, the bins will have equal size.",
+                     "A vector of labels to be used for the y-axis in the visualization. If this is not provided, the labels will be the position on the y-axis.",
+                     "The column name in the data that will be used for grouping. Allow the function to isolate the calculation between the groups.",
+                     "The scaling method to be used; \"rank\" or \"absolute\". The default scaling is \"rank\".") 
 
-argument_table <- tibble::tibble(Argument = argument,
-                         Description = description)
-```
-  
-```{r tbl-required}
-argument_table |> 
-  filter(argument %in% c("data", "id", "values", "time")) |> 
-  knitr::kable(caption = "The required argument for the prep function.")
-```
-  
-```{r tbl-animprep}
-argument_table |> 
-  filter(argument %in% c("ncat", "breaks", "group_scaling", "scaling")) |> 
-  knitr::kable(caption = "The argument in the anim\\_prep for customized the data scaling.")
+argument_num_tab <- tibble::tibble(Argument = argument_num,
+                                   Description = description_num)
 ```
 
-```{r tbl-animprepcat}
-argument_table |> 
-  filter(argument %in% c("order")) |> 
-  knitr::kable(caption = "The argument in the anim\\_prep\\_cat for customized the order of the category.")
+```{r}
+argument_cat <- c("data", "id", "values", "time", "group", "order", "label")
+
+description_cat <- c("The data that contains the values in the categorized format.",
+                     "The column name in the data that will be used to identify an individual over time. For example, election parties.",
+                     "The column name in the data that will be used for the y-axis (must be a factor).",
+                     "The column name in the data represents the time variable (x-axis).",
+                     "The column name in the data for distinguishes between the values group (for example, gender). In the visualization, this will be used as a color argument.",
+                     "A vector of order for sorting the category values. If this is not provided, it will be arranged based on the number of observations (largest to smallest).",
+                     "A vector of labels to be used for the y-axis in the visualization. If this is not provided, the labels will be the position on the y-axis.")
+
+argument_cat_tab <- tibble::tibble(Argument = argument_cat,
+                                   Description = description_cat)
 ```
 
-```{r tbl-visual}
-argument_table |> 
-  filter(argument %in% c("label", "group", "time_dependent")) |> 
-  knitr::kable(caption = "The additional argument for customizing the aesthetics of the visualization.")
+```{r tbl-num, eval=knitr::is_html_output()}
+argument_num_tab |> 
+  knitr::kable(caption = "The arguments for the anim\\_prep function.")
 ```
 
+```{r tbl-num-la, eval=knitr::is_latex_output()}
+argument_num_tab |> 
+  kableExtra::kable(caption = "The arguments for the anim\\_prep function.", format = "latex") |> 
+  kableExtra::column_spec(2, width = "30em")
+```
+
+```{r tbl-cat, eval=knitr::is_html_output()}
+argument_cat_tab |> 
+  knitr::kable(caption = "The arguments for the anim\\_prep\\_cat function.")
+```
+
+```{r tbl-cat-la, eval=knitr::is_latex_output()}
+argument_num_tab |> 
+  kableExtra::kable(caption = "The argumenst for the anim\\_prep\\_cat function.", format = "latex") |> 
+  kableExtra::column_spec(2, width = "30em")
+```
   
-  In the `anim_prep()` and `anim_prep_cat()`, there are required arguments that need to be specified. The lists are in the Table \@ref(tab:tbl-required).
+  The argument for the `anim_prep()` and `anim_prep_cat()` function are listed in the Table `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-num-la}','\\@ref(tab:tbl-num)'))` and `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-cat-la}','\\@ref(tab:tbl-cat)'))` respectively. The `data`, `id`, `values`, and `time` arguments are required for both functions.
   
-  As shown previously, there are a total of four different scaling for the `anim_prep()` function. Both the use can customization of these scaling can be set using the following arguments in Table \@ref(tab:tbl-animprep).
+  The `ncat`, `breaks`, `group_scaling`, and `scaling` arguments are for the user to customize the data scaling calculation in the `anim_prep()` function. In the `anim_prep_cat` function, the users can customize the order of the category to be shown on the y-axis using the `order` argument.
   
-  For the `anim_prep_cat()` function, the arguments that allowed the user to order the category are by using this argument in Table \@ref(tab:tbl-animprepcat).
-  
-  Then, for further customization regarding how the final visualization looks. The following arguments in Table \@ref(tab:tbl-visual) can be adjusted.
+  Then, for further customization regarding how the final visualization looks. The `group`, `label`, and `time_dependent` arguments can be adjusted.
   
 
 ### Plotting function
@@ -286,7 +293,7 @@ knitr::include_graphics("figures/sankey-shade-2.png")
   
   Now that the data are in the right format for the wallaby's plot, the `geom_point()` function is used for plotting the observations, `geom_polygon()` is used for creating the proportional shaded areas, and `geom_text()` is used for creating labels. These three functions are from the \CRANpkg{ggplot2} package. During this process, the aesthetics mapping will be different depending on the rendering tool to be used, which can be either `gganimate` or `plotly`. The difference between the two rendering tools is that for `plotly`, the `ids` and `frame` arguments need to be specified during the creation of the `ggplot` object.
   
-```{r, eval=knitr::is_html_output()}
+```{r}
 argument2 <- c("data", "group_palette", "shade_palette", "rendering",
                "subset", "relation", "total_point", "height", "width", "size",
                "alpha")
@@ -294,14 +301,14 @@ argument2 <- c("data", "group_palette", "shade_palette", "rendering",
 description2 <- c("The categorized data returned from the prep function.",
                   "The vector of the palette used by the function to supply the color to each group.",
                   "The vector of the palette used by the function to supply the color to the shaded area.",
-                  "The choice of method used to create and display the plot, either gganimate or plotly.",
-                  "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument.",
-                  "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one.\"",
+                  "The choice of method used to create and display the plot, either gganimate or plotly. Default is gganimate.",
+                  "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument. Default is \"top\".",
+                  "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one\". Default is \"one_many\".",
                   "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
-                  "The proportion of the area occupied by the observations in the shaded areas.",
-                  "The distance between the first and last observation in the animation.",
-                  "The point size.",
-                  "The opacity of the proportional shaded areas.")
+                  "The proportion of the area occupied by the observations in the shaded areas. Default is 0.6.",
+                  "The distance between the first and last observation in the animation. Default is 50.",
+                  "The point size. Default is 2.",
+                  "The opacity of the proportional shaded areas. Default is 0.1.")
 
 argument_table2 <- tibble::tibble(Argument = argument2,
                                   Description = description2)
@@ -310,27 +317,6 @@ argument_table2 <- tibble::tibble(Argument = argument2,
 ```{r, eval=knitr::is_html_output()}
 argument_table2 |> 
   knitr::kable(caption = "The arguments for the wallaby\\_plot function.")
-```
-
-```{r, eval=knitr::is_latex_output()}
-argument2 <- c("data", "group_palette", "shade_palette", "rendering",
-               "subset", "relation", "total_point", "height", "width", "size",
-               "alpha")
-
-description2 <- c("The categorized data returned from the prep function.",
-                  "The vector of the palette used by the function to supply the color to each group.",
-                  "The vector of the palette used by the function to supply the color to the shaded area.",
-                  "The choice of method used to create and display the plot, either gganimate or plotly.",
-                  "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument.",
-                  "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one.\"",
-                  "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
-                  "The proportion of the area occupied by the observations in the shaded areas.",
-                  "The distance between the first and last observation in the animation.",
-                  "The point size.",
-                  "The opacity of the proportional shaded areas.")
-
-argument_table2 <- tibble::tibble(Argument = argument2,
-                                  Description = description2)
 ```
 
 ```{r, eval=knitr::is_latex_output()}
@@ -394,7 +380,7 @@ gganimate::animate(p2)
 knitr::include_graphics("figures/animation-example.png")
 ```
 
-```{r catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.", eval=knitr::is_html_output()}
+```{r catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while some of the Y observations change from group A to group E.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/catchange.gif")
 ```
 
@@ -405,13 +391,14 @@ knitr::include_graphics("figures/catchange.gif")
 
 ## Accounting database: osiris
 
-The accounting Osiris data that will be used in this section was collected from Bureau van Dijk (@bvd). This data set comprises 30,000 rows and 94 variables of information on listed and major unlisted/delisted companies worldwide. The variables of interest from this data set are ID, year, country, and sales. A subset of companies from this data set is used recorded from 2006 to 2018. This sample is included in the package.
-
-  An OECD report (@oecd_report) claims that the United States has a faster metabolic rate relative to Japanese companies. We use the wallaby plot and kangaroo plot animation to explore this. The steps are: 
+The data included in the package contained a record of 790 companies from 2006 to 2018. The variables in this data are year, ID, country, sales, and japan. It is a subset of the 2021 sample data collected from the Bureau van Dijk (@bvd). The original data comprises 1000 companies from 1991 to 2020. It has 94 variables of information on listed and major unlisted/delisted companies worldwide.
   
-- Filter the countries to include only the United States and Japan. 
-- Prepare the data using the `anim_prep` function with the first scaling, which is a ranking method. 
-- Use the `wallaby_plot` and `kangaroo_plot` functions to create `ggplot` objects and add default settings for `gganimate` rendering.
+  An OECD report (@oecd_report) claims that the United States has a faster metabolic rate relative to Japanese companies, indicating that more US companies are listed and exited. The wallaby plot allows for the observation of the entry and exit behavior. It provides an insight into the number of companies involved in these actions. Additionally, the kangaroo plot animation displays a full view of the movement of the companies over time, helping to explain any behavior not depicted in the wallaby plot. It particularly looks at the movement between the beginning and end of the observation period.
+  
+  The steps needed to create a visualization:
+1. Filter the countries to include only the United States and Japan. 
+2. Prepare the data using the `anim_prep` function with the first scaling, which is a ranking method. 
+3. Use the `wallaby_plot` and `kangaroo_plot` functions to create `ggplot` objects and add default settings for `gganimate` rendering.
   
 ```{r, echo=TRUE}
 # library(animbook)
@@ -478,13 +465,16 @@ knitr::include_graphics("figures/animation-exit.png")
 knitr::include_graphics("figures/exit.gif")
 ```
   
-  From the kangaroo plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`), most companies are staying in the same quantile group, with only a small number moving upward or downward. Most of the movement is made by American companies, supporting the OECD report (@oecd_report) that the United States has a higher turnover rate compared to Japan. To emphasize this point, the wallaby plot can be utilized (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`). There are clearly more American companies de-listed compared to Japanese companies, and we can see that there are no Japanese companies in the Top 25% in 2006 that were de-listed.
+  From the kangaroo plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`), most companies are staying in the same quantile group, with only a small number moving upward or downward. Most of the movement is made by American companies, supporting the OECD report (@oecd_report) that the United States has a higher turnover rate compared to Japan.
+  
+  Using the wallaby plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`), it emphasize the high turnover rate from the kangaroo plot. There are clearly more American companies de-listed compared to Japanese companies, and it can be seen that there are no Japanese companies in the Top 25% in 2006 that were de-listed.
 
 
 ## Voter behavior
 
-The Australian Election Study data was collected from ADA Dataverse (@aeles). The dataset included in the \pkg{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer how the top party performs in keeping the old voters for different genders relative to the 2016 Australian election results.
-  
+The election survey dataset included in the \pkg{animbook} package focuses on the voter behavior of the 734 individuals who participated in the 2019 survey. The variables in this data are id, year, party, and gender. The ID variable has been de-identified to ensure the privacy of the responders, preventing the identification of the survey participants. The year column is derived from the two different questions in the survey, which answered how the top party performs in keeping the old voters of different genders relative to the 2016 Australian election results. This dataset was collected from ADA Dataverse (@aeles).
+
+
 ```{r, echo=TRUE}
 voter <- anim_prep_cat(data = aeles,
                        id = id,
@@ -517,29 +507,29 @@ gganimate::anim_save("figures/voter.gif", p2_voter, height = 8, fps = 30,
 gganimate::animate(p2_voter)
 ```
 
-```{r voter-figure, fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, individual who identified as others overwhelmingly shifted their party affiliations to the Greens party.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r voter-figure, fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, an individual who identified as others overwhelmingly shifted their party affiliations to the Greens party. However, not many of them are shown in the plot.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-voter.png")
 ```
 
-```{r voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, individual who identified as others overwhelmingly shifted their party affiliations to the Greens party.", eval=knitr::is_html_output()}
+```{r voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, an individual who identified as others overwhelmingly shifted their party affiliations to the Greens party. However, not many of them are shown in the plot.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/voter.gif")
 ```
 
   From Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:voter-figure}','\\@ref(fig:voter-gif)'))`, it reveals an intriguing pattern where individuals who identified their gender as 'others' have shifted their voting preference from the Liberal Party, the leading party in 2006, to the Greens Party. This change in behavior could be linked to the Green Party's "A FAIRER, MORE EQUAL COMMUNITY" campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals.
   
-  Liberal Party analysts may find it worthwhile to delve into this topic further, considering both the benefits and drawbacks. If the Liberal Party wishes to retain this demographic of voters, they may need to consider implementing a campaign focused on LGBTIQ+ issues. However, this may also lead to a further defection of conservative voters.
+  According to the survey (@lgbtiq), the Greens Party provided a detailed response to all nine priority areas that focus on changing systems and addressing health and well-being disparities among LGBTIQ+ communities. However, the Labor Party only give a broad statement of commitment to a range of LGBTIQ+ and human right issues. This includes working with LGBTIQ+ Australians and advocates to ensure equality before the law and full access to Medicare.
   
   
 # Summary
 
-Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of \pkg{animbook}, the feature to have different speeds for each observation has not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. The plotly rendering is also not yet been optimized for use. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (@the_new_york_time), to compare the demographics at a specific point in time. On top of that, the \CRANpkg{cli} package (@cli) could be used for a more aesthetically pleasing command-line interface.
+Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. The paper outlines the anticipated data format for input into the prep function, covering raw, categorized, and animated formats. It delves into the animation concept, persistence of vision, achieved through point interpolation, and the visualization design choices. The software is explained in detail with examples and real-world applications. If more time were available, the features allowing a vary in speeds for each observation could enhance the visualization with an additional dimension. Additionally, the new animated and static plots, as demonstrated in the New York Times article, would enable comparisons of demographics at specific points in time.
 
 
 # Acknowledgements {-}
 
-This paper is created using the \CRANpkg{rjtools} packages (@rjtools) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on [GitHub](https://github.com/KrisanatA/animbook). 
+This paper is created using the \CRANpkg{rjtools} packages (@rjtools) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on [https://github.com/KrisanatA/animbook](https://github.com/KrisanatA/animbook). 
 I also acknowledge the use of ChatGPT (https://chat.openai.com/) to improve the text, grammar, and spelling.
 
-- The presentation for the ETC5543 can be found on [GitHub.](https://github.com/KrisanatA/animbook-presentation)
-- This paper is contained in the following [GitHub repository.](https://github.com/KrisanatA/animbook-journal)
+I would like to acknowledge Chika Saka for providing the inspiration that led to the development of this R package. Additionally, thanks to Masayuki Jimichi for the efforts in collecting the sample Osiris data, which contributed to the practical application of the package.
+
 

@@ -88,48 +88,59 @@ original |>
 
 
 ## -----------------------------------------------------------------------------
-argument <- c("data", "id", "values", "time", "group", "ncat", "breaks", "label",
-              "group_scaling", "scaling", "order", "time_dependent")
+argument_num <- c("data", "id", "values", "time", "group", "ncat", "breaks", "label", 
+              "group_scaling", "scaling")
 
-description <- c("A data frame containing the data to be prepared for visualization.",
-                 "The column name that represents the unique identifier variable.",
-                 "The column name that contains the numeric values to be visualized.",
-                 "The column name represents the time variable.",
-                 "The column name that distinguishes between the values group.",
-                 "The number of groups or categories to create for scaling values.",
-                 "A vector of breaks for creating bins.",
-                 "A vector of labels to be used for the y-axis in the visualization.",
-                 "The column name that represents the grouping variable.",
-                 "The scaling method to be used; \"rank\" or \"absolute.\"",
-                 "A vector of order for sorting the category values.",
-                 "Logical. Should the visualization be time-dependent? Default is TRUE.")
+description_num <- c("The numerical data to be prepared for visualization.",
+                     "The column name in the data that will be used to identify an individual over time. For example, company name.",
+                     "The column name in the data that will be used for the y-axis (must be numerical).",
+                     "The column name in the data represents the time variable (x-axis).",
+                     "The column name in the data for distinguishes between the values group (for example, country). In the visualization, this will be used as a color argument.",
+                     "The number of categories to create for scaling values. The default for this function is 5 categories.",
+                     "A vector of breaks for creating bins. If this is not provided, the bins will have equal size.",
+                     "A vector of labels to be used for the y-axis in the visualization. If this is not provided, the labels will be the position on the y-axis.",
+                     "The column name in the data that will be used for grouping. Allow the function to isolate the calculation between the groups.",
+                     "The scaling method to be used; \"rank\" or \"absolute\". The default scaling is \"rank\".") 
 
-argument_table <- tibble::tibble(Argument = argument,
-                         Description = description)
+argument_num_tab <- tibble::tibble(Argument = argument_num,
+                                   Description = description_num)
 
 
-## ----tbl-required-------------------------------------------------------------
-argument_table |> 
-  filter(argument %in% c("data", "id", "values", "time")) |> 
-  knitr::kable(caption = "The required argument for the prep function.")
+## -----------------------------------------------------------------------------
+argument_cat <- c("data", "id", "values", "time", "group", "order", "label")
+
+description_cat <- c("The data that contains the values in the categorized format.",
+                     "The column name in the data that will be used to identify an individual over time. For example, election parties.",
+                     "The column name in the data that will be used for the y-axis (must be a factor).",
+                     "The column name in the data represents the time variable (x-axis).",
+                     "The column name in the data for distinguishes between the values group (for example, gender). In the visualization, this will be used as a color argument.",
+                     "A vector of order for sorting the category values. If this is not provided, it will be arranged based on the number of observations (largest to smallest).",
+                     "A vector of labels to be used for the y-axis in the visualization. If this is not provided, the labels will be the position on the y-axis.")
+
+argument_cat_tab <- tibble::tibble(Argument = argument_cat,
+                                   Description = description_cat)
 
 
-## ----tbl-animprep-------------------------------------------------------------
-argument_table |> 
-  filter(argument %in% c("ncat", "breaks", "group_scaling", "scaling")) |> 
-  knitr::kable(caption = "The argument in the anim\\_prep for customized the data scaling.")
+## ----tbl-num, eval=knitr::is_html_output()------------------------------------
+#> argument_num_tab |>
+#>   knitr::kable(caption = "The arguments for the anim\\_prep function.")
 
 
-## ----tbl-animprepcat----------------------------------------------------------
-argument_table |> 
-  filter(argument %in% c("order")) |> 
-  knitr::kable(caption = "The argument in the anim\\_prep\\_cat for customized the order of the category.")
+## ----tbl-num-la, eval=knitr::is_latex_output()--------------------------------
+argument_num_tab |> 
+  kableExtra::kable(caption = "The arguments for the anim\\_prep function.", format = "latex") |> 
+  kableExtra::column_spec(2, width = "30em")
 
 
-## ----tbl-visual---------------------------------------------------------------
-argument_table |> 
-  filter(argument %in% c("label", "group", "time_dependent")) |> 
-  knitr::kable(caption = "The additional argument for customizing the aesthetics of the visualization.")
+## ----tbl-cat, eval=knitr::is_html_output()------------------------------------
+#> argument_cat_tab |>
+#>   knitr::kable(caption = "The arguments for the anim\\_prep\\_cat function.")
+
+
+## ----tbl-cat-la, eval=knitr::is_latex_output()--------------------------------
+argument_num_tab |> 
+  kableExtra::kable(caption = "The argumenst for the anim\\_prep\\_cat function.", format = "latex") |> 
+  kableExtra::column_spec(2, width = "30em")
 
 
 ## ----shade-algorithm, fig.show="hold", out.width="50%", fig.cap="The plot shows how the algorithm for the proportional\\_shade() function works. The left figure represents the initial step of the algorithm, which calculates all the corner points. The right figure demonstrates the subsequent step, where points in-between the left and right are interpolated using the sine() function."----
@@ -137,33 +148,7 @@ knitr::include_graphics("figures/sankey-shade-1.png")
 knitr::include_graphics("figures/sankey-shade-2.png")
 
 
-## ----eval=knitr::is_html_output()---------------------------------------------
-#> argument2 <- c("data", "group_palette", "shade_palette", "rendering",
-#>                "subset", "relation", "total_point", "height", "width", "size",
-#>                "alpha")
-#> 
-#> description2 <- c("The categorized data returned from the prep function.",
-#>                   "The vector of the palette used by the function to supply the color to each group.",
-#>                   "The vector of the palette used by the function to supply the color to the shaded area.",
-#>                   "The choice of method used to create and display the plot, either gganimate or plotly.",
-#>                   "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument.",
-#>                   "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one.\"",
-#>                   "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
-#>                   "The proportion of the area occupied by the observations in the shaded areas.",
-#>                   "The distance between the first and last observation in the animation.",
-#>                   "The point size.",
-#>                   "The opacity of the proportional shaded areas.")
-#> 
-#> argument_table2 <- tibble::tibble(Argument = argument2,
-#>                                   Description = description2)
-
-
-## ----eval=knitr::is_html_output()---------------------------------------------
-#> argument_table2 |>
-#>   knitr::kable(caption = "The arguments for the wallaby\\_plot function.")
-
-
-## ----eval=knitr::is_latex_output()--------------------------------------------
+## -----------------------------------------------------------------------------
 argument2 <- c("data", "group_palette", "shade_palette", "rendering",
                "subset", "relation", "total_point", "height", "width", "size",
                "alpha")
@@ -171,17 +156,22 @@ argument2 <- c("data", "group_palette", "shade_palette", "rendering",
 description2 <- c("The categorized data returned from the prep function.",
                   "The vector of the palette used by the function to supply the color to each group.",
                   "The vector of the palette used by the function to supply the color to the shaded area.",
-                  "The choice of method used to create and display the plot, either gganimate or plotly.",
-                  "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument.",
-                  "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one.\"",
+                  "The choice of method used to create and display the plot, either gganimate or plotly. Default is gganimate.",
+                  "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument. Default is \"top\".",
+                  "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one\". Default is \"one_many\".",
                   "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
-                  "The proportion of the area occupied by the observations in the shaded areas.",
-                  "The distance between the first and last observation in the animation.",
-                  "The point size.",
-                  "The opacity of the proportional shaded areas.")
+                  "The proportion of the area occupied by the observations in the shaded areas. Default is 0.6.",
+                  "The distance between the first and last observation in the animation. Default is 50.",
+                  "The point size. Default is 2.",
+                  "The opacity of the proportional shaded areas. Default is 0.1.")
 
 argument_table2 <- tibble::tibble(Argument = argument2,
                                   Description = description2)
+
+
+## ----eval=knitr::is_html_output()---------------------------------------------
+#> argument_table2 |>
+#>   knitr::kable(caption = "The arguments for the wallaby\\_plot function.")
 
 
 ## ----eval=knitr::is_latex_output()--------------------------------------------
@@ -225,7 +215,7 @@ p
 knitr::include_graphics("figures/animation-example.png")
 
 
-## ----catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.", eval=knitr::is_html_output()----
+## ----catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while some of the Y observations change from group A to group E.", eval=knitr::is_html_output()----
 #> knitr::include_graphics("figures/catchange.gif")
 
 
@@ -316,10 +306,10 @@ p2_voter <- anim_animate(p_voter)
 #>                      nframes = 400, width = 9, units = "in", res = 150)
 
 
-## ----voter-figure, fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, individual who identified as others overwhelmingly shifted their party affiliations to the Greens party.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
+## ----voter-figure, fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, an individual who identified as others overwhelmingly shifted their party affiliations to the Greens party. However, not many of them are shown in the plot.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/animation-voter.png")
 
 
-## ----voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, individual who identified as others overwhelmingly shifted their party affiliations to the Greens party.", eval=knitr::is_html_output()----
+## ----voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, an individual who identified as others overwhelmingly shifted their party affiliations to the Greens party. However, not many of them are shown in the plot.", eval=knitr::is_html_output()----
 #> knitr::include_graphics("figures/voter.gif")
 

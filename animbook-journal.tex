@@ -115,7 +115,7 @@ The paths of observations need to be interpolated to create small changes in the
 \hypertarget{installation}{%
 \subsection{Installation}\label{installation}}
 
-The development version of \pkg{animbook} can be installed from \href{https://github.com/KrisanatA/animbook}{GitHub} with:
+The development version of \pkg{animbook} can be installed from \url{https://github.com/KrisanatA/animbook} with:
 
 \begin{verbatim}
 # install.packages("devtools")
@@ -175,79 +175,71 @@ The frame variable is assigned by sorting the data based on the ID and time usin
 
 \begin{table}
 
-\caption{\label{tab:tbl-required}The required argument for the prep function.}
+\caption{\label{tab:tbl-num-la}The arguments for the anim\_prep function.}
 \centering
-\begin{tabular}[t]{l|l}
+\begin{tabular}[t]{l|>{\raggedright\arraybackslash}p{30em}}
 \hline
 Argument & Description\\
 \hline
-data & A data frame containing the data to be prepared for visualization.\\
+data & The numerical data to be prepared for visualization.\\
 \hline
-id & The column name that represents the unique identifier variable.\\
+id & The column name in the data that will be used to identify an individual over time. For example, company name.\\
 \hline
-values & The column name that contains the numeric values to be visualized.\\
+values & The column name in the data that will be used for the y-axis (must be numerical).\\
 \hline
-time & The column name represents the time variable.\\
+time & The column name in the data represents the time variable (x-axis).\\
+\hline
+group & The column name in the data for distinguishes between the values group (for example, country). In the visualization, this will be used as a color argument.\\
+\hline
+ncat & The number of categories to create for scaling values. The default for this function is 5 categories.\\
+\hline
+breaks & A vector of breaks for creating bins. If this is not provided, the bins will have equal size.\\
+\hline
+label & A vector of labels to be used for the y-axis in the visualization. If this is not provided, the labels will be the position on the y-axis.\\
+\hline
+group\_scaling & The column name in the data that will be used for grouping. Allow the function to isolate the calculation between the groups.\\
+\hline
+scaling & The scaling method to be used; "rank" or "absolute". The default scaling is "rank".\\
 \hline
 \end{tabular}
 \end{table}
 
 \begin{table}
 
-\caption{\label{tab:tbl-animprep}The argument in the anim\_prep for customized the data scaling.}
+\caption{\label{tab:tbl-cat-la}The argumenst for the anim\_prep\_cat function.}
 \centering
-\begin{tabular}[t]{l|l}
+\begin{tabular}[t]{l|>{\raggedright\arraybackslash}p{30em}}
 \hline
 Argument & Description\\
 \hline
-ncat & The number of groups or categories to create for scaling values.\\
+data & The numerical data to be prepared for visualization.\\
 \hline
-breaks & A vector of breaks for creating bins.\\
+id & The column name in the data that will be used to identify an individual over time. For example, company name.\\
 \hline
-group\_scaling & The column name that represents the grouping variable.\\
+values & The column name in the data that will be used for the y-axis (must be numerical).\\
 \hline
-scaling & The scaling method to be used; "rank" or "absolute."\\
+time & The column name in the data represents the time variable (x-axis).\\
+\hline
+group & The column name in the data for distinguishes between the values group (for example, country). In the visualization, this will be used as a color argument.\\
+\hline
+ncat & The number of categories to create for scaling values. The default for this function is 5 categories.\\
+\hline
+breaks & A vector of breaks for creating bins. If this is not provided, the bins will have equal size.\\
+\hline
+label & A vector of labels to be used for the y-axis in the visualization. If this is not provided, the labels will be the position on the y-axis.\\
+\hline
+group\_scaling & The column name in the data that will be used for grouping. Allow the function to isolate the calculation between the groups.\\
+\hline
+scaling & The scaling method to be used; "rank" or "absolute". The default scaling is "rank".\\
 \hline
 \end{tabular}
 \end{table}
 
-\begin{table}
+The argument for the \texttt{anim\_prep()} and \texttt{anim\_prep\_cat()} function are listed in the Table \ref{tab:tbl-num-la} and \ref{tab:tbl-cat-la} respectively. The \texttt{data}, \texttt{id}, \texttt{values}, and \texttt{time} arguments are required for both functions.
 
-\caption{\label{tab:tbl-animprepcat}The argument in the anim\_prep\_cat for customized the order of the category.}
-\centering
-\begin{tabular}[t]{l|l}
-\hline
-Argument & Description\\
-\hline
-order & A vector of order for sorting the category values.\\
-\hline
-\end{tabular}
-\end{table}
+The \texttt{ncat}, \texttt{breaks}, \texttt{group\_scaling}, and \texttt{scaling} arguments are for the user to customize the data scaling calculation in the \texttt{anim\_prep()} function. In the \texttt{anim\_prep\_cat} function, the users can customize the order of the category to be shown on the y-axis using the \texttt{order} argument.
 
-\begin{table}
-
-\caption{\label{tab:tbl-visual}The additional argument for customizing the aesthetics of the visualization.}
-\centering
-\begin{tabular}[t]{l|l}
-\hline
-Argument & Description\\
-\hline
-group & The column name that distinguishes between the values group.\\
-\hline
-label & A vector of labels to be used for the y-axis in the visualization.\\
-\hline
-time\_dependent & Logical. Should the visualization be time-dependent? Default is TRUE.\\
-\hline
-\end{tabular}
-\end{table}
-
-In the \texttt{anim\_prep()} and \texttt{anim\_prep\_cat()}, there are required arguments that need to be specified. The lists are in the Table \ref{tab:tbl-required}.
-
-As shown previously, there are a total of four different scaling for the \texttt{anim\_prep()} function. Both the use can customization of these scaling can be set using the following arguments in Table \ref{tab:tbl-animprep}.
-
-For the \texttt{anim\_prep\_cat()} function, the arguments that allowed the user to order the category are by using this argument in Table \ref{tab:tbl-animprepcat}.
-
-Then, for further customization regarding how the final visualization looks. The following arguments in Table \ref{tab:tbl-visual} can be adjusted.
+Then, for further customization regarding how the final visualization looks. The \texttt{group}, \texttt{label}, and \texttt{time\_dependent} arguments can be adjusted.
 
 \hypertarget{plotting-function}{%
 \subsubsection{Plotting function}\label{plotting-function}}
@@ -290,21 +282,21 @@ group\_palette & The vector of the palette used by the function to supply the co
 \hline
 shade\_palette & The vector of the palette used by the function to supply the color to the shaded area.\\
 \hline
-rendering & The choice of method used to create and display the plot, either gganimate or plotly.\\
+rendering & The choice of method used to create and display the plot, either gganimate or plotly. Default is gganimate.\\
 \hline
-subset & A character string specifying the variable used for subsetting the data. The "top" and "bottom" strings can also be used in this argument.\\
+subset & A character string specifying the variable used for subsetting the data. The "top" and "bottom" strings can also be used in this argument. Default is "top".\\
 \hline
-relation & The choice of relationship for the values to display on the plot, either "one\_many." or "many\_one."\\
+relation & The choice of relationship for the values to display on the plot, either "one\_many." or "many\_one". Default is "one\_many".\\
 \hline
 total\_point & The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.\\
 \hline
-height & The proportion of the area occupied by the observations in the shaded areas.\\
+height & The proportion of the area occupied by the observations in the shaded areas. Default is 0.6.\\
 \hline
-width & The distance between the first and last observation in the animation.\\
+width & The distance between the first and last observation in the animation. Default is 50.\\
 \hline
-size & The point size.\\
+size & The point size. Default is 2.\\
 \hline
-alpha & The opacity of the proportional shaded areas.\\
+alpha & The opacity of the proportional shaded areas. Default is 0.1.\\
 \hline
 \end{tabular}
 \end{table}
@@ -400,19 +392,14 @@ This is an example of how the users can apply the three-step process in creating
 \hypertarget{accounting-database-osiris}{%
 \subsection{Accounting database: osiris}\label{accounting-database-osiris}}
 
-The accounting Osiris data that will be used in this section was collected from Bureau van Dijk ({``Osiris''} (2023)). This data set comprises 30,000 rows and 94 variables of information on listed and major unlisted/delisted companies worldwide. The variables of interest from this data set are ID, year, country, and sales. A subset of companies from this data set is used recorded from 2006 to 2018. This sample is included in the package.
+The data included in the package contained a record of 790 companies from 2006 to 2018. The variables in this data are year, ID, country, sales, and japan. It is a subset of the 2021 sample data collected from the Bureau van Dijk ({``Osiris''} (2023)). The original data comprises 1000 companies from 1991 to 2020. It has 94 variables of information on listed and major unlisted/delisted companies worldwide.
 
-An OECD report (McGowan, Andrews, and Millot (2017)) claims that the United States has a faster metabolic rate relative to Japanese companies. We use the wallaby plot and kangaroo plot animation to explore this. The steps are:
+An OECD report (McGowan, Andrews, and Millot (2017)) claims that the United States has a faster metabolic rate relative to Japanese companies, indicating that more US companies are listed and exited. The wallaby plot allows for the observation of the entry and exit behavior. It provides an insight into the number of companies involved in these actions. Additionally, the kangaroo plot animation displays a full view of the movement of the companies over time, helping to explain any behavior not depicted in the wallaby plot. It particularly looks at the movement between the beginning and end of the observation period.
 
-\begin{itemize}
-\tightlist
-\item
-  Filter the countries to include only the United States and Japan.
-\item
-  Prepare the data using the \texttt{anim\_prep} function with the first scaling, which is a ranking method.
-\item
-  Use the \texttt{wallaby\_plot} and \texttt{kangaroo\_plot} functions to create \texttt{ggplot} objects and add default settings for \texttt{gganimate} rendering.
-\end{itemize}
+The steps needed to create a visualization:
+1. Filter the countries to include only the United States and Japan.
+2. Prepare the data using the \texttt{anim\_prep} function with the first scaling, which is a ranking method.
+3. Use the \texttt{wallaby\_plot} and \texttt{kangaroo\_plot} functions to create \texttt{ggplot} objects and add default settings for \texttt{gganimate} rendering.
 
 \begin{verbatim}
 # library(animbook)
@@ -473,12 +460,14 @@ gganimate::animate(p2)
 \caption{The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.}\label{fig:osiris-figure}
 \end{figure}
 
-From the kangaroo plot (Figure \ref{fig:kan-osiris-figure}), most companies are staying in the same quantile group, with only a small number moving upward or downward. Most of the movement is made by American companies, supporting the OECD report (McGowan, Andrews, and Millot (2017)) that the United States has a higher turnover rate compared to Japan. To emphasize this point, the wallaby plot can be utilized (Figure \ref{fig:osiris-figure}). There are clearly more American companies de-listed compared to Japanese companies, and we can see that there are no Japanese companies in the Top 25\% in 2006 that were de-listed.
+From the kangaroo plot (Figure \ref{fig:kan-osiris-figure}), most companies are staying in the same quantile group, with only a small number moving upward or downward. Most of the movement is made by American companies, supporting the OECD report (McGowan, Andrews, and Millot (2017)) that the United States has a higher turnover rate compared to Japan.
+
+Using the wallaby plot (Figure \ref{fig:osiris-figure}), it emphasize the high turnover rate from the kangaroo plot. There are clearly more American companies de-listed compared to Japanese companies, and it can be seen that there are no Japanese companies in the Top 25\% in 2006 that were de-listed.
 
 \hypertarget{voter-behavior}{%
 \subsection{Voter behavior}\label{voter-behavior}}
 
-The Australian Election Study data was collected from ADA Dataverse (McAllister et al. (2023)). The dataset included in the \pkg{animbook} package contains 1,468 rows and 4 variables of information: ID, year, party, and gender. This dataset comprises survey responses from the 2019 election. The year column was transformed from the two different questions to answer how the top party performs in keeping the old voters for different genders relative to the 2016 Australian election results.
+The election survey dataset included in the \pkg{animbook} package focuses on the voter behavior of the 734 individuals who participated in the 2019 survey. The variables in this data are id, year, party, and gender. The ID variable has been de-identified to ensure the privacy of the responders, preventing the identification of the survey participants. The year column is derived from the two different questions in the survey, which answered how the top party performs in keeping the old voters of different genders relative to the 2016 Australian election results. This dataset was collected from ADA Dataverse (McAllister et al. (2023)).
 
 \begin{verbatim}
 voter <- anim_prep_cat(data = aeles,
@@ -513,32 +502,26 @@ gganimate::animate(p2_voter)
 
 }
 
-\caption{The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, individual who identified as others overwhelmingly shifted their party affiliations to the Greens party.}\label{fig:voter-figure}
+\caption{The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, an individual who identified as others overwhelmingly shifted their party affiliations to the Greens party. However, not many of them are shown in the plot.}\label{fig:voter-figure}
 \end{figure}
 
 From Figure \ref{fig:voter-figure}, it reveals an intriguing pattern where individuals who identified their gender as `others' have shifted their voting preference from the Liberal Party, the leading party in 2006, to the Greens Party. This change in behavior could be linked to the Green Party's ``A FAIRER, MORE EQUAL COMMUNITY'' campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals.
 
-Liberal Party analysts may find it worthwhile to delve into this topic further, considering both the benefits and drawbacks. If the Liberal Party wishes to retain this demographic of voters, they may need to consider implementing a campaign focused on LGBTIQ+ issues. However, this may also lead to a further defection of conservative voters.
+According to the survey ({``LGBTIQ+ Health Australia Party Survey''} (2022)), the Greens Party provided a detailed response to all nine priority areas that focus on changing systems and addressing health and well-being disparities among LGBTIQ+ communities. However, the Labor Party only give a broad statement of commitment to a range of LGBTIQ+ and human right issues. This includes working with LGBTIQ+ Australians and advocates to ensure equality before the law and full access to Medicare.
 
 \hypertarget{summary}{%
 \section{Summary}\label{summary}}
 
-Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. In the current version of \pkg{animbook}, the feature to have different speeds for each observation has not yet been implemented. This feature will introduce a new dimension that allows the users to explore the data further. The plotly rendering is also not yet been optimized for use. Additionally, both new animated and static plots could also be added, as seen in the New York Times article (Badger et al. (2018)), to compare the demographics at a specific point in time. On top of that, the \CRANpkg{cli} package (Csárdi (2023)) could be used for a more aesthetically pleasing command-line interface.
+Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. The paper outlines the anticipated data format for input into the prep function, covering raw, categorized, and animated formats. It delves into the animation concept, persistence of vision, achieved through point interpolation, and the visualization design choices. The software is explained in detail with examples and real-world applications. If more time were available, the features allowing a vary in speeds for each observation could enhance the visualization with an additional dimension. Additionally, the new animated and static plots, as demonstrated in the New York Times article, would enable comparisons of demographics at specific points in time.
 
 \hypertarget{acknowledgements}{%
 \section*{Acknowledgements}\label{acknowledgements}}
 \addcontentsline{toc}{section}{Acknowledgements}
 
-This paper is created using the \CRANpkg{rjtools} packages (O'Hara-Wild et al. (2023)) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on \href{https://github.com/KrisanatA/animbook}{GitHub}.
+This paper is created using the \CRANpkg{rjtools} packages (O'Hara-Wild et al. (2023)) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on \url{https://github.com/KrisanatA/animbook}.
 I also acknowledge the use of ChatGPT (\url{https://chat.openai.com/}) to improve the text, grammar, and spelling.
 
-\begin{itemize}
-\tightlist
-\item
-  The presentation for the ETC5543 can be found on \href{https://github.com/KrisanatA/animbook-presentation}{GitHub.}
-\item
-  This paper is contained in the following \href{https://github.com/KrisanatA/animbook-journal}{GitHub repository.}
-\end{itemize}
+I would like to acknowledge Chika Saka for providing the inspiration that led to the development of this R package. Additionally, thanks to Masayuki Jimichi for the efforts in collecting the sample Osiris data, which contributed to the practical application of the package.
 
 \hypertarget{references}{%
 \section*{References}\label{references}}
@@ -558,14 +541,14 @@ Caballero, Ricardo J., Takeo Hoshi, and Anil K. Kashyap. 2008. {``Zombie Lending
 \leavevmode\vadjust pre{\hypertarget{ref-race}{}}%
 Chetty, Raj, Nathaniel Hendren, Maggie Jones, and Sonya Porter. 2020. {``Race and Economic Opportunity in the United States: An Intergenerational Perspective*.''} \emph{The Quarterly Journal of Economics} 135 (May): 711--83. \url{https://doi.org/10.1093/qje/qjz042}.
 
-\leavevmode\vadjust pre{\hypertarget{ref-cli}{}}%
-Csárdi, Gábor. 2023. \emph{Cli: Helpers for Developing Command Line Interfaces}. \url{https://CRAN.R-project.org/package=cli}.
-
 \leavevmode\vadjust pre{\hypertarget{ref-learner-control}{}}%
 Hasler, Béatrice, Bernd Kersten, and John Sweller. 2007. {``Learner Control, Cognitive Load and Instructional Animation. Applied Cognitive Psychology, 21, 713-729.''} \emph{Applied Cognitive Psychology} 21 (September): 713--29. \url{https://doi.org/10.1002/acp.1345}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Hvitfeldt_2018}{}}%
 Hvitfeldt, Emil. 2018. {``Recreate - Sankey Flow Chart.''} \emph{Recreate - Sankey Flow Chart}. \url{https://emilhvitfeldt.com/post/2018-03-20-recreate-sankey-flow-chart/}.
+
+\leavevmode\vadjust pre{\hypertarget{ref-lgbtiq}{}}%
+{``LGBTIQ+ Health Australia Party Survey.''} 2022. \emph{LGBTIQ+ Health Australia}. \url{https://www.lgbtiqhealth.org.au/electionsurvey}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-mayer-2010}{}}%
 Mayer, Richard. 2010. {``Applying the Science of Learning to Medical Education.''} \emph{Medical Education} 44 (June): 543--49. \url{https://doi.org/10.1111/j.1365-2923.2010.03624.x}.
