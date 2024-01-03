@@ -122,12 +122,16 @@ knitr::include_graphics("figures/sine-shade.png")
 
 ## Installation
 
-The development version of \pkg{animbook} can be installed from [https://github.com/KrisanatA/animbook](https://github.com/KrisanatA/animbook) with:
+\pkg{animbook} is available through CRAN. The development version of this package can be found in the Github repositories.
 
 ``` r
-# install.packages("devtools")
+# CRAN
+install.packages("animbook")
+
+# Development version
 devtools::install_github("KrisanatA/animbook")
 ```
+
 
 ## Overview of functions
 
@@ -387,18 +391,22 @@ knitr::include_graphics("figures/catchange.gif")
   This is an example of how the users can apply the three-step process in creating an animation plot using the `animbook` package. 
   
   
-# Application
+# Applications
+
+Two examples of usage are provided. The osiris example studies company movement between quantiles of sales performance over a 12-year period. The voting example studies party preference changes between 2016 and 2019 elections.
+
 
 ## Accounting database: osiris
 
-The data included in the package contained a record of 790 companies from 2006 to 2018. The variables in this data are year, ID, country, sales, and japan. It is a subset of the 2021 sample data collected from the Bureau van Dijk (@bvd). The original data comprises 1000 companies from 1991 to 2020. It has 94 variables of information on listed and major unlisted/delisted companies worldwide.
+The Osiris data presented in this section was acquired from Bureau van Dijk (@bvd), compiling information on a total of 122,318 companies. It was subsequently a subset for the 2021 report, consisting of 1000 companies with 94 variables. The dataset included in the package focuses on 790 companies, spanning from 2006 to 2018. The variables in this dataset include year, ID, country, sales, and japan.
+
+  @oecd_report reported that companies in the United States have a faster metabolic rate relative to Japanese companies. This means that US companies tends to move up and down performance metrics more frequently than Japanese companies. This can be examine using the wallaby and kangaroo plots. The wallaby plot allows the study of entry and exit behavior. The kangaroo plot allows studying the full movement of companies over time.
   
-  An OECD report (@oecd_report) claims that the United States has a faster metabolic rate relative to Japanese companies, indicating that more US companies are listed and exited. The wallaby plot allows for the observation of the entry and exit behavior. It provides an insight into the number of companies involved in these actions. Additionally, the kangaroo plot animation displays a full view of the movement of the companies over time, helping to explain any behavior not depicted in the wallaby plot. It particularly looks at the movement between the beginning and end of the observation period.
+  The steps needed to create both plots are:
   
-  The steps needed to create a visualization:
 1. Filter the countries to include only the United States and Japan. 
-2. Prepare the data using the `anim_prep` function with the first scaling, which is a ranking method. 
-3. Use the `wallaby_plot` and `kangaroo_plot` functions to create `ggplot` objects and add default settings for `gganimate` rendering.
+2. Prepare the data using the `anim_prep` function with the first scaling, which is a ranking method. The variable `sales` is used as the performance metric. Four quantiles are used as specified by the `ncat` option, and NAs formed a fifth category labeled as "Not listed".
+3. Use the `wallaby_plot` and `kangaroo_plot` functions to create `ggplot` objects and add default settings for `gganimate` rendering. In the wallaby plot, the `subset` and `relation` options are set to "bottom" and "many_one", respectively, to focus on exiting behavior. 
   
 ```{r, echo=TRUE}
 # library(animbook)
@@ -420,9 +428,6 @@ accounting <- anim_prep(data,
 kan_p <- kangaroo_plot(accounting)
 
 p <- wallaby_plot(accounting,
-                  group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-                  shade_palette = c("#737373", "#969696", "#BDBDBD",
-                                    "#D9D9D9","#D9D9D9","#D9D9D9"),
                   subset = "bottom",
                   relation = "many_one",
                   height = 1,
@@ -457,6 +462,11 @@ knitr::include_graphics("figures/osiris.png")
 knitr::include_graphics("figures/kan-osiris.gif")
 ```
 
+From the kangaroo plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`) it can be seen that most companies stay in the same quantile group over the time period. There are several companies that move up and down, and most of these are US companies. This support the @oecd_report claim that US companies have a higher turnover rate compared to Japanese companies.
+
+Perceiving the differences between the movement pattern of groups can be difficult, especially when the groups have different sizes as the case here. There are more US companies than Japanese companies and particularly there are more US companies in the top 25 percent quantile. Thus there will be more blue points (US) moving than red points (JP) purely for this reason. Interpreting differences requires the reader to mentally calculated the **relative proportion** between the blue and red points, which is hard.
+
+
 ```{r osiris-figure, fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-exit.png")
 ```
@@ -464,10 +474,10 @@ knitr::include_graphics("figures/animation-exit.png")
 ```{r osiris-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/exit.gif")
 ```
+
+  From Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`, there are clearly more US companies de-listed compared to Japanese companies, and it can be seen that there are no Japanese companies in the Top 25% in 2006 that were de-listed.
   
-  From the kangaroo plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`), most companies are staying in the same quantile group, with only a small number moving upward or downward. Most of the movement is made by American companies, supporting the OECD report (@oecd_report) that the United States has a higher turnover rate compared to Japan.
-  
-  Using the wallaby plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`), it emphasize the high turnover rate from the kangaroo plot. There are clearly more American companies de-listed compared to Japanese companies, and it can be seen that there are no Japanese companies in the Top 25% in 2006 that were de-listed.
+  Using the wallaby plot, it can be employed to emphasized the high turnvoer rate observed in the kangaroo plot, as it specifically focuses on a subset, allowing the users to better perceive the **relative proportion**. However, it is important to note that this plot is confined to only two-time points (start and end), which may not provide a comprehensive view of the entire story.
 
 
 ## Voter behavior

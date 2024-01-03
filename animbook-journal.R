@@ -239,9 +239,6 @@ accounting <- anim_prep(data,
 kan_p <- kangaroo_plot(accounting)
 
 p <- wallaby_plot(accounting,
-                  group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-                  shade_palette = c("#737373", "#969696", "#BDBDBD",
-                                    "#D9D9D9","#D9D9D9","#D9D9D9"),
                   subset = "bottom",
                   relation = "many_one",
                   height = 1,
