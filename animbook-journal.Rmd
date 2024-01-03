@@ -393,7 +393,7 @@ knitr::include_graphics("figures/catchange.gif")
   
 # Applications
 
-Two examples of usage are provided. The osiris example studies company movement between quantiles of sales performance over a 12-year period. The voting example studies party preference changes between 2016 and 2019 elections.
+Two examples of usage are provided. The osiris example studies company movement between quartiles of sales performance over a 12-year period. The voting example studies party preference changes between 2016 and 2019 elections.
 
 
 ## Accounting database: osiris
@@ -464,8 +464,7 @@ knitr::include_graphics("figures/kan-osiris.gif")
 
 From the kangaroo plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`) it can be seen that most companies stay in the same quantile group over the time period. There are several companies that move up and down, and most of these are US companies. This support the @oecd_report claim that US companies have a higher turnover rate compared to Japanese companies.
 
-Perceiving the differences between the movement pattern of groups can be difficult, especially when the groups have different sizes as the case here. There are more US companies than Japanese companies and particularly there are more US companies in the top 25 percent quantile. Thus there will be more blue points (US) moving than red points (JP) purely for this reason. Interpreting differences requires the reader to mentally calculated the **relative proportion** between the blue and red points, which is hard.
-
+Perceiving the differences between the movement pattern of groups can be difficult, especially when the groups have different sizes, as is the case here. There are more US companies than Japanese companies and particularly there are more US companies in the top 25 percent quantile. Thus there will likely be more blue points (US) moving than red points (JP) purely for this reason. The difference that is of interest is **relative proportion**, that one country has a higher fraction of companies moving between quartiles than the other. This animated sankey plot requires the reader to mentally calculate the fraction of points that are moving, separately for the blue and red points, to answer the question whether one group has a higher movement rate. The task is easier if the two groups have a similar number of points. 
 
 ```{r osiris-figure, fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-exit.png")
@@ -532,8 +531,10 @@ knitr::include_graphics("figures/voter.gif")
   
 # Summary
 
-Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. The paper outlines the anticipated data format for input into the prep function, covering raw, categorized, and animated formats. It delves into the animation concept, persistence of vision, achieved through point interpolation, and the visualization design choices. The software is explained in detail with examples and real-world applications. If more time were available, the features allowing a vary in speeds for each observation could enhance the visualization with an additional dimension. Additionally, the new animated and static plots, as demonstrated in the New York Times article, would enable comparisons of demographics at specific points in time.
+Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. The paper outlines the anticipated data format for input into the prep function, covering raw, categorized, and animated formats. It delves into the animation concept, persistence of vision, achieved through point interpolation, and the visualization design choices. The software usage is illustrated with two applications. If more time were available, the features allowing a vary in speeds for each observation could enhance the visualization with an additional dimension. Additionally, the new animated and static plots, as demonstrated in the New York Times article, would enable comparisons of demographics at specific points in time.
 
+- positives and negatives about the method
+- extensions that would be desirable for the software
 
 # Acknowledgements {-}
 
