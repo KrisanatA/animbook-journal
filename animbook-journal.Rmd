@@ -1,7 +1,7 @@
 ---
 title: "animbook: Visualizing changes in performance measures and demographic affiliations using animation"
 abstract: >
-  Performance is often reported in quantiles or ranks and often repeatedly provided over time. Between elections, voters often switch party preferences, which produces categorical values over time. Inspired by the animation in the New York Times article "Extensive data show punishing reach of racism for black boys," we provide new visualization functions to generate animations that display this type of data in an R package called \pkg{animbook}. Functions to pre-process the data and prepare it for the animation are provided. The methods will be suitable generally for data where categorical variables are measured over time, and provide a way to engagingly view changes.
+  Performance is often reported in quantiles or ranks and often repeatedly provided over time. Between elections, voters often switch party preferences, which produces categorical values over time. Inspired by the animation in the New York Times article "Extensive data show punishing reach of racism for black boys," we provide new visualization functions to generate animations that display this type of data in an R package called \CRANpkg{animbook}. Functions to pre-process the data and prepare it for the animation are provided. The methods will be suitable generally for data where categorical variables are measured over time, and provide a way to engagingly view changes.
 draft: true
 author:  
   - name: Krisanat Anukarnsakulchularp
@@ -59,7 +59,11 @@ The interactive chart featured in the New York Times article (Figure \@ref(fig:n
   
   The political data that exhibits the movement of voters switching party affiliations between elections can be a valuable insight into the behavior of the voters. This data could be extended to incorporate demographic information about the voters, providing analysts with a significant insight into voter behavior. This allows them to consolidate effective campaigns for their political party. This also applies to marketing data, where customers shift their product interest to the competitor, providing the marketing analysts with an understanding of both the company's products and the overall market.
 
-  This animation was developed using the software based on JavaScript, D3.js (@d3js), and WebGL (@webgl). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. For the animation in this paper, the programming language that will be used for recreating and revising the visualization done by The New York Times articles is R (@r).
+  This animation was developed using the software based on JavaScript, D3.js (@d3js), and WebGL (@webgl). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. 
+  
+  There was an implementation of the New York Times animation in R (@r) by @Hvitfeldt_2018. This article demonstrates the path generation for each point and how to map them to the animation. Taking inspiration from this example, \CRANpkg{animbook} expands upon the visualization by incorporating additional elements, particularly the proportional shaded area, and introduces new visualizations inspired by the New York Times animation.
+  
+  As mentioned about the proportional shaded area, a similar static visualization of the animation is known as the Sankey plot. Sankey plots are flow diagrams that show the movement/change from one state to another, with the width of each arrow representing the proportional changes between states. R packages capable of generating a Sankey plot type include  \CRANpkg{ggalluvial} and \CRANpkg{ggparallel}, both are extensions from the \CRANpkg{ggplot2} {@ggplot2}. The main difference between the Sankey plot visualization and the animation featured in the New York Times lies in their methods of representing the proportion of changes between states. Sankey plots utilize the width of connecting lines, while the New York Times animation employs the density and color of points accompanied by counters. Combining the differences between these two features will be shown in the Visualization design section.
   
   
 # Data {#data}
@@ -83,7 +87,7 @@ A principle important for designing a useful animation is called persistence of 
 
   There are multiple ways to create an animation in the R environment (@r), including the packages \CRANpkg{gganimate} (@gganimate) and \CRANpkg{plotly} (@plotly).
   
-  The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (@ggplot2) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of `transition_*()` functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. This includes `gifski_renderer()` from the \CRANpkg{gifski} package (@gifski) to save animation in GIF format or `av_renderer()` from the \CRANpkg{av} package (@av) to save it into a video file format.
+  The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of `transition_*()` functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. This includes `gifski_renderer()` from the \CRANpkg{gifski} package (@gifski) to save animation in GIF format or `av_renderer()` from the \CRANpkg{av} package (@av) to save it into a video file format.
   
   The `plotly` software is a graphic library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the \CRANpkg{plotly} package, which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, `ggplotly()`, or a standalone function, `plot_ly()`. The conversion is accomplished by taking the elements from the `ggplot` object and then redrawing them using the plotly.js.
   
@@ -113,7 +117,11 @@ knitr::include_graphics("figures/sigmoid-shade.png")
 knitr::include_graphics("figures/sine-shade.png")
 ```
 
-  In the animation, the proportional shaded area has been incorporated to facilitate a quick grasp of the proportion information. It displays the proportion of observation within each group. The design also needs to account for situations where the visualization lacks an adequate number of data points. In such cases, it can be challenging to visually discern the movement pattern of the subgroup, requiring the implementation of observation interpolation.
+  In the animation, the use of proportional shaded areas serves to enhances the quick comprehension of proportion information, effectively displaying the distribution within each group. This method replaces the coutners seen in the New York Times animation, alleviating information overload for users and reducing the computation required. To represents sub-groups, the plot utilizes color to distinguish differences among observation.
+
+  However, discerning the movement pattern or proportion of sub-groups can be challenging when the visualization lacks a sufficient number of data points. Addressing this, observation interpolation is employed by calculating the sub-group proportion and multiplying it by the desired number of generated points. This approach ensures a more detailed representation of movement patterns, particularly in scenarios where a limited number of data points may impede visual clarity.
+  
+  The issue with this type of animation in the New York Times lies in point clustering, particularly when all points start simultaneously. This clustering poses a challenge in distinguishing and tracking individual observations. In the context of time series data (e.g., year), the observations in the animation enter the visualization at different times. It is important to note that this does not necessarily reflect the real-time occurrence of observations. The neglect of the time-dependent nature of observations is a deliberate choice made for visualization purposes, aiming enhance the clarity of the presented information.
   
   The paths of observations need to be interpolated to create small changes in the position of points to produce the appearance of motion, as mentioned in the Animation tools section. These interpolate functions in \CRANpkg{gganimate} and \CRANpkg{plotly} only generate a linear path between points. However, linear paths are visually less appealing than non-linear paths. Sigmoid curves are commonly used in Sankey diagrams (@Hvitfeldt_2018). However, @Shaffer_2019 argues that a sine curve more accurately represents proportion throughout the path. This is illustrated in Figure \@ref(fig:proportional-shade). The sigmoid accurately represents the proportion at the beginning and end, but as it curves, the shape gets narrower, leading to a less accurate proportion representation than the sine curve.
 
@@ -122,7 +130,7 @@ knitr::include_graphics("figures/sine-shade.png")
 
 ## Installation
 
-\pkg{animbook} is available through CRAN. The development version of this package can be found in the Github repositories.
+\CRANpkg{animbook} is available through CRAN. The development version of this package can be found in the Github repositories.
 
 ``` r
 # CRAN
@@ -135,7 +143,7 @@ devtools::install_github("KrisanatA/animbook")
 
 ## Overview of functions
 
-In designing the \pkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data into a categorized data structure, as seen in Figure \@ref(fig:data-diagram). The second stage is creating a `ggplot` object, which can be subsequently passed into the animation function. During the second stage, an internal function will turn the categorized data into an animated data structure. The final step involves transforming the `ggplot` to a `gganimate` object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
+In designing the \CRANpkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data into a categorized data structure, as seen in Figure \@ref(fig:data-diagram). The second stage is creating a `ggplot` object, which can be subsequently passed into the animation function. During the second stage, an internal function will turn the categorized data into an animated data structure. The final step involves transforming the `ggplot` to a `gganimate` object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
 
 
 ### Data preprocessing
@@ -283,6 +291,8 @@ Once the data is prepared. The next step is to create the `ggplot` object as a b
   - `kangaroo_plot()`: plots the observation's movement over time.
   - `wallaby_plot()`: the subset plot of the `kangaroo_plot` with the time limit to only start and end.
   - `funnel_web_plot()`: the faceted static plot by time variable.
+  
+  The names of these plots draws inspiration from a native Australian animals. The comprehensive plot is named Kangaroo, while its subset is referred to as Wallaby, representing a smaller version of the Kangaroo. The final plot is names after Funnel Web Spider, drawing parallels between the plot's features and the distinctive legs of the spider.
 
   The main focus of this paper will be on the `wallaby_plot()`, which draws inspiration from the New York Times animation and combines the knowledge gained from the previous sections in creating the visualization.
 
@@ -298,7 +308,7 @@ knitr::include_graphics("figures/sankey-shade-2.png")
   Now that the data are in the right format for the wallaby's plot, the `geom_point()` function is used for plotting the observations, `geom_polygon()` is used for creating the proportional shaded areas, and `geom_text()` is used for creating labels. These three functions are from the \CRANpkg{ggplot2} package. During this process, the aesthetics mapping will be different depending on the rendering tool to be used, which can be either `gganimate` or `plotly`. The difference between the two rendering tools is that for `plotly`, the `ids` and `frame` arguments need to be specified during the creation of the `ggplot` object.
   
 ```{r}
-argument2 <- c("data", "group_palette", "shade_palette", "rendering",
+argument2 <- c("data", "group_palette", "shade_palette", "rendering", "time_dependent",
                "subset", "relation", "total_point", "height", "width", "size",
                "alpha")
 
@@ -306,6 +316,7 @@ description2 <- c("The categorized data returned from the prep function.",
                   "The vector of the palette used by the function to supply the color to each group.",
                   "The vector of the palette used by the function to supply the color to the shaded area.",
                   "The choice of method used to create and display the plot, either gganimate or plotly. Default is gganimate.",
+                  "Should the observations entered the visualization at the same time. Default is FALSE",
                   "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument. Default is \"top\".",
                   "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one\". Default is \"one_many\".",
                   "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
@@ -405,7 +416,7 @@ The Osiris data presented in this section was acquired from Bureau van Dijk (@bv
   The steps needed to create both plots are:
   
 1. Filter the countries to include only the United States and Japan. 
-2. Prepare the data using the `anim_prep` function with the first scaling, which is a ranking method. The variable `sales` is used as the performance metric. Four quantiles are used as specified by the `ncat` option, and NAs formed a fifth category labeled as "Not listed".
+2. Prepare the data using the `anim_prep` function with the first scaling, which is a ranking method. The variable `sales` is used as the performance metric. Four quantiles (quartiles) are used as specified by `ncat = 4`, and NAs are converted into a fifth category labeled as "Not listed".
 3. Use the `wallaby_plot` and `kangaroo_plot` functions to create `ggplot` objects and add default settings for `gganimate` rendering. In the wallaby plot, the `subset` and `relation` options are set to "bottom" and "many_one", respectively, to focus on exiting behavior. 
   
 ```{r, echo=TRUE}
@@ -462,9 +473,9 @@ knitr::include_graphics("figures/osiris.png")
 knitr::include_graphics("figures/kan-osiris.gif")
 ```
 
-From the kangaroo plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`) it can be seen that most companies stay in the same quantile group over the time period. There are several companies that move up and down, and most of these are US companies. This support the @oecd_report claim that US companies have a higher turnover rate compared to Japanese companies.
+In the kangaroo plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`) the five grey bars indicate the five categories (Top 25%, 25-50, 50-75, 75-100, Not listed) across years 2006 and 2018. Points represent individual companies with color indicating country of registration. Points that stay within the bar indicate companies that remain in the same quartile over the entire time period. If a company drop in performance or improve performance to the extent of switching quartile, the corresponding point will jump up or down in this plot. Note that all the companies in the "Not listed" category were listed at some point during this time period. It can be seen that most companies stay in the same quantile group over the time period. There are several companies that move up and down, and most of these are US companies. This support the @oecd_report claim that US companies have a higher turnover rate compared to Japanese companies.
 
-Perceiving the differences between the movement pattern of groups can be difficult, especially when the groups have different sizes, as is the case here. There are more US companies than Japanese companies and particularly there are more US companies in the top 25 percent quantile. Thus there will likely be more blue points (US) moving than red points (JP) purely for this reason. The difference that is of interest is **relative proportion**, that one country has a higher fraction of companies moving between quartiles than the other. This animated sankey plot requires the reader to mentally calculate the fraction of points that are moving, separately for the blue and red points, to answer the question whether one group has a higher movement rate. The task is easier if the two groups have a similar number of points. 
+Perceiving the differences between the movement pattern of groups can be difficult, especially when the groups have different sizes, as is the case here. There are more US companies than Japanese companies and particularly there are more US companies in the top 25 percent quantile. Thus there will likely be more blue points (US) moving than red points (JP) purely for this reason. The difference that is of interest is **relative proportion**, that one country has a higher fraction of companies moving between quartiles than the other. This animated Sankey plot requires the reader to mentally calculate the fraction of points that are moving, separately for the blue and red points, to answer the question whether one group has a higher movement rate. The task is easier if the two groups have a similar number of points. 
 
 ```{r osiris-figure, fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-exit.png")
@@ -474,14 +485,14 @@ knitr::include_graphics("figures/animation-exit.png")
 knitr::include_graphics("figures/exit.gif")
 ```
 
-  From Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`, there are clearly more US companies de-listed compared to Japanese companies, and it can be seen that there are no Japanese companies in the Top 25% in 2006 that were de-listed.
+  In Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`, the focus is placed on companies that exited the market in 2018 that were in the market at some point since 2006. The grey regions show the proportion of companies in each of the categories in 2006 on the left that were exited the market by 2018. (explain the different in proportion and not listed companies). In 2006, the companies represented by points, colored by country are in one of the quartiles or "Not listed" category. All the companies in the Top 25% were US companies. Any Japanese companies in the Top 25% in 2006 did not exited the market (Not listed). But actually, there were non Japanese companies in the Top 25% in 2006. It is also interesting that the larger proportion of the companies in the Top 25% are getting de-listed, and the lower the quartiles, the less likely that the companies will exit the market.
   
   Using the wallaby plot, it can be employed to emphasized the high turnvoer rate observed in the kangaroo plot, as it specifically focuses on a subset, allowing the users to better perceive the **relative proportion**. However, it is important to note that this plot is confined to only two-time points (start and end), which may not provide a comprehensive view of the entire story.
 
 
 ## Voter behavior
 
-The election survey dataset included in the \pkg{animbook} package focuses on the voter behavior of the 734 individuals who participated in the 2019 survey. The variables in this data are id, year, party, and gender. The ID variable has been de-identified to ensure the privacy of the responders, preventing the identification of the survey participants. The year column is derived from the two different questions in the survey, which answered how the top party performs in keeping the old voters of different genders relative to the 2016 Australian election results. This dataset was collected from ADA Dataverse (@aeles).
+The election survey dataset included in the \CRANpkg{animbook} package focuses on the voter behavior of the 734 individuals who participated in the 2019 survey. The variables in this data are id, year, party, and gender. The ID variable has been de-identified to ensure the privacy of the responders, preventing the identification of the survey participants. The year column is derived from the two different questions in the survey, which answered how the top party performs in keeping the old voters of different genders relative to the 2016 Australian election results. This dataset was collected from ADA Dataverse (@aeles).
 
 
 ```{r, echo=TRUE}
@@ -531,14 +542,16 @@ knitr::include_graphics("figures/voter.gif")
   
 # Summary
 
-Beginning with inspiration from the New York Times articles, this package provides tools to facilitate the communication of complex data to general audiences. The paper outlines the anticipated data format for input into the prep function, covering raw, categorized, and animated formats. It delves into the animation concept, persistence of vision, achieved through point interpolation, and the visualization design choices. The software usage is illustrated with two applications. If more time were available, the features allowing a vary in speeds for each observation could enhance the visualization with an additional dimension. Additionally, the new animated and static plots, as demonstrated in the New York Times article, would enable comparisons of demographics at specific points in time.
+Beginning with inspiration drawn from the New York Times article, this packages provides tools to facilitate the communication of complex data to broader audiences. The paper outlies the anticipated data format for input into the prep function, covering raw, categorized, and animated formats. It delves into the animation concept, persistence of vision, achieved through point interpolation, and the visualizatoin design choices.
+
+The paper further proviedes illustrative examples of software usage through two application to the real world data. Given more time, introducing geatures that allow variation in speeds for each observation could enhance the visualization by introducing an additional dimension. The new animated adn static plots, as demonstrated in the New York Times article, would enable comparisons of demographics at specific points in time. Additionally, the potential re-parameterization of the x-axis from years to ages (e.g., company) could add different details to the visualization.
 
 - positives and negatives about the method
 - extensions that would be desirable for the software
 
 # Acknowledgements {-}
 
-This paper is created using the \CRANpkg{rjtools} packages (@rjtools) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \pkg{animbook} package. This version is available on [https://github.com/KrisanatA/animbook](https://github.com/KrisanatA/animbook). 
+This paper is created using the \CRANpkg{rjtools} packages (@rjtools) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \CRANpkg{animbook} package. This version is available on [https://github.com/KrisanatA/animbook](https://github.com/KrisanatA/animbook). 
 I also acknowledge the use of ChatGPT (https://chat.openai.com/) to improve the text, grammar, and spelling.
 
 I would like to acknowledge Chika Saka for providing the inspiration that led to the development of this R package. Additionally, thanks to Masayuki Jimichi for the efforts in collecting the sample Osiris data, which contributed to the practical application of the package.

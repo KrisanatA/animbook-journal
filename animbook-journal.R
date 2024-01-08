@@ -149,7 +149,7 @@ knitr::include_graphics("figures/sankey-shade-2.png")
 
 
 ## -----------------------------------------------------------------------------
-argument2 <- c("data", "group_palette", "shade_palette", "rendering",
+argument2 <- c("data", "group_palette", "shade_palette", "rendering", "time_dependent",
                "subset", "relation", "total_point", "height", "width", "size",
                "alpha")
 
@@ -157,6 +157,7 @@ description2 <- c("The categorized data returned from the prep function.",
                   "The vector of the palette used by the function to supply the color to each group.",
                   "The vector of the palette used by the function to supply the color to the shaded area.",
                   "The choice of method used to create and display the plot, either gganimate or plotly. Default is gganimate.",
+                  "Should the observations entered the visualization at the same time. Default is FALSE",
                   "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument. Default is \"top\".",
                   "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one\". Default is \"one_many\".",
                   "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
