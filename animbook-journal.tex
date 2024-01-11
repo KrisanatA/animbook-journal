@@ -39,9 +39,9 @@ The political data that exhibits the movement of voters switching party affiliat
 
 This animation was developed using the software based on JavaScript, D3.js (Bostock (2012)), and WebGL (Mozilla Foundation (2011)). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins.
 
-There was an implementation of the New York Times animation in R (R Core Team (2021)) by Hvitfeldt (2018). This article demonstrates the path generation for each point and how to map them to the animation. Taking inspiration from this example, \CRANpkg{animbook} expands upon the visualization by incorporating additional elements, particularly the proportional shaded area, and introduces new visualizations inspired by the New York Times animation.
+Hvitfeldt (2018) provides R (R Core Team (2021)) code to generate an animation similar to that of the New York Times. Taking inspiration from this example, \CRANpkg{animbook} expands upon the visualization in numerous ways and packages the code so that it can be use for a variety of similar animations for studying flow and temporal change data.
 
-As mentioned about the proportional shaded area, a similar static visualization of the animation is known as the Sankey plot. Sankey plots are flow diagrams that show the movement/change from one state to another, with the width of each arrow representing the proportional changes between states. R packages capable of generating a Sankey plot type include \CRANpkg{ggalluvial} and \CRANpkg{ggparallel}, both are extensions from the \CRANpkg{ggplot2} \{Wickham (2016)\}. The main difference between the Sankey plot visualization and the animation featured in the New York Times lies in their methods of representing the proportion of changes between states. Sankey plots utilize the width of connecting lines, while the New York Times animation employs the density and color of points accompanied by counters. Combining the differences between these two features will be shown in the Visualization design section.
+The New York Times visualization is also similar to what is called a Sankey plot. Sankey plots are flow diagrams that show the movement/change from one category levels to another, with the width of each arrow representing the proportional changes between levels. There are several R packages available to generate version of Sankey plots including \CRANpkg{ggalluvial} and \CRANpkg{ggparallel}. The main difference between the Sankey plot visualization and the animation featured in the New York Times lies in their methods of representing the proportion of changes. Sankey plots utilize the width of connecting lines, while the New York Times animation employs the density and color of points.
 
 \hypertarget{data}{%
 \section{Data}\label{data}}
@@ -58,6 +58,8 @@ As mentioned about the proportional shaded area, a similar static visualization 
 In the data structure, there are requirements that must be followed for reproducing the animation. First, the data set needs to be in the \texttt{tidy\ data} format (Wickham (2014)). The data then must have at least ID and time variables, in addition to the measured variables, which would usually be numeric but can also be categorical as well. The ID variable indicates the individual, which is followed over time, such as the company name. There may also be a grouping variable, such as the country where the company is registered.
 
 Figure \ref{fig:data-diagram} illustrates the expected format of the data and variables created to prepare it for the animation. We start with the raw data structure. The values are presented in the numerical format, which we call the `raw' form. In most cases, the measured variable will be numerical and require transformation. The second form is categorized data, which involves transforming numerical variables into categories, typically quantiles. This transformation may not be necessary if it is already provided in the categorized format. The last form is animated data, where the frame is assigned to each unique ID.
+
+One of the frequently encountered values in the dataset is NA, commonly known as missing values. In the context of accounting data, NA might signify that a company is either not yet listed or has been de-listed. In scenarios like voter data, NA may indicate that individuals did not provide the necessary information. Disregarding NA values could result in the loss of valuable information. Therefore, instead of completely removing NA entries, this information is categorized into its quantiles, ensuring that the missing data are factored into the visualization.
 
 \hypertarget{animation}{%
 \section{Animation tools}\label{animation}}
@@ -109,13 +111,13 @@ R. E. Mayer (2005) states that designing multimedia requires the designer to und
 \includegraphics[width=0.5\linewidth]{figures/sigmoid-shade} \includegraphics[width=0.5\linewidth]{figures/sine-shade} \caption{The plot shows the difference between the sigmoid (shown in the left figure) and the sine curve (shown in the right figure). In the sigmoid, as the curve progresses, it becomes narrower, resulting in a less accurate representation of proportions compared to the sine curve.}\label{fig:proportional-shade}
 \end{figure}
 
-In the animation, the use of proportional shaded areas serves to enhances the quick comprehension of proportion information, effectively displaying the distribution within each group. This method replaces the coutners seen in the New York Times animation, alleviating information overload for users and reducing the computation required. To represents sub-groups, the plot utilizes color to distinguish differences among observation.
+In the animation, the use of proportional shaded areas serves to enhances the comprehension of proportion information, effectively displaying the distribution within each group. To represent sub-groups, points are colored to focus attention on differences between groups of observation.
 
-However, discerning the movement pattern or proportion of sub-groups can be challenging when the visualization lacks a sufficient number of data points. Addressing this, observation interpolation is employed by calculating the sub-group proportion and multiplying it by the desired number of generated points. This approach ensures a more detailed representation of movement patterns, particularly in scenarios where a limited number of data points may impede visual clarity.
+Discerning the movement pattern or proportion of sub-groups can be challenging when there is only a small number of points. To address this, sample size are inflated by calculating the sub-group proportion and multiplying it by the desired total number of points. This approach ensures a richer representation of movement patterns.
 
-The issue with this type of animation in the New York Times lies in point clustering, particularly when all points start simultaneously. This clustering poses a challenge in distinguishing and tracking individual observations. In the context of time series data (e.g., year), the observations in the animation enter the visualization at different times. It is important to note that this does not necessarily reflect the real-time occurrence of observations. The neglect of the time-dependent nature of observations is a deliberate choice made for visualization purposes, aiming enhance the clarity of the presented information.
+Another issue is that all observations have a common starting time. This would mean all points start the animation simultaneously and move as a block through time. This poses a challenge in distinguishing and tracking individual observations and their change patterns. To alleviate this, the animation randomly starts observations at different times so a continuous flow of points is shown. It is important to note that this does not necessarily reflect the real-time occurrence of observations.
 
-The paths of observations need to be interpolated to create small changes in the position of points to produce the appearance of motion, as mentioned in the Animation tools section. These interpolate functions in \CRANpkg{gganimate} and \CRANpkg{plotly} only generate a linear path between points. However, linear paths are visually less appealing than non-linear paths. Sigmoid curves are commonly used in Sankey diagrams (Hvitfeldt (2018)). However, Shaffer (2019) argues that a sine curve more accurately represents proportion throughout the path. This is illustrated in Figure \ref{fig:proportional-shade}. The sigmoid accurately represents the proportion at the beginning and end, but as it curves, the shape gets narrower, leading to a less accurate proportion representation than the sine curve.
+The paths of observations are also interpolated to create small changes in the position of points to produce the appearance of motion. The interpolation functions in \CRANpkg{gganimate} and \CRANpkg{plotly} are inadequate because they only generate a linear path. Our animation needs non-linear path to show the flow. Sigmoid curves are commonly used in Sankey diagrams (Hvitfeldt (2018)). However, Shaffer (2019) argues that a sine curve more accurately represents proportion throughout the path. As illustrated in Figure \ref{fig:proportional-shade}. The sigmoid accurately represents the proportion at the beginning and end, but as it curves, the shape gets narrower, leading to a less accurate proportion representation than the sine curve. New interpolation functions are needed to compute both the sigmoid and sine path.
 
 \hypertarget{software}{%
 \section{Software}\label{software}}
@@ -535,19 +537,23 @@ From Figure \ref{fig:voter-figure}, it reveals an intriguing pattern where indiv
 
 According to the survey ({``LGBTIQ+ Health Australia Party Survey''} (2022)), the Greens Party provided a detailed response to all nine priority areas that focus on changing systems and addressing health and well-being disparities among LGBTIQ+ communities. However, the Labor Party only give a broad statement of commitment to a range of LGBTIQ+ and human right issues. This includes working with LGBTIQ+ Australians and advocates to ensure equality before the law and full access to Medicare.
 
-\hypertarget{summary}{%
-\section{Summary}\label{summary}}
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
 
-Beginning with inspiration drawn from the New York Times article, this packages provides tools to facilitate the communication of complex data to broader audiences. The paper outlies the anticipated data format for input into the prep function, covering raw, categorized, and animated formats. It delves into the animation concept, persistence of vision, achieved through point interpolation, and the visualizatoin design choices.
+Beginning with inspiration drawn from the New York Times article, this packages provides tools to facilitate the communication of complex data to broader audiences. The paper outlines the anticipated data format for input into the prep function, covering raw, categorized, and animated data formats. It delves into the animation concept, persistence of vision, achieved through point interpolation, and the visualization design choices.
 
-The paper further proviedes illustrative examples of software usage through two application to the real world data. Given more time, introducing geatures that allow variation in speeds for each observation could enhance the visualization by introducing an additional dimension. The new animated adn static plots, as demonstrated in the New York Times article, would enable comparisons of demographics at specific points in time. Additionally, the potential re-parameterization of the x-axis from years to ages (e.g., company) could add different details to the visualization.
+The \CRANpkg{animbook} package comes with certain drawbacks. Firstly, it leans more towards being a communication tool rather than an exploratory one, as the information it presents can often be obtained from a summary table. Secondly, it may struggle to handle datasets with numerous categories (quantiles), limiting its applicability in such scenarios. Furthermore, perceiving patterns from the animation might be challenging for users when there are differences in sample sizes across groups. Lastly, the animation requires the reader to mentally calculate the fraction of points that are in motion. However, the package provides tools that provides a simple solution for creating meaningful animations through a simple step process.
+
+Introducing features that allow variation in speeds for each observation could enhance the visualization by introducing an additonal dimension. The new animated and static plots, as demonstrated in the New York Times article, would enable comparisons of demographics at specific points in time. Additionally, the potential re-parameterization of the x-axis from years to ages (e.g., company ages) could add different ways of viewing the visualization.
 
 \begin{itemize}
 \tightlist
 \item
-  positives and negatives about the method
+  the first paragraph is to summarize the achievement of this
 \item
-  extensions that would be desirable for the software
+  the second paragraph is about the pro and con, what works, what doesn't works.
+\item
+  the third paragraph, if you have another 6 months, what would you implemented.
 \end{itemize}
 
 \hypertarget{acknowledgements}{%
@@ -639,9 +645,6 @@ Webster, Chris. 2005. \emph{Animation : The Mechanics of Motion}. Focal Press Vi
 
 \leavevmode\vadjust pre{\hypertarget{ref-tidy-data}{}}%
 Wickham, Hadley. 2014. {``Tidy Data.''} \emph{Journal of Statistical Software} 59 (10): 1--23. \url{https://doi.org/10.18637/jss.v059.i10}.
-
-\leavevmode\vadjust pre{\hypertarget{ref-ggplot2}{}}%
----------. 2016. \emph{Ggplot2: Elegant Graphics for Data Analysis}. Springer-Verlag New York. \url{https://ggplot2.tidyverse.org}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-dplyr}{}}%
 Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. \emph{Dplyr: A Grammar of Data Manipulation}.
