@@ -368,14 +368,33 @@ str(animbook)
 ```{r, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 p <- wallaby_plot(data = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-             shade_palette = c("#737373", "#969696", "#BDBDBD",
-                               "#D9D9D9","#D9D9D9","#D9D9D9"),
              rendering = "gganimate",
              subset = "top",
              relation = "one_many",
              total_point = NULL)
 
 p
+```
+  
+  Additionally, users have the flexibility to explore various options, such as subset or relation, allowing them to customize how the plot will appear.
+  
+```{r}
+p_2 <- wallaby_plot(data = animbook,
+                   rendering = "gganimate",
+                   subset = "top",
+                   relation = "many_one",
+                   total_point = NULL)
+
+p_2
+
+
+p_3 <- wallaby_plot(data = animbook,
+                    rendering = "gganimate",
+                    subset = "B",
+                    relation = "many_one",
+                    total_point = NULL)
+
+p_3
 ```
   
   Once the `ggplot` object is obtained, the `anim_animate()` function can be used to transform it into a `gganimate` object. This then can be passed onto the `animate()` function from the \CRANpkg{gganimate} for rendering.

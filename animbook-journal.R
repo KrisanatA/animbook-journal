@@ -195,14 +195,31 @@ str(animbook)
 ## ----echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body"----
 p <- wallaby_plot(data = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-             shade_palette = c("#737373", "#969696", "#BDBDBD",
-                               "#D9D9D9","#D9D9D9","#D9D9D9"),
              rendering = "gganimate",
              subset = "top",
              relation = "one_many",
              total_point = NULL)
 
 p
+
+
+## -----------------------------------------------------------------------------
+p_2 <- wallaby_plot(data = animbook,
+                   rendering = "gganimate",
+                   subset = "top",
+                   relation = "many_one",
+                   total_point = NULL)
+
+p_2
+
+
+p_3 <- wallaby_plot(data = animbook,
+                    rendering = "gganimate",
+                    subset = "B",
+                    relation = "many_one",
+                    total_point = NULL)
+
+p_3
 
 
 ## ----eval=FALSE---------------------------------------------------------------

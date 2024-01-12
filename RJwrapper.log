@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.23)  11 JAN 2024 21:27
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.23)  12 JAN 2024 15:24
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -826,67 +826,86 @@ Overfull \hbox (1.90001pt too wide) in paragraph at lines 279--279
 <animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf, id=192, 578.16pt x 325.215pt>
 File: animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf Graphic file (type pdf)
 <use animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf>
-Package pdftex.def Info: animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 385.
+Package pdftex.def Info: animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf  used on input line 383.
 (pdftex.def)             Requested size: 398.33858pt x 224.0661pt.
-<figures/animation-example.png, id=194, 957.5775pt x 961.5925pt>
+<animbook-journal_files/figure-latex/unnamed-chunk-11-1.pdf, id=193, 469.755pt x 325.215pt>
+File: animbook-journal_files/figure-latex/unnamed-chunk-11-1.pdf Graphic file (type pdf)
+<use animbook-journal_files/figure-latex/unnamed-chunk-11-1.pdf>
+Package pdftex.def Info: animbook-journal_files/figure-latex/unnamed-chunk-11-1.pdf  used on input line 387.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+<animbook-journal_files/figure-latex/unnamed-chunk-11-2.pdf, id=194, 469.755pt x 325.215pt>
+File: animbook-journal_files/figure-latex/unnamed-chunk-11-2.pdf Graphic file (type pdf)
+<use animbook-journal_files/figure-latex/unnamed-chunk-11-2.pdf>
+Package pdftex.def Info: animbook-journal_files/figure-latex/unnamed-chunk-11-2.pdf  used on input line 387.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+
+Overfull \hbox (86.41528pt too wide) in paragraph at lines 387--388
+[][]
+ []
+
+
+Overfull \hbox (71.41528pt too wide) in paragraph at lines 387--388
+[] 
+ []
+
+[10 <./animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf>] [11 <./animbook-journal_files/figure-latex/unnamed-chunk-11-1.pdf> <./animbook-journal_files/figure-latex/unnamed-chunk-11-2.pdf>]
+<figures/animation-example.png, id=228, 957.5775pt x 961.5925pt>
 File: figures/animation-example.png Graphic file (type png)
 <use figures/animation-example.png>
-Package pdftex.def Info: figures/animation-example.png  used on input line 397.
+Package pdftex.def Info: figures/animation-example.png  used on input line 399.
 (pdftex.def)             Requested size: 398.33858pt x 400.00717pt.
-[10 <./animbook-journal_files/figure-latex/unnamed-chunk-10-1.pdf>] [11 <./figures/animation-example.png>]
-<figures/osiris.png, id=215, 2694.065pt x 2409.0pt>
+[12 <./figures/animation-example.png>]
+<figures/osiris.png, id=237, 2694.065pt x 2409.0pt>
 File: figures/osiris.png Graphic file (type png)
 <use figures/osiris.png>
-Package pdftex.def Info: figures/osiris.png  used on input line 471.
+Package pdftex.def Info: figures/osiris.png  used on input line 473.
 (pdftex.def)             Requested size: 398.33858pt x 356.18825pt.
-[12] [13 <./figures/osiris.png>]
-<figures/animation-exit.png, id=231, 2216.28pt x 1973.3725pt>
+<figures/animation-exit.png, id=239, 2216.28pt x 1973.3725pt>
 File: figures/animation-exit.png Graphic file (type png)
 <use figures/animation-exit.png>
-Package pdftex.def Info: figures/animation-exit.png  used on input line 484.
+Package pdftex.def Info: figures/animation-exit.png  used on input line 486.
 (pdftex.def)             Requested size: 398.33858pt x 354.67984pt.
-[14 <./figures/animation-exit.png>]
-<figures/animation-voter.png, id=241, 1991.44pt x 1768.6075pt>
+[13] [14 <./figures/osiris.png>] [15 <./figures/animation-exit.png>]
+<figures/animation-voter.png, id=263, 1991.44pt x 1768.6075pt>
 File: figures/animation-voter.png Graphic file (type png)
 <use figures/animation-voter.png>
-Package pdftex.def Info: figures/animation-voter.png  used on input line 529.
+Package pdftex.def Info: figures/animation-voter.png  used on input line 531.
 (pdftex.def)             Requested size: 398.33858pt x 353.76921pt.
-[15] [16 <./figures/animation-voter.png>]
+[16 <./figures/animation-voter.png>]
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 563.
+(Font)              scaled to size 9.37807pt on input line 565.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 563.
+(Font)              scaled to size 7.29405pt on input line 565.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 563.
+(Font)              scaled to size 5.21004pt on input line 565.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 563.
+(Font)              scaled to size 9.37807pt on input line 565.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 563.
+(Font)              scaled to size 7.29405pt on input line 565.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 563.
-
-Overfull \hbox (6.51071pt too wide) in paragraph at lines 592--594
+(Font)              scaled to size 5.21004pt on input line 565.
+[17]
+Overfull \hbox (6.51071pt too wide) in paragraph at lines 594--596
 []\T1/ppl/m/n/9 (-20) ``LGBTIQ+ Health Aus-tralia Party Sur-vey.'' 2022. \T1/ppl/m/it/9 (-20) LGB-TIQ+ Health Aus-tralia\T1/ppl/m/n/9 (-20) . [][]$\T1/zi4/m/n/9 https : / / www . lgbtiqhealth .
  []
 
 
-Overfull \hbox (3.41628pt too wide) in paragraph at lines 613--615
+Overfull \hbox (3.41628pt too wide) in paragraph at lines 615--617
 []\T1/ppl/m/n/9 (-20) O'Hara-Wild, Mitchell, Stephanie Kobakian, H. Sherry Zhang, Di Cook, Si-mon Ur-banek, and Christophe
  []
 
 
-Overfull \hbox (30.22154pt too wide) in paragraph at lines 622--624
+Overfull \hbox (30.22154pt too wide) in paragraph at lines 624--626
 []\T1/ppl/m/n/9 (-20) ``Osiris.'' 2023. \T1/ppl/m/it/9 (-20) Bvd\T1/ppl/m/n/9 (-20) . Bu-reau van Dijk. [][]$\T1/zi4/m/n/9 https : / / www . bvdinfo . com / en -[] gb / our -[] products / data / international /
  []
 
-[17]
 No file RJwrapper.bbl.
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 667.
+(Font)              using `T1/zi4/m/n' instead on input line 669.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 9.18004pt on input line 677.
+(Font)              scaled to size 9.18004pt on input line 679.
 ) [18] (./RJwrapper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
@@ -899,18 +918,18 @@ Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: 394C471A0A5E8F90A64C20CA53E35506;2673.
  ) 
 Here is how much of TeX's memory you used:
- 26863 strings out of 476450
- 493475 string characters out of 5799743
+ 26877 strings out of 476450
+ 494431 string characters out of 5799743
  1945043 words of memory out of 5000000
- 47713 multiletter control sequences out of 15000+600000
+ 47727 multiletter control sequences out of 15000+600000
  602686 words of font info for 293 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 117i,11n,131p,1018b,894s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 117i,12n,131p,1018b,913s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (18 pages, 2319879 bytes).
+Output written on RJwrapper.pdf (18 pages, 2638486 bytes).
 PDF statistics:
- 387 PDF objects out of 1000 (max. 8388607)
- 332 compressed objects within 4 object streams
+ 405 PDF objects out of 1000 (max. 8388607)
+ 346 compressed objects within 4 object streams
  101 named destinations out of 1000 (max. 500000)
- 61134 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 61144 words of extra memory for PDF output out of 61914 (max. 10000000)
 

@@ -372,8 +372,6 @@ To obtain a \texttt{ggplot} object for the animation function, the \texttt{walla
 \begin{verbatim}
 p <- wallaby_plot(data = animbook,
              group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-             shade_palette = c("#737373", "#969696", "#BDBDBD",
-                               "#D9D9D9","#D9D9D9","#D9D9D9"),
              rendering = "gganimate",
              subset = "top",
              relation = "one_many",
@@ -383,6 +381,10 @@ p
 \end{verbatim}
 
 \begin{center}\includegraphics[width=1\linewidth]{animbook-journal_files/figure-latex/unnamed-chunk-10-1} \end{center}
+
+Additionally, users have the flexibility to explore various options, such as subset or relation, allowing them to customize how the plot will appear.
+
+\includegraphics{animbook-journal_files/figure-latex/unnamed-chunk-11-1.pdf} \includegraphics{animbook-journal_files/figure-latex/unnamed-chunk-11-2.pdf}
 
 Once the \texttt{ggplot} object is obtained, the \texttt{anim\_animate()} function can be used to transform it into a \texttt{gganimate} object. This then can be passed onto the \texttt{animate()} function from the \CRANpkg{gganimate} for rendering.
 
