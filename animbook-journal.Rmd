@@ -148,7 +148,7 @@ devtools::install_github("KrisanatA/animbook")
 In designing the \CRANpkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data into a categorized data structure, as seen in Figure \@ref(fig:data-diagram). The second stage is creating a `ggplot` object, which can be subsequently passed into the animation function. During the second stage, an internal function will turn the categorized data into an animated data structure. The final step involves transforming the `ggplot` to a `gganimate` object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
 
 
-### Data preprocessing
+### Data pre-processing
 
 From Figure \@ref(fig:data-diagram), there is a need to map numerical value to a category. One way to handle this is by ranking the sales and grouping the rankings into quantiles. In some cases, this may not be the best option. When the observation is moved up by quantile, one is bound to move down. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different groups, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data.
 
@@ -351,45 +351,45 @@ It is necessary to save the plot as a `ggplot` object before passing it to the f
 ## Example usage
 
 The `cat_change` data in the package is used to illustrate how to use this package. It has five categories, A to E, over two time points. Since the data is already in the categorized data structure, the `anim_prep_cat()` function is used. The output from this function is a class called `categorized`.
-  
+
 ```{r, echo=TRUE}
 a <- anim_prep_cat(cat_change, 
-                          id = id, 
-                          values = qnt, 
-                          time = time, 
-                          group = gp)
+                   id = id, 
+                   values = qnt, 
+                   time = time, 
+                   group = gp)
 class(a)
 glimpse(a)
 ```
 
-  To obtain an object for the animation function, the `wallaby_plot` is used. The `shade_palette`, `subset`, and `relation` arguments are applied to refine the final appearance of the animation. REFER TO FIGURE
+To obtain an object for the animation function, the `wallaby_plot` is used. The `subset` and `relation` arguments are applied to refine the final appearance of the animation, Figure \@ref(fig:top-one).
 
-```{r, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="FIXME"}
+```{r top-one, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points transferred from the left category A to the right category A and E before being animated."}
 p <- wallaby_plot(data = a,
-             group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-             rendering = "gganimate",
-             subset = "top",
-             relation = "one_many",
-             total_point = NULL)
+                  group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+                  rendering = "gganimate",
+                  subset = "top",
+                  relation = "one_many",
+                  total_point = NULL)
 
 p
 ```
-  
-  Users have the flexibility to use various options, such as `subset` or `relation`, to customize the plot appearance. Here "top" is used to to specify category A for the final time point, and "many_one" is used to specify that all categories flowing into A at time point 2 are shown. REFER TO FIGURE
-  
-```{r fig.cap="FIXME"}
+
+Figure \@ref(fig:top-many), show the flexibility to use various options, such as `subset` or `relation`, to customize the plot appearance. Here `subset = "top"` is used to specify category A for the final time point, and `relation = "many_one"` is used to specify that all categories flowing into A at time point 2 are shown.
+
+```{r top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points transferred from the right category A and E to the left category A before being animated. This is called a many-to-one relationship."}
 p_2 <- wallaby_plot(data = a,
-                   rendering = "gganimate",
-                   subset = "top",
-                   relation = "many_one",
-                   total_point = NULL)
+                    rendering = "gganimate",
+                    subset = "top",
+                    relation = "many_one",
+                    total_point = NULL)
 
 p_2
 ```
 
-Using `subset = "B"` will only show the point for a single category. REFER TO FIGURE
+Using `subset = "B"` will only show the point for a single category as shown in the Figure \@ref(fig:b-many).
 
-```{r fig.cap="FIXME"}
+```{r b-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points that got transferred to category B on the right are only from category B. The plot shown is the plot before it is being animated."}
 p_3 <- wallaby_plot(data = a,
                     rendering = "gganimate",
                     subset = "B",
@@ -398,9 +398,9 @@ p_3 <- wallaby_plot(data = a,
 
 p_3
 ```
-  
-  This plot object is passed to the `anim_animate()` function to transform it into a `gganimate` object, which appears as an animation when the `animate()` function from \CRANpkg{gganimate} is used for rendering. REFER TO PLOT
-  
+
+This plot object is passed to the `anim_animate()` function to transform it into a `gganimate` object, which appears as an animation when the `animate()` function from \CRANpkg{gganimate} is used for rendering. This can be seen in Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:catchange-figure}','\\@ref(fig:catchange-gif)'))`
+
 ```{r, eval=FALSE}
 p2 <- anim_animate(p)
 
@@ -421,6 +421,7 @@ knitr::include_graphics("figures/animation-example.png")
 ```{r catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while some of the Y observations change from group A to group E.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/catchange.gif")
 ```
+
 
 
 # Applications

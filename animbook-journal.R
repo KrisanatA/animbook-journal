@@ -182,38 +182,38 @@ argument_table2 |>
 
 
 ## ----echo=TRUE----------------------------------------------------------------
-animbook <- anim_prep_cat(cat_change, 
-                          id = id, 
-                          values = qnt, 
-                          time = time, 
-                          group = gp)
+a <- anim_prep_cat(cat_change, 
+                   id = id, 
+                   values = qnt, 
+                   time = time, 
+                   group = gp)
+class(a)
+glimpse(a)
 
-head(animbook, 10)
-str(animbook)
 
-
-## ----echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body"----
-p <- wallaby_plot(data = animbook,
-             group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-             rendering = "gganimate",
-             subset = "top",
-             relation = "one_many",
-             total_point = NULL)
+## ----top-one, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points transferred from the left category A to the right category A and E before being animated."----
+p <- wallaby_plot(data = a,
+                  group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+                  rendering = "gganimate",
+                  subset = "top",
+                  relation = "one_many",
+                  total_point = NULL)
 
 p
 
 
-## -----------------------------------------------------------------------------
-p_2 <- wallaby_plot(data = animbook,
-                   rendering = "gganimate",
-                   subset = "top",
-                   relation = "many_one",
-                   total_point = NULL)
+## ----top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points transferred from the right category A and E to the left category A before being animated. This is called a many-to-one relationship."----
+p_2 <- wallaby_plot(data = a,
+                    rendering = "gganimate",
+                    subset = "top",
+                    relation = "many_one",
+                    total_point = NULL)
 
 p_2
 
 
-p_3 <- wallaby_plot(data = animbook,
+## ----b-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points that got transferred to category B on the right are only from category B. The plot shown is the plot before it is being animated."----
+p_3 <- wallaby_plot(data = a,
                     rendering = "gganimate",
                     subset = "B",
                     relation = "many_one",

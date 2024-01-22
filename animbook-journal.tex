@@ -140,8 +140,8 @@ devtools::install_github("KrisanatA/animbook")
 
 In designing the \CRANpkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data into a categorized data structure, as seen in Figure \ref{fig:data-diagram}. The second stage is creating a \texttt{ggplot} object, which can be subsequently passed into the animation function. During the second stage, an internal function will turn the categorized data into an animated data structure. The final step involves transforming the \texttt{ggplot} to a \texttt{gganimate} object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
 
-\hypertarget{data-preprocessing}{%
-\subsubsection{Data preprocessing}\label{data-preprocessing}}
+\hypertarget{data-pre-processing}{%
+\subsubsection{Data pre-processing}\label{data-pre-processing}}
 
 From Figure \ref{fig:data-diagram}, there is a need to map numerical value to a category. One way to handle this is by ranking the sales and grouping the rankings into quantiles. In some cases, this may not be the best option. When the observation is moved up by quantile, one is bound to move down. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different groups, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data.
 
@@ -326,67 +326,100 @@ It is necessary to save the plot as a \texttt{ggplot} object before passing it t
 \hypertarget{example-usage}{%
 \subsection{Example usage}\label{example-usage}}
 
-In this section, the package usage will be demonstrated using the \texttt{cat\_change} dataset included in this package. This dataset is simulated data that has changed from category A to E between two time points. Since this data is already in the categorized data structure, the \texttt{anim\_prep\_cat()} function is utilized. The output produced from this package is referred to as the \texttt{categorized} data.
+The \texttt{cat\_change} data in the package is used to illustrate how to use this package. It has five categories, A to E, over two time points. Since the data is already in the categorized data structure, the \texttt{anim\_prep\_cat()} function is used. The output from this function is a class called \texttt{categorized}.
 
 \begin{verbatim}
-animbook <- anim_prep_cat(cat_change, 
-                          id = id, 
-                          values = qnt, 
-                          time = time, 
-                          group = gp)
-
-head(animbook, 10)
+a <- anim_prep_cat(cat_change, 
+                   id = id, 
+                   values = qnt, 
+                   time = time, 
+                   group = gp)
+class(a)
 \end{verbatim}
 
 \begin{verbatim}
-#> # A tibble: 10 x 5
-#>    id     time qtile label group
-#>    <fct> <int> <dbl> <chr> <fct>
-#>  1 1      2020     5 A     X    
-#>  2 2      2020     5 A     X    
-#>  3 3      2020     5 A     X    
-#>  4 4      2020     5 A     X    
-#>  5 5      2020     5 A     X    
-#>  6 6      2020     5 A     X    
-#>  7 7      2020     5 A     X    
-#>  8 8      2020     5 A     X    
-#>  9 9      2020     5 A     X    
-#> 10 10     2020     5 A     X
+#> [1] "tbl_df"      "tbl"         "data.frame"  "categorized"
 \end{verbatim}
 
 \begin{verbatim}
-str(animbook)
+glimpse(a)
 \end{verbatim}
 
 \begin{verbatim}
-#> tibble[,5] (S3: tbl_df/tbl/data.frame/categorized)
-#>  $ id   : Factor w/ 200 levels "1","2","3","4",..: 1 2 3 4 5 6 7 8 9 10 ...
-#>  $ time : int [1:400] 2020 2020 2020 2020 2020 2020 2020 2020 2020 2020 ...
-#>  $ qtile: num [1:400] 5 5 5 5 5 5 5 5 5 5 ...
-#>  $ label: chr [1:400] "A" "A" "A" "A" ...
-#>  $ group: Factor w/ 2 levels "X","Y": 1 1 1 1 1 1 1 1 1 1 ...
+#> Rows: 400
+#> Columns: 5
+#> $ id    <fct> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1~
+#> $ time  <int> 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020~
+#> $ qtile <dbl> 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5~
+#> $ label <chr> "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",~
+#> $ group <fct> X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, Y, Y~
 \end{verbatim}
 
-To obtain a \texttt{ggplot} object for the animation function, the \texttt{wallaby\_plot} is used. For further customization, the \texttt{shade\_palette}, \texttt{subset}, and \texttt{relation} arguments are applied to define the final appearance of the animation.
+To obtain an object for the animation function, the \texttt{wallaby\_plot} is used. The \texttt{subset} and \texttt{relation} arguments are applied to refine the final appearance of the animation, Figure \ref{fig:top-one}.
 
 \begin{verbatim}
-p <- wallaby_plot(data = animbook,
-             group_palette = RColorBrewer::brewer.pal(9, "Set1"),
-             rendering = "gganimate",
-             subset = "top",
-             relation = "one_many",
-             total_point = NULL)
+p <- wallaby_plot(data = a,
+                  group_palette = RColorBrewer::brewer.pal(9, "Set1"),
+                  rendering = "gganimate",
+                  subset = "top",
+                  relation = "one_many",
+                  total_point = NULL)
 
 p
 \end{verbatim}
 
-\begin{center}\includegraphics[width=1\linewidth]{animbook-journal_files/figure-latex/unnamed-chunk-10-1} \end{center}
+\begin{figure}
 
-Additionally, users have the flexibility to explore various options, such as subset or relation, allowing them to customize how the plot will appear.
+{\centering \includegraphics[width=1\linewidth]{animbook-journal_files/figure-latex/top-one-1} 
 
-\includegraphics{animbook-journal_files/figure-latex/unnamed-chunk-11-1.pdf} \includegraphics{animbook-journal_files/figure-latex/unnamed-chunk-11-2.pdf}
+}
 
-Once the \texttt{ggplot} object is obtained, the \texttt{anim\_animate()} function can be used to transform it into a \texttt{gganimate} object. This then can be passed onto the \texttt{animate()} function from the \CRANpkg{gganimate} for rendering.
+\caption{The static plot shows the points transferred from the left category A to the right category A and E before being animated.}\label{fig:top-one}
+\end{figure}
+
+Figure \ref{fig:top-many}, show the flexibility to use various options, such as \texttt{subset} or \texttt{relation}, to customize the plot appearance. Here \texttt{subset\ =\ "top"} is used to specify category A for the final time point, and \texttt{relation\ =\ "many\_one"} is used to specify that all categories flowing into A at time point 2 are shown.
+
+\begin{verbatim}
+p_2 <- wallaby_plot(data = a,
+                    rendering = "gganimate",
+                    subset = "top",
+                    relation = "many_one",
+                    total_point = NULL)
+
+p_2
+\end{verbatim}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{animbook-journal_files/figure-latex/top-many-1} 
+
+}
+
+\caption{The static plot shows the points transferred from the right category A and E to the left category A before being animated. This is called a many-to-one relationship.}\label{fig:top-many}
+\end{figure}
+
+Using \texttt{subset\ =\ "B"} will only show the point for a single category as shown in the Figure \ref{fig:b-many}.
+
+\begin{verbatim}
+p_3 <- wallaby_plot(data = a,
+                    rendering = "gganimate",
+                    subset = "B",
+                    relation = "many_one",
+                    total_point = NULL)
+
+p_3
+\end{verbatim}
+
+\begin{figure}
+
+{\centering \includegraphics[width=1\linewidth]{animbook-journal_files/figure-latex/b-many-1} 
+
+}
+
+\caption{The static plot shows the points that got transferred to category B on the right are only from category B. The plot shown is the plot before it is being animated.}\label{fig:b-many}
+\end{figure}
+
+This plot object is passed to the \texttt{anim\_animate()} function to transform it into a \texttt{gganimate} object, which appears as an animation when the \texttt{animate()} function from \CRANpkg{gganimate} is used for rendering. This can be seen in Figure \ref{fig:catchange-figure}
 
 \begin{verbatim}
 p2 <- anim_animate(p)
@@ -402,8 +435,6 @@ gganimate::animate(p2)
 
 \caption{Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.}\label{fig:catchange-figure}
 \end{figure}
-
-This is an example of how the users can apply the three-step process in creating an animation plot using the \texttt{animbook} package.
 
 \hypertarget{applications}{%
 \section{Applications}\label{applications}}
@@ -542,21 +573,11 @@ According to the survey ({``LGBTIQ+ Health Australia Party Survey''} (2022)), th
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
-Beginning with inspiration drawn from the New York Times article, this packages provides tools to facilitate the communication of complex data to broader audiences. The paper outlines the anticipated data format for input into the prep function, covering raw, categorized, and animated data formats. It delves into the animation concept, persistence of vision, achieved through point interpolation, and the visualization design choices.
+Beginning with inspiration drawn from the New York Times article, this package provides tools to generate animations for temporal flow data to study changes in groups over time. The paper describes how to pre-process the data into a format for making several types of plots and animation. It also explains what needs to be considered when making an animation such as persistence of objects, how to achieve this using interpolation, and the visualization design choices automated and those available to users.
 
-The \CRANpkg{animbook} package comes with certain drawbacks. Firstly, it leans more towards being a communication tool rather than an exploratory one, as the information it presents can often be obtained from a summary table. Secondly, it may struggle to handle datasets with numerous categories (quantiles), limiting its applicability in such scenarios. Furthermore, perceiving patterns from the animation might be challenging for users when there are differences in sample sizes across groups. Lastly, the animation requires the reader to mentally calculate the fraction of points that are in motion. However, the package provides tools that provides a simple solution for creating meaningful animations through a simple step process.
+The package provides the tools to create animations for simple temporal patterns, with a few steps, but these visualization methods have some limitations. It is primarily for communication rather than exploration because one typically knows what the main patterns are. If there are many categories (quantiles) the display will be too crowded. Because the animation involves perceiving patterns in groups of moving points it can be challenging with unbalanced sample sizes. This requires the reader to mentally calculate the fraction of points that are in motion.
 
-Introducing features that allow variation in speeds for each observation could enhance the visualization by introducing an additonal dimension. The new animated and static plots, as demonstrated in the New York Times article, would enable comparisons of demographics at specific points in time. Additionally, the potential re-parameterization of the x-axis from years to ages (e.g., company ages) could add different ways of viewing the visualization.
-
-\begin{itemize}
-\tightlist
-\item
-  the first paragraph is to summarize the achievement of this
-\item
-  the second paragraph is about the pro and con, what works, what doesn't works.
-\item
-  the third paragraph, if you have another 6 months, what would you implemented.
-\end{itemize}
+There are some potential new directions to develop this work. Some applications might benefit by re-parameterization of the x-axis from years to ages (e.g.~company ages, time since the company was founded). One could also re-arrange the mapping of variables to the plot and animations. For example, the New York Times article, mentioned that to better compare distributions in time, one could plot the quantiles, which would form something like an S-curve, and animate over time, to observe how the distributions are changing.
 
 \hypertarget{acknowledgements}{%
 \section*{Acknowledgements}\label{acknowledgements}}
