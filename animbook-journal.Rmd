@@ -283,7 +283,9 @@ argument_num_tab |>
   
   The `ncat`, `breaks`, `group_scaling`, and `scaling` arguments are for the user to customize the data scaling calculation in the `anim_prep()` function. In the `anim_prep_cat` function, the users can customize the order of the category to be shown on the y-axis using the `order` argument.
   
-  Then, for further customization regarding how the final visualization looks. The `group`, `label`, and `time_dependent` arguments can be adjusted.
+  Then, for further customization regarding how the final visualization looks. The `group`, `label`, and `time_dependent` arguments can be adjusted. 
+  
+  The `time_dependent` argument provides the user flexibility to choose whether points will start simultaneously (`time_dependent = TRUE`) or randomly (`time_dependent = FALSE`). The challenge with points starting at the same time is the formation of point clusters, making it difficult to track individual points. Allowing for the random starting time makes the point tracking simpler. The starting times for the points are generated using the `runif()` function, where the `max` argument can be adjusted using the `width` parameter in the plotting function.
   
 
 ### Plotting function
@@ -364,7 +366,7 @@ glimpse(a)
 
 To obtain an object for the animation function, the `wallaby_plot` is used. The `subset` and `relation` arguments are applied to refine the final appearance of the animation, Figure \@ref(fig:top-one).
 
-```{r top-one, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points transferred from the left category A to the right category A and E before being animated."}
+```{r top-one, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the transition of points from the left category A to the right categories A and E. This is also referred to as a one-to-many relationship plot. The points shown in this plot only originated in category A. It emphasizes that these points only stay within the same category A or change to category E."}
 p <- wallaby_plot(data = a,
                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
                   rendering = "gganimate",
@@ -377,7 +379,7 @@ p
 
 Figure \@ref(fig:top-many), show the flexibility to use various options, such as `subset` or `relation`, to customize the plot appearance. Here `subset = "top"` is used to specify category A for the final time point, and `relation = "many_one"` is used to specify that all categories flowing into A at time point 2 are shown.
 
-```{r top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points transferred from the right category A and E to the left category A before being animated. This is called a many-to-one relationship."}
+```{r top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the movement of points from categories A and E on the right to category A on the left, representing a many-to-one relationship. This specifically highlights the points that have moved to category A, which are the points that originate from categories A and E."}
 p_2 <- wallaby_plot(data = a,
                     rendering = "gganimate",
                     subset = "top",
@@ -389,7 +391,7 @@ p_2
 
 Using `subset = "B"` will only show the point for a single category as shown in the Figure \@ref(fig:b-many).
 
-```{r b-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points that got transferred to category B on the right are only from category B. The plot shown is the plot before it is being animated."}
+```{r b-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the transfer of points from the right category B to the left category B. It underscores that the points ultimately landing in category B originate specifically from category B itself."}
 p_3 <- wallaby_plot(data = a,
                     rendering = "gganimate",
                     subset = "B",

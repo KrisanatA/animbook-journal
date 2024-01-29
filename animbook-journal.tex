@@ -254,6 +254,8 @@ The \texttt{ncat}, \texttt{breaks}, \texttt{group\_scaling}, and \texttt{scaling
 
 Then, for further customization regarding how the final visualization looks. The \texttt{group}, \texttt{label}, and \texttt{time\_dependent} arguments can be adjusted.
 
+The \texttt{time\_dependent} argument provides the user flexibility to choose whether points will start simultaneously (\texttt{time\_dependent\ =\ TRUE}) or randomly (\texttt{time\_dependent\ =\ FALSE}). The challenge with points starting at the same time is the formation of point clusters, making it difficult to track individual points. Allowing for the random starting time makes the point tracking simpler. The starting times for the points are generated using the \texttt{runif()} function, where the \texttt{max} argument can be adjusted using the \texttt{width} parameter in the plotting function.
+
 \hypertarget{plotting-function}{%
 \subsubsection{Plotting function}\label{plotting-function}}
 
@@ -374,7 +376,7 @@ p
 
 }
 
-\caption{The static plot shows the points transferred from the left category A to the right category A and E before being animated.}\label{fig:top-one}
+\caption{The static plot shows the transition of points from the left category A to the right categories A and E. This is also referred to as a one-to-many relationship plot. The points shown in this plot only originated in category A. It emphasizes that these points only stay within the same category A or change to category E.}\label{fig:top-one}
 \end{figure}
 
 Figure \ref{fig:top-many}, show the flexibility to use various options, such as \texttt{subset} or \texttt{relation}, to customize the plot appearance. Here \texttt{subset\ =\ "top"} is used to specify category A for the final time point, and \texttt{relation\ =\ "many\_one"} is used to specify that all categories flowing into A at time point 2 are shown.
@@ -395,7 +397,7 @@ p_2
 
 }
 
-\caption{The static plot shows the points transferred from the right category A and E to the left category A before being animated. This is called a many-to-one relationship.}\label{fig:top-many}
+\caption{The static plot shows the movement of points from categories A and E on the right to category A on the left, representing a many-to-one relationship. This specifically highlights the points that have moved to category A, which are the points that originate from categories A and E.}\label{fig:top-many}
 \end{figure}
 
 Using \texttt{subset\ =\ "B"} will only show the point for a single category as shown in the Figure \ref{fig:b-many}.
@@ -416,7 +418,7 @@ p_3
 
 }
 
-\caption{The static plot shows the points that got transferred to category B on the right are only from category B. The plot shown is the plot before it is being animated.}\label{fig:b-many}
+\caption{The static plot shows the transfer of points from the right category B to the left category B. It underscores that the points ultimately landing in category B originate specifically from category B itself.}\label{fig:b-many}
 \end{figure}
 
 This plot object is passed to the \texttt{anim\_animate()} function to transform it into a \texttt{gganimate} object, which appears as an animation when the \texttt{animate()} function from \CRANpkg{gganimate} is used for rendering. This can be seen in Figure \ref{fig:catchange-figure}

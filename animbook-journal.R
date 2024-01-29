@@ -191,7 +191,7 @@ class(a)
 glimpse(a)
 
 
-## ----top-one, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points transferred from the left category A to the right category A and E before being animated."----
+## ----top-one, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the transition of points from the left category A to the right categories A and E. This is also referred to as a one-to-many relationship plot. The points shown in this plot only originated in category A. It emphasizes that these points only stay within the same category A or change to category E."----
 p <- wallaby_plot(data = a,
                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
                   rendering = "gganimate",
@@ -202,7 +202,7 @@ p <- wallaby_plot(data = a,
 p
 
 
-## ----top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points transferred from the right category A and E to the left category A before being animated. This is called a many-to-one relationship."----
+## ----top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the movement of points from categories A and E on the right to category A on the left, representing a many-to-one relationship. This specifically highlights the points that have moved to category A, which are the points that originate from categories A and E."----
 p_2 <- wallaby_plot(data = a,
                     rendering = "gganimate",
                     subset = "top",
@@ -212,7 +212,7 @@ p_2 <- wallaby_plot(data = a,
 p_2
 
 
-## ----b-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the points that got transferred to category B on the right are only from category B. The plot shown is the plot before it is being animated."----
+## ----b-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the transfer of points from the right category B to the left category B. It underscores that the points ultimately landing in category B originate specifically from category B itself."----
 p_3 <- wallaby_plot(data = a,
                     rendering = "gganimate",
                     subset = "B",
