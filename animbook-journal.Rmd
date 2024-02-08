@@ -44,8 +44,8 @@ The concept of "zombie companies" began to attract attention when @zombie_compan
   
   The challenge in producing an animation like that in the New York Times article animation is the transformation of the data and connection with elements of the plot that will be animated. The complexities include allowing the user to choose the number of categories, standardizing distributions, and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.    
   
-  The structure of this paper is as follows. The next section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools and how they are employed for this problem. A section on the functions of the package and how the visualization is designed demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
-
+  The structure of this paper is as follows. The next section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. It is followed by sections that describe the data format needed, considerations about making animations, and visual design. The software and its functions and usage are detailed in the next section. The next section illustrates the usage of the software to examine company performance, particularly zombie patterns, and changing political allegiance of voters in Australia.
+The discussion section summarises, outlines some limitations and suggests some future directions.
 
 # Explanation of the New York Times visualization {#NYTvis}
 
@@ -81,7 +81,7 @@ In the data structure, there are requirements that must be followed for reproduc
 
 # Animation tools {#animation}
 
-```{r animation-diagram, fig.cap="The diagram shows how the animation is done using the successive pictures. When small changes are seen in quick succession, it will appear as if the objects are in motion.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
+```{r animation-diagram, fig.cap="An animation requires small changes shown in quick succession to make it appear as if the objects are in motion. The three plots above show a single point changing position by a small amount, which when shown quickly will look like that point has moved up and to the right.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/animation-diagram.png")
 ```
 
@@ -93,7 +93,7 @@ A principle important for designing a useful animation is called persistence of 
   
   The `plotly` software is a graphic library that provides tools for creating an interactive plot in multiple programming languages, such as R, JavaScript, Python, and Julia. In R, plotly can be accessed through the \CRANpkg{plotly} package, which integrates plotly.js from the JavaScript graphing library. The usage of this library can be from a converting function, `ggplotly()`, or a standalone function, `plot_ly()`. The conversion is accomplished by taking the elements from the `ggplot` object and then redrawing them using the plotly.js.
   
-```{r animated-diagram, fig.cap="The diagram shows how the frames were used in the animated plot. Frame one is depicted in blue, and frame two is represented in red. Each blue component is mapped exclusively to the Frame 1 plot, while all the second-frame elements are excluded, and vice versa.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
+```{r animated-diagram, fig.cap="Frames 1 and 2 show the year 1 and year 2 positions of points, from the data in the table at top. The id is necessary to enable interpolation to make the small changes to generate a perception of motion from frame 1 position to frame 2 position.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/animated-diagram.png")
 ```
 
@@ -114,7 +114,7 @@ The animated visualization can be an effective communication tool (@Mayer_Moreno
 
   @mayer_2005 states that designing multimedia requires the designer to understand how people learn. One of the principles in @mayer_2005, Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
   
-```{r proportional-shade, fig.show="hold", out.width="50%", fig.cap="The plot shows the difference between the sigmoid (shown in the left figure) and the sine curve (shown in the right figure). In the sigmoid, as the curve progresses, it becomes narrower, resulting in a less accurate representation of proportions compared to the sine curve."}
+```{r proportional-shade, fig.show="hold", out.width="50%", fig.cap="The plot shows the difference between the sigmoid (left) and the sine curve (right). In the sigmoid, as the curve progresses it appears to become narrower, possibly resulting in more misperception of relative proportions compared to the sine curve."}
 knitr::include_graphics("figures/sigmoid-shade.png")
 knitr::include_graphics("figures/sine-shade.png")
 ```
@@ -366,7 +366,7 @@ glimpse(a)
 
 To obtain an object for the animation function, the `wallaby_plot` is used. The `subset` and `relation` arguments are applied to refine the final appearance of the animation, Figure \@ref(fig:top-one).
 
-```{r top-one, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the transition of points from the left category A to the right categories A and E. This is also referred to as a one-to-many relationship plot. The points shown in this plot only originated in category A. It emphasizes that these points only stay within the same category A or change to category E."}
+```{r top-one, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="This illustrates the transition of points from the left category A to the right categories A and E. This is also referred to as a one-to-many relationship plot. The points shown in this plot only originated in category A. It emphasizes that these points only stay within the same category A or change to category E."}
 p <- wallaby_plot(data = a,
                   group_palette = RColorBrewer::brewer.pal(9, "Set1"),
                   rendering = "gganimate",
@@ -379,7 +379,7 @@ p
 
 Figure \@ref(fig:top-many), show the flexibility to use various options, such as `subset` or `relation`, to customize the plot appearance. Here `subset = "top"` is used to specify category A for the final time point, and `relation = "many_one"` is used to specify that all categories flowing into A at time point 2 are shown.
 
-```{r top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the movement of points from categories A and E on the right to category A on the left, representing a many-to-one relationship. This specifically highlights the points that have moved to category A, which are the points that originate from categories A and E."}
+```{r top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The plot shows the movement of points from categories A and E on the right to category A on the left, representing a many-to-one relationship. This specifically highlights the points that have moved to category A, which are the points that originate from categories A and E."}
 p_2 <- wallaby_plot(data = a,
                     rendering = "gganimate",
                     subset = "top",
@@ -391,7 +391,7 @@ p_2
 
 Using `subset = "B"` will only show the point for a single category as shown in the Figure \@ref(fig:b-many).
 
-```{r b-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The static plot shows the transfer of points from the right category B to the left category B. It underscores that the points ultimately landing in category B originate specifically from category B itself."}
+```{r b-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The plot shows the transfer of points from the right category B to the left category B. It underscores that the points ultimately landing in category B originate specifically from category B itself."}
 p_3 <- wallaby_plot(data = a,
                     rendering = "gganimate",
                     subset = "B",
@@ -416,11 +416,11 @@ p2 <- anim_animate(p)
 gganimate::animate(p2)
 ```
 
-```{r catchange-figure, fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r catchange-figure, fig.cap = "Four single frames from the animated visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-example.png")
 ```
 
-```{r catchange-gif, out.extra="class = 'gif'", fig.cap = "Animate visualization using example data. All of the X observations stay within the same group, while some of the Y observations change from group A to group E.", eval=knitr::is_html_output()}
+```{r catchange-gif, out.extra="class = 'gif'", fig.cap = "Animated visualization using example data. All of the X observations stay within the same group, while some of the Y observations change from group A to group E.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/catchange.gif")
 ```
 
@@ -489,11 +489,11 @@ gganimate::animate(kan_p2)
 gganimate::animate(p2)
 ```
 
-```{r kan-osiris-figure, fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r kan-osiris-figure, fig.cap = "Four frames from the kangaroo plot visualization showing the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report that US companies have higher turnover rate relative to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/osiris.png")
 ```
 
-```{r kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.", eval=knitr::is_html_output()}
+```{r kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report that US companies have higher turnover rate relative to Japanese companies.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/kan-osiris.gif")
 ```
 
@@ -551,11 +551,11 @@ gganimate::anim_save("figures/voter.gif", p2_voter, height = 8, fps = 30,
 gganimate::animate(p2_voter)
 ```
 
-```{r voter-figure, fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, an individual who identified as others overwhelmingly shifted their party affiliations to the Greens party. However, not many of them are shown in the plot.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
+```{r voter-figure, fig.cap = "Four frames from a wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, the few individuals who identified as neither male or female overwhelmingly shifted their party affiliations to the Greens.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}
 knitr::include_graphics("figures/animation-voter.png")
 ```
 
-```{r voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, an individual who identified as others overwhelmingly shifted their party affiliations to the Greens party. However, not many of them are shown in the plot.", eval=knitr::is_html_output()}
+```{r voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, the few individuals who identified as neither male or female overwhelmingly shifted their party affiliations to the Greens.", eval=knitr::is_html_output()}
 knitr::include_graphics("figures/voter.gif")
 ```
 
