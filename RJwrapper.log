@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.23)  29 JAN 2024 13:21
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.23)  14 FEB 2024 16:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -805,86 +805,70 @@ LaTeX Font Info:    Font shape `U/msb/m/n' will be
 LaTeX Font Info:    Trying to load font information for TS1+ppl on input line 267.
 (c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/psnfss/ts1ppl.fd
 File: ts1ppl.fd 2001/06/04 font definitions for TS1/ppl.
-) [7]
-<figures/sankey-shade-1.png, id=174, 602.25pt x 480.29437pt>
-File: figures/sankey-shade-1.png Graphic file (type png)
-<use figures/sankey-shade-1.png>
-Package pdftex.def Info: figures/sankey-shade-1.png  used on input line 281.
-(pdftex.def)             Requested size: 199.16928pt x 158.83475pt.
-<figures/sankey-shade-2.png, id=175, 602.25pt x 480.29437pt>
-File: figures/sankey-shade-2.png Graphic file (type png)
-<use figures/sankey-shade-2.png>
-Package pdftex.def Info: figures/sankey-shade-2.png  used on input line 281.
-(pdftex.def)             Requested size: 199.16928pt x 158.83475pt.
-
-Overfull \hbox (1.90001pt too wide) in paragraph at lines 281--281
-[][] [] 
- []
-
-[8] [9 <./figures/sankey-shade-1.png> <./figures/sankey-shade-2.png>]
-<animbook-journal_files/figure-latex/top-one-1.pdf, id=195, 578.16pt x 325.215pt>
+) [7] [8]
+<animbook-journal_files/figure-latex/top-one-1.pdf, id=184, 578.16pt x 325.215pt>
 File: animbook-journal_files/figure-latex/top-one-1.pdf Graphic file (type pdf)
 <use animbook-journal_files/figure-latex/top-one-1.pdf>
-Package pdftex.def Info: animbook-journal_files/figure-latex/top-one-1.pdf  used on input line 375.
+Package pdftex.def Info: animbook-journal_files/figure-latex/top-one-1.pdf  used on input line 371.
 (pdftex.def)             Requested size: 398.33858pt x 224.0661pt.
-[10 <./animbook-journal_files/figure-latex/top-one-1.pdf>]
-<animbook-journal_files/figure-latex/top-many-1.pdf, id=211, 578.16pt x 325.215pt>
+[9]
+<animbook-journal_files/figure-latex/top-many-1.pdf, id=193, 578.16pt x 325.215pt>
 File: animbook-journal_files/figure-latex/top-many-1.pdf Graphic file (type pdf)
 <use animbook-journal_files/figure-latex/top-many-1.pdf>
-Package pdftex.def Info: animbook-journal_files/figure-latex/top-many-1.pdf  used on input line 396.
+Package pdftex.def Info: animbook-journal_files/figure-latex/top-many-1.pdf  used on input line 392.
 (pdftex.def)             Requested size: 398.33858pt x 224.0661pt.
-<animbook-journal_files/figure-latex/b-many-1.pdf, id=213, 578.16pt x 325.215pt>
+<animbook-journal_files/figure-latex/b-many-1.pdf, id=195, 578.16pt x 325.215pt>
 File: animbook-journal_files/figure-latex/b-many-1.pdf Graphic file (type pdf)
 <use animbook-journal_files/figure-latex/b-many-1.pdf>
-Package pdftex.def Info: animbook-journal_files/figure-latex/b-many-1.pdf  used on input line 417.
+Package pdftex.def Info: animbook-journal_files/figure-latex/b-many-1.pdf  used on input line 413.
 (pdftex.def)             Requested size: 398.33858pt x 224.0661pt.
-<figures/animation-example.png, id=216, 957.5775pt x 961.5925pt>
+<figures/animation-example.png, id=198, 957.5775pt x 961.5925pt>
 File: figures/animation-example.png Graphic file (type png)
 <use figures/animation-example.png>
-Package pdftex.def Info: figures/animation-example.png  used on input line 434.
+Package pdftex.def Info: figures/animation-example.png  used on input line 430.
 (pdftex.def)             Requested size: 398.33858pt x 400.00717pt.
-[11 <./animbook-journal_files/figure-latex/top-many-1.pdf>] [12 <./animbook-journal_files/figure-latex/b-many-1.pdf> <./figures/animation-example.png>]
-<figures/osiris.png, id=246, 2694.065pt x 2409.0pt>
+[10 <./animbook-journal_files/figure-latex/top-one-1.pdf>] [11 <./animbook-journal_files/figure-latex/top-many-1.pdf> <./animbook-journal_files/figure-latex/b-many-1.pdf>] [12 <./figures/animation-example.png>]
+<figures/osiris.png, id=240, 2694.065pt x 2409.0pt>
 File: figures/osiris.png Graphic file (type png)
 <use figures/osiris.png>
-Package pdftex.def Info: figures/osiris.png  used on input line 506.
+Package pdftex.def Info: figures/osiris.png  used on input line 502.
 (pdftex.def)             Requested size: 398.33858pt x 356.18825pt.
 [13] [14 <./figures/osiris.png>]
-<figures/animation-exit.png, id=262, 2216.28pt x 1973.3725pt>
+<figures/animation-exit.png, id=256, 2216.28pt x 1973.3725pt>
 File: figures/animation-exit.png Graphic file (type png)
 <use figures/animation-exit.png>
-Package pdftex.def Info: figures/animation-exit.png  used on input line 519.
+Package pdftex.def Info: figures/animation-exit.png  used on input line 515.
 (pdftex.def)             Requested size: 398.33858pt x 354.67984pt.
 [15 <./figures/animation-exit.png>]
-<figures/animation-voter.png, id=272, 1991.44pt x 1768.6075pt>
+<figures/animation-voter.png, id=266, 2127.95pt x 1893.0725pt>
 File: figures/animation-voter.png Graphic file (type png)
 <use figures/animation-voter.png>
-Package pdftex.def Info: figures/animation-voter.png  used on input line 564.
-(pdftex.def)             Requested size: 398.33858pt x 353.76921pt.
+Package pdftex.def Info: figures/animation-voter.png  used on input line 560.
+(pdftex.def)             Requested size: 398.33858pt x 354.34361pt.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 588.
+(Font)              scaled to size 9.37807pt on input line 584.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 588.
+(Font)              scaled to size 7.29405pt on input line 584.
 LaTeX Font Info:    Font shape `U/msa/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 588.
+(Font)              scaled to size 5.21004pt on input line 584.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 9.37807pt on input line 588.
+(Font)              scaled to size 9.37807pt on input line 584.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 7.29405pt on input line 588.
+(Font)              scaled to size 7.29405pt on input line 584.
 LaTeX Font Info:    Font shape `U/msb/m/n' will be
-(Font)              scaled to size 5.21004pt on input line 588.
+(Font)              scaled to size 5.21004pt on input line 584.
 [16] [17 <./figures/animation-voter.png>]
-Overfull \hbox (6.51071pt too wide) in paragraph at lines 617--619
-[]\T1/ppl/m/n/9 (-20) ``LGBTIQ+ Health Aus-tralia Party Sur-vey.'' 2022. \T1/ppl/m/it/9 (-20) LGB-TIQ+ Health Aus-tralia\T1/ppl/m/n/9 (-20) . [][]$\T1/zi4/m/n/9 https : / / www . lgbtiqhealth .
+Overfull \hbox (5.61987pt too wide) in paragraph at lines 613--615
+[]\T1/ppl/m/n/9 (-20) ``LGBTIQ+ Health Aus-tralia Party sur-vey.'' 2022. \T1/ppl/m/it/9 (-20) LGB-TIQ+ Health Aus-tralia\T1/ppl/m/n/9 (-20) . [][]$\T1/zi4/m/n/9 https : / / www . lgbtiqhealth .
  []
 
 
-Overfull \hbox (3.41628pt too wide) in paragraph at lines 638--640
+Overfull \hbox (3.41628pt too wide) in paragraph at lines 634--636
 []\T1/ppl/m/n/9 (-20) O'Hara-Wild, Mitchell, Stephanie Kobakian, H. Sherry Zhang, Di Cook, Si-mon Ur-banek, and Christophe
  []
 
 
-Overfull \hbox (30.22154pt too wide) in paragraph at lines 647--649
+Overfull \hbox (30.22154pt too wide) in paragraph at lines 643--645
 []\T1/ppl/m/n/9 (-20) ``Osiris.'' 2023. \T1/ppl/m/it/9 (-20) Bvd\T1/ppl/m/n/9 (-20) . Bu-reau van Dijk. [][]$\T1/zi4/m/n/9 https : / / www . bvdinfo . com / en -[] gb / our -[] products / data / international /
  []
 
@@ -892,10 +876,10 @@ Overfull \hbox (30.22154pt too wide) in paragraph at lines 647--649
 No file RJwrapper.bbl.
 
 LaTeX Font Warning: Font shape `T1/zi4/m/it' undefined
-(Font)              using `T1/zi4/m/n' instead on input line 692.
+(Font)              using `T1/zi4/m/n' instead on input line 688.
 
 LaTeX Font Info:    Font shape `T1/zi4/m/it' will be
-(Font)              scaled to size 9.18004pt on input line 702.
+(Font)              scaled to size 9.18004pt on input line 698.
 ) [19] (./RJwrapper.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
@@ -908,18 +892,18 @@ Package rerunfilecheck Info: File `RJwrapper.out' has not changed.
 (rerunfilecheck)             Checksum: 394C471A0A5E8F90A64C20CA53E35506;2673.
  ) 
 Here is how much of TeX's memory you used:
- 26863 strings out of 476450
- 493697 string characters out of 5799743
+ 26827 strings out of 476450
+ 492854 string characters out of 5799743
  1945043 words of memory out of 5000000
- 47704 multiletter control sequences out of 15000+600000
- 602941 words of font info for 299 fonts, out of 8000000 for 9000
+ 47681 multiletter control sequences out of 15000+600000
+ 602671 words of font info for 291 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 117i,11n,131p,1018b,899s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 117i,11n,131p,1025b,895s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/inconsolata/Inconsolata-zi4r.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplb8a.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplr8a.pfb><c:/Users/ottoi/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/urw/palatino/uplri8a.pfb>
-Output written on RJwrapper.pdf (19 pages, 2055490 bytes).
+Output written on RJwrapper.pdf (19 pages, 2047457 bytes).
 PDF statistics:
- 419 PDF objects out of 1000 (max. 8388607)
- 357 compressed objects within 4 object streams
- 105 named destinations out of 1000 (max. 500000)
- 61144 words of extra memory for PDF output out of 61914 (max. 10000000)
+ 413 PDF objects out of 1000 (max. 8388607)
+ 355 compressed objects within 4 object streams
+ 104 named destinations out of 1000 (max. 500000)
+ 61134 words of extra memory for PDF output out of 61914 (max. 10000000)
 

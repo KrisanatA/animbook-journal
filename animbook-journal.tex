@@ -17,7 +17,7 @@ The New York Times provided a possible solution in the article titled ``Extensiv
 
 The challenge in producing an animation like that in the New York Times article animation is the transformation of the data and connection with elements of the plot that will be animated. The complexities include allowing the user to choose the number of categories, standardizing distributions, and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.
 
-The structure of this paper is as follows. The next section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. The next section describes the expected data format. Following this is an explanation of available animation tools and how they are employed for this problem. A section on the functions of the package and how the visualization is designed demonstrates how the data is mapped to the animation. The last two sections illustrate the usage of the package and applications to company performance and changing political allegiance.
+The structure of this paper is as follows. The next section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. It is followed by sections describing the data format needed, considerations about making animations, and visual design. The software and its functions and usage are detailed in the next section. The next section illustrates the usage of the software to examine company performance, particularly zombie patterns, and the changing political allegiance of voters in Australia. The discussion section summarizes, outlines some limitations, and suggests some future directions.
 
 \hypertarget{NYTvis}{%
 \section{Explanation of the New York Times visualization}\label{NYTvis}}
@@ -28,7 +28,7 @@ The structure of this paper is as follows. The next section explains the animati
 
 }
 
-\caption{Screenshot of the New York Times animation, which is the motivation for this visualization package.}\label{fig:nyt}
+\caption{Screenshot of the New York Times animation, which is the motivation for this visualization package. The animation illustrates the disparity between white men and black men. It reveals that despite black boys growing up in a rich household, they still have a higher likelihood of falling into lower income groups compared to white boys.}\label{fig:nyt}
 \end{figure}
 
 The interactive chart featured in the New York Times article (Figure \ref{fig:nyt}) unveils the issue of income disparities between black and white children who were raised in families with comparable income according to the Chetty et al. (2020). This visualization reveals that, compared to white children, black children are more likely to drop down to the lower-income group, given that they both grew up in wealthy families.
@@ -41,7 +41,7 @@ This animation was developed using the software based on JavaScript, D3.js (Bost
 
 Hvitfeldt (2018) provides R (R Core Team (2021)) code to generate an animation similar to that of the New York Times. Taking inspiration from this example, \CRANpkg{animbook} expands upon the visualization in numerous ways and packages the code so that it can be use for a variety of similar animations for studying flow and temporal change data.
 
-The New York Times visualization is also similar to what is called a Sankey plot. Sankey plots are flow diagrams that show the movement/change from one category levels to another, with the width of each arrow representing the proportional changes between levels. There are several R packages available to generate version of Sankey plots including \CRANpkg{ggalluvial} and \CRANpkg{ggparallel}. The main difference between the Sankey plot visualization and the animation featured in the New York Times lies in their methods of representing the proportion of changes. Sankey plots utilize the width of connecting lines, while the New York Times animation employs the density and color of points.
+The New York Times visualization is also similar to what is called a Sankey plot. Sankey plots are flow diagrams that show the movement/change from one category level to another, with the width of each arrow representing the proportional changes between levels. There are several R packages available to generate versions of Sankey plots, including \CRANpkg{ggalluvial} and \CRANpkg{ggparallel}. The main difference between the Sankey plot visualization and the animation featured in the New York Times lies in their methods of representing the proportion of changes. Sankey plots utilize the width of connecting lines, while the New York Times animation employs the density and color of points.
 
 \hypertarget{data}{%
 \section{Data}\label{data}}
@@ -70,7 +70,7 @@ One of the frequently encountered values in the dataset is NA, commonly known as
 
 }
 
-\caption{The diagram shows how the animation is done using the successive pictures. When small changes are seen in quick succession, it will appear as if the objects are in motion.}\label{fig:animation-diagram}
+\caption{An animation requires small changes shown in quick succession to make it appear as if the objects are in motion. The three plots above show a single point changing position by a small amount, which when shown quickly, will look like that point has moved up and to the right.}\label{fig:animation-diagram}
 \end{figure}
 
 A principle important for designing a useful animation is called persistence of vision (Webster (2005)). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \ref{fig:animation-diagram}.
@@ -87,7 +87,7 @@ The \texttt{plotly} software is a graphic library that provides tools for creati
 
 }
 
-\caption{The diagram shows how the frames were used in the animated plot. Frame one is depicted in blue, and frame two is represented in red. Each blue component is mapped exclusively to the Frame 1 plot, while all the second-frame elements are excluded, and vice versa.}\label{fig:animated-diagram}
+\caption{Frames 1 and 2 show the year 1 and year 2 positions of points from the data in the table at the top. The id is necessary to enable interpolation to make the small changes to generate a perception of motion from frame 1 position to frame 2 position.}\label{fig:animated-diagram}
 \end{figure}
 
 In the context of data, as shown in Figure \ref{fig:animated-diagram}, observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the \CRANpkg{gganimate} package, the interpolation is achieved using the \CRANpkg{tweenr} package (Pedersen (2022)), while in \CRANpkg{plotly}, it utilizes d3.interpolate (Bostock (2012)).
@@ -108,16 +108,16 @@ The animated visualization can be an effective communication tool (R. E. Mayer a
 R. E. Mayer (2005) states that designing multimedia requires the designer to understand how people learn. One of the principles in R. E. Mayer (2005), Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
 
 \begin{figure}
-\includegraphics[width=0.5\linewidth]{figures/sigmoid-shade} \includegraphics[width=0.5\linewidth]{figures/sine-shade} \caption{The plot shows the difference between the sigmoid (shown in the left figure) and the sine curve (shown in the right figure). In the sigmoid, as the curve progresses, it becomes narrower, resulting in a less accurate representation of proportions compared to the sine curve.}\label{fig:proportional-shade}
+\includegraphics[width=0.5\linewidth]{figures/sigmoid-shade} \includegraphics[width=0.5\linewidth]{figures/sine-shade} \caption{The plot shows the difference between the sigmoid (left) and the sine curve (right). In the sigmoid, as the curve progresses, it appears to become narrower, possibly resulting in more misperception of relative proportions compared to the sine curve.}\label{fig:proportional-shade}
 \end{figure}
 
-In the animation, the use of proportional shaded areas serves to enhances the comprehension of proportion information, effectively displaying the distribution within each group. To represent sub-groups, points are colored to focus attention on differences between groups of observation.
+In the animation, the use of proportional shaded areas serves to enhance the comprehension of proportion information, effectively displaying the distribution within each group. To represent sub-groups, points are colored to focus attention on differences between groups of observation.
 
-Discerning the movement pattern or proportion of sub-groups can be challenging when there is only a small number of points. To address this, sample size are inflated by calculating the sub-group proportion and multiplying it by the desired total number of points. This approach ensures a richer representation of movement patterns.
+Discerning the movement pattern or proportion of sub-groups can be challenging when there are only a small number of points. To address this, the sample size is inflated by calculating the sub-group proportion and multiplying it by the desired total number of points. This approach ensures a richer representation of movement patterns.
 
-Another issue is that all observations have a common starting time. This would mean all points start the animation simultaneously and move as a block through time. This poses a challenge in distinguishing and tracking individual observations and their change patterns. To alleviate this, the animation randomly starts observations at different times so a continuous flow of points is shown. It is important to note that this does not necessarily reflect the real-time occurrence of observations.
+Another issue is that all observations would have a common starting time. It would mean all points start the animation simultaneously and move as a block through time. It poses a challenge in distinguishing and tracking individual observations and their change patterns. To alleviate this, the observations in the animation are randomly started at different times so a continuous flow of points can be seen. It is important to note that this does not necessarily reflect the real-time occurrence of observations.
 
-The paths of observations are also interpolated to create small changes in the position of points to produce the appearance of motion. The interpolation functions in \CRANpkg{gganimate} and \CRANpkg{plotly} are inadequate because they only generate a linear path. Our animation needs non-linear path to show the flow. Sigmoid curves are commonly used in Sankey diagrams (Hvitfeldt (2018)). However, Shaffer (2019) argues that a sine curve more accurately represents proportion throughout the path. As illustrated in Figure \ref{fig:proportional-shade}. The sigmoid accurately represents the proportion at the beginning and end, but as it curves, the shape gets narrower, leading to a less accurate proportion representation than the sine curve. New interpolation functions are needed to compute both the sigmoid and sine path.
+The paths of observations are also interpolated to create small changes in the position of points to produce the appearance of motion. The interpolation functions in \CRANpkg{gganimate} and \CRANpkg{plotly} are inadequate because they only generate a linear path. Our animation needs a non-linear path to show the flow. Sigmoid curves are commonly used in Sankey diagrams (Hvitfeldt (2018)). However, Shaffer (2019) argues that a sine curve more accurately represents proportion throughout the path. As illustrated in Figure \ref{fig:proportional-shade}. The sigmoid accurately represents the proportion at the beginning and end, but as it curves, the shape gets narrower, leading to a less accurate proportion representation than the sine curve. New interpolation functions are needed to compute both the sigmoid and sine paths.
 
 \hypertarget{software}{%
 \section{Software}\label{software}}
@@ -254,7 +254,7 @@ The \texttt{ncat}, \texttt{breaks}, \texttt{group\_scaling}, and \texttt{scaling
 
 Then, for further customization regarding how the final visualization looks. The \texttt{group}, \texttt{label}, and \texttt{time\_dependent} arguments can be adjusted.
 
-The \texttt{time\_dependent} argument provides the user flexibility to choose whether points will start simultaneously (\texttt{time\_dependent\ =\ TRUE}) or randomly (\texttt{time\_dependent\ =\ FALSE}). The challenge with points starting at the same time is the formation of point clusters, making it difficult to track individual points. Allowing for the random starting time makes the point tracking simpler. The starting times for the points are generated using the \texttt{runif()} function, where the \texttt{max} argument can be adjusted using the \texttt{width} parameter in the plotting function.
+The \texttt{time\_dependent} argument provides the user flexibility to choose whether points will start simultaneously (\texttt{time\_dependent\ =\ TRUE}) or randomly (\texttt{time\_dependent\ =\ FALSE}). The challenge with points starting at the same time is the formation of point clusters, making it difficult to track individual points. Allowing for the random starting time makes point tracking simpler. The starting times for the points are generated using the \texttt{runif()} function, where the \texttt{max} argument can be adjusted using the \texttt{width} parameter in the plotting function.
 
 \hypertarget{plotting-function}{%
 \subsubsection{Plotting function}\label{plotting-function}}
@@ -271,17 +271,13 @@ Once the data is prepared. The next step is to create the \texttt{ggplot} object
   \texttt{funnel\_web\_plot()}: the faceted static plot by time variable.
 \end{itemize}
 
-The names of these plots draws inspiration from a native Australian animals. The comprehensive plot is named Kangaroo, while its subset is referred to as Wallaby, representing a smaller version of the Kangaroo. The final plot is names after Funnel Web Spider, drawing parallels between the plot's features and the distinctive legs of the spider.
+The names of these plots draw inspiration from native Australian animals. The comprehensive plot is named Kangaroo, while its subset is referred to as Wallaby, representing a smaller version of the Kangaroo. The final plot is named after the Funnel Web Spider, drawing parallels between the plot's features and the distinctive legs of the spider.
 
 The main focus of this paper will be on the \texttt{wallaby\_plot()}, which draws inspiration from the New York Times animation and combines the knowledge gained from the previous sections in creating the visualization.
 
 The \texttt{wallaby\_data()} function is responsible for performing data manipulation and formatting tasks on the original object. It includes creating additional data components for labeling and shading. This function also responds by interpolating the non-linear path. It performs this task by mapping the \texttt{sine()} function provided in this package to each observation using the \texttt{map()} function from the \CRANpkg{purrr} package (Wickham and Henry (2023)). The frame is recalculated using the same method mentioned in the data preprocessing section. The \texttt{proportional\_shade()} function is called to generate the proportional shaded data.
 
-\begin{figure}
-\includegraphics[width=0.5\linewidth]{figures/sankey-shade-1} \includegraphics[width=0.5\linewidth]{figures/sankey-shade-2} \caption{The plot shows how the algorithm for the proportional\_shade() function works. The left figure represents the initial step of the algorithm, which calculates all the corner points. The right figure demonstrates the subsequent step, where points in-between the left and right are interpolated using the sine() function.}\label{fig:shade-algorithm}
-\end{figure}
-
-The algorithm behind the \texttt{proportional\_shade()} function for generating the proportional shaded data is illustrated in Figure \ref{fig:shade-algorithm}. It started by calculating the corner points for all of the shaded areas. Then, use the \texttt{sine()} function to interpolate the point between the left and right.
+The \texttt{proportional\_shade()} function's algorithm begins by calculating the corner points for each shaded area. Subsequently, the algorithm utilizes the \texttt{sine()} function to interpolate points between the left and right boundaries. Once this interpolation is completed, all the generated points are interconnected to form the shaded regions.
 
 Now that the data are in the right format for the wallaby's plot, the \texttt{geom\_point()} function is used for plotting the observations, \texttt{geom\_polygon()} is used for creating the proportional shaded areas, and \texttt{geom\_text()} is used for creating labels. These three functions are from the \CRANpkg{ggplot2} package. During this process, the aesthetics mapping will be different depending on the rendering tool to be used, which can be either \texttt{gganimate} or \texttt{plotly}. The difference between the two rendering tools is that for \texttt{plotly}, the \texttt{ids} and \texttt{frame} arguments need to be specified during the creation of the \texttt{ggplot} object.
 
@@ -328,7 +324,7 @@ It is necessary to save the plot as a \texttt{ggplot} object before passing it t
 \hypertarget{example-usage}{%
 \subsection{Example usage}\label{example-usage}}
 
-The \texttt{cat\_change} data in the package is used to illustrate how to use this package. It has five categories, A to E, over two time points. Since the data is already in the categorized data structure, the \texttt{anim\_prep\_cat()} function is used. The output from this function is a class called \texttt{categorized}.
+The \texttt{cat\_change} data in the package is used to illustrate how to use this package. It has five categories, A to E, over two-time points. Since the data is already in the categorized data structure, the \texttt{anim\_prep\_cat()} function is used. The output from this function is a class called \texttt{categorized}.
 
 \begin{verbatim}
 a <- anim_prep_cat(cat_change, 
@@ -376,10 +372,10 @@ p
 
 }
 
-\caption{The static plot shows the transition of points from the left category A to the right categories A and E. This is also referred to as a one-to-many relationship plot. The points shown in this plot only originated in category A. It emphasizes that these points only stay within the same category A or change to category E.}\label{fig:top-one}
+\caption{This illustrates the transition of points from the left category A to the right categories A and E. This is also referred to as a one-to-many relationship plot. The points shown in this plot only originated in category A. It emphasizes that these points only stay within the same category A or change to category E.}\label{fig:top-one}
 \end{figure}
 
-Figure \ref{fig:top-many}, show the flexibility to use various options, such as \texttt{subset} or \texttt{relation}, to customize the plot appearance. Here \texttt{subset\ =\ "top"} is used to specify category A for the final time point, and \texttt{relation\ =\ "many\_one"} is used to specify that all categories flowing into A at time point 2 are shown.
+Figure \ref{fig:top-many}, shows the flexibility to use various options, such as \texttt{subset} or \texttt{relation}, to customize the plot appearance. Here \texttt{subset\ =\ "top"} is used to specify category A for the final time point, and \texttt{relation\ =\ "many\_one"} is used to specify that all categories flowing into A at time point 2 are shown.
 
 \begin{verbatim}
 p_2 <- wallaby_plot(data = a,
@@ -397,10 +393,10 @@ p_2
 
 }
 
-\caption{The static plot shows the movement of points from categories A and E on the right to category A on the left, representing a many-to-one relationship. This specifically highlights the points that have moved to category A, which are the points that originate from categories A and E.}\label{fig:top-many}
+\caption{The plot shows the movement of points from categories A and E on the right to category A on the left, representing a many-to-one relationship. This specifically highlights the points that have moved to category A, which are the points that originate from categories A and E.}\label{fig:top-many}
 \end{figure}
 
-Using \texttt{subset\ =\ "B"} will only show the point for a single category as shown in the Figure \ref{fig:b-many}.
+Using \texttt{subset\ =\ "B"} will only show the point for a single category as shown in Figure \ref{fig:b-many}.
 
 \begin{verbatim}
 p_3 <- wallaby_plot(data = a,
@@ -418,7 +414,7 @@ p_3
 
 }
 
-\caption{The static plot shows the transfer of points from the right category B to the left category B. It underscores that the points ultimately landing in category B originate specifically from category B itself.}\label{fig:b-many}
+\caption{The plot shows the transfer of points from the right category B to the left category B. It underscores that the points ultimately landing in category B originate specifically from category B itself.}\label{fig:b-many}
 \end{figure}
 
 This plot object is passed to the \texttt{anim\_animate()} function to transform it into a \texttt{gganimate} object, which appears as an animation when the \texttt{animate()} function from \CRANpkg{gganimate} is used for rendering. This can be seen in Figure \ref{fig:catchange-figure}
@@ -435,7 +431,7 @@ gganimate::animate(p2)
 
 }
 
-\caption{Animate visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.}\label{fig:catchange-figure}
+\caption{Four single frames from the animated visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.}\label{fig:catchange-figure}
 \end{figure}
 
 \hypertarget{applications}{%
@@ -448,7 +444,7 @@ Two examples of usage are provided. The osiris example studies company movement 
 
 The Osiris data presented in this section was acquired from Bureau van Dijk ({``Osiris''} (2023)), compiling information on a total of 122,318 companies. It was subsequently a subset for the 2021 report, consisting of 1000 companies with 94 variables. The dataset included in the package focuses on 790 companies, spanning from 2006 to 2018. The variables in this dataset include year, ID, country, sales, and japan.
 
-McGowan, Andrews, and Millot (2017) reported that companies in the United States have a faster metabolic rate relative to Japanese companies. This means that US companies tends to move up and down performance metrics more frequently than Japanese companies. This can be examine using the wallaby and kangaroo plots. The wallaby plot allows the study of entry and exit behavior. The kangaroo plot allows studying the full movement of companies over time.
+McGowan, Andrews, and Millot (2017) reported that companies in the United States have a faster metabolic rate relative to Japanese companies. This means that US companies tend to move up and down performance metrics more frequently than Japanese companies. This can be examined using the wallaby and kangaroo plots. The wallaby plot allows the study of entry and exit behavior. The kangaroo plot allows for studying the full movement of companies over time.
 
 The steps needed to create both plots are:
 
@@ -507,12 +503,12 @@ gganimate::animate(p2)
 
 }
 
-\caption{The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report.}\label{fig:kan-osiris-figure}
+\caption{Four frames from the kangaroo plot visualization showing the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report that US companies have a higher turnover rate relative to Japanese companies.}\label{fig:kan-osiris-figure}
 \end{figure}
 
-In the kangaroo plot (Figure \ref{fig:kan-osiris-figure}) the five grey bars indicate the five categories (Top 25\%, 25-50, 50-75, 75-100, Not listed) across years 2006 and 2018. Points represent individual companies with color indicating country of registration. Points that stay within the bar indicate companies that remain in the same quartile over the entire time period. If a company drop in performance or improve performance to the extent of switching quartile, the corresponding point will jump up or down in this plot. Note that all the companies in the ``Not listed'' category were listed at some point during this time period. It can be seen that most companies stay in the same quantile group over the time period. There are several companies that move up and down, and most of these are US companies. This support the McGowan, Andrews, and Millot (2017) claim that US companies have a higher turnover rate compared to Japanese companies.
+In the kangaroo plot (Figure \ref{fig:kan-osiris-figure}) the five grey bars indicate the five categories (Top 25\%, 25-50, 50-75, 75-100, Not listed) across years 2006 and 2018. Points represent individual companies with color indicating the country of registration. Points that stay within the bar indicate companies that remain in the same quartile over the entire time period. If a company drops in performance or improves performance to the extent of switching quartile, the corresponding point will jump up or down in this plot. Note that all the companies in the ``Not listed'' category were listed at some point during this time period. It can be seen that most companies stay in the same quantile group over the time period. There are several companies that move up and down, and most of these are US companies. This supports the McGowan, Andrews, and Millot (2017) claim that US companies have a higher turnover rate compared to Japanese companies.
 
-Perceiving the differences between the movement pattern of groups can be difficult, especially when the groups have different sizes, as is the case here. There are more US companies than Japanese companies and particularly there are more US companies in the top 25 percent quantile. Thus there will likely be more blue points (US) moving than red points (JP) purely for this reason. The difference that is of interest is \textbf{relative proportion}, that one country has a higher fraction of companies moving between quartiles than the other. This animated Sankey plot requires the reader to mentally calculate the fraction of points that are moving, separately for the blue and red points, to answer the question whether one group has a higher movement rate. The task is easier if the two groups have a similar number of points.
+Perceiving the differences between the movement patterns of groups can be difficult, especially when the groups have different sizes, as is the case here. There are more US companies than Japanese companies, and particularly, there are more US companies in the top 25 percent quantile. Thus, there will likely be more blue points (US) moving than red points (JP) purely for this reason. The difference that is of interest is \textbf{relative proportion}, that one country has a higher fraction of companies moving between quartiles than the other. This animated Sankey plot requires the reader to mentally calculate the fraction of points that are moving, separately for the blue and red points, to answer the question of whether one group has a higher movement rate. The task is easier if the two groups have a similar number of points.
 
 \begin{figure}
 
@@ -523,9 +519,9 @@ Perceiving the differences between the movement pattern of groups can be difficu
 \caption{The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.}\label{fig:osiris-figure}
 \end{figure}
 
-In Figure \ref{fig:osiris-figure}, the focus is placed on companies that exited the market in 2018 that were in the market at some point since 2006. The grey regions show the proportion of companies in each of the categories in 2006 on the left that were exited the market by 2018. (explain the different in proportion and not listed companies). In 2006, the companies represented by points, colored by country are in one of the quartiles or ``Not listed'' category. All the companies in the Top 25\% were US companies. Any Japanese companies in the Top 25\% in 2006 did not exited the market (Not listed). But actually, there were non Japanese companies in the Top 25\% in 2006. It is also interesting that the larger proportion of the companies in the Top 25\% are getting de-listed, and the lower the quartiles, the less likely that the companies will exit the market.
+In Figure \ref{fig:osiris-figure}, the focus is placed on companies that exited the market in 2018 that were in the market at some point since 2006. The grey regions show the proportion of companies in each of the categories in 2006 on the left that exited the market by 2018. (explain the difference in proportion and not listed companies). In 2006, the companies represented by points, colored by country, were in one of the quartiles or ``Not listed'' category. All the companies in the Top 25\% were US companies. Any Japanese companies in the Top 25\% in 2006 did not exit the market (Not listed). But actually, there were non-Japanese companies in the Top 25\% in 2006. It is also interesting that the larger proportion of the companies in the Top 25\% are getting de-listed, and the lower the quartiles, the less likely that the companies will exit the market.
 
-Using the wallaby plot, it can be employed to emphasized the high turnvoer rate observed in the kangaroo plot, as it specifically focuses on a subset, allowing the users to better perceive the \textbf{relative proportion}. However, it is important to note that this plot is confined to only two-time points (start and end), which may not provide a comprehensive view of the entire story.
+The wallaby plot can be employed to emphasize the high turnover rate observed in the kangaroo plot, as it specifically focuses on a subset, allowing the users to better perceive the \textbf{relative proportion}. However, it is also important to note that this plot is confined to only two-time points (start and end), which may not provide a comprehensive view of the entire story.
 
 \hypertarget{voter-behavior}{%
 \subsection{Voter behavior}\label{voter-behavior}}
@@ -565,21 +561,21 @@ gganimate::animate(p2_voter)
 
 }
 
-\caption{The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, an individual who identified as others overwhelmingly shifted their party affiliations to the Greens party. However, not many of them are shown in the plot.}\label{fig:voter-figure}
+\caption{Four frames from a wallaby plot visualization show how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, the few individuals who identified as neither male nor female overwhelmingly shifted their party affiliations to the Greens.}\label{fig:voter-figure}
 \end{figure}
 
 From Figure \ref{fig:voter-figure}, it reveals an intriguing pattern where individuals who identified their gender as `others' have shifted their voting preference from the Liberal Party, the leading party in 2006, to the Greens Party. This change in behavior could be linked to the Green Party's ``A FAIRER, MORE EQUAL COMMUNITY'' campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals.
 
-According to the survey ({``LGBTIQ+ Health Australia Party Survey''} (2022)), the Greens Party provided a detailed response to all nine priority areas that focus on changing systems and addressing health and well-being disparities among LGBTIQ+ communities. However, the Labor Party only give a broad statement of commitment to a range of LGBTIQ+ and human right issues. This includes working with LGBTIQ+ Australians and advocates to ensure equality before the law and full access to Medicare.
+According to the survey ({``{LGBTIQ+ Health Australia Party survey}''} (2022)), the Greens Party provided a detailed response to all nine priority areas that focus on changing systems and addressing health and well-being disparities among LGBTIQ+ communities. However, the Labor Party only gives a broad statement of commitment to a range of LGBTIQ+ and human rights issues. This includes working with LGBTIQ+ Australians and advocates to ensure equality before the law and full access to Medicare.
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
 
-Beginning with inspiration drawn from the New York Times article, this package provides tools to generate animations for temporal flow data to study changes in groups over time. The paper describes how to pre-process the data into a format for making several types of plots and animation. It also explains what needs to be considered when making an animation such as persistence of objects, how to achieve this using interpolation, and the visualization design choices automated and those available to users.
+Beginning with inspiration drawn from the New York Times article, this package provides tools to generate animations for temporal flow data to study changes in groups over time. The paper describes how to pre-process the data into a format for making several types of plots and animation. It also explains what needs to be considered when making an animation, such as the persistence of objects, how to achieve this using interpolation, and the visualization design choices automated and those available to users.
 
-The package provides the tools to create animations for simple temporal patterns, with a few steps, but these visualization methods have some limitations. It is primarily for communication rather than exploration because one typically knows what the main patterns are. If there are many categories (quantiles) the display will be too crowded. Because the animation involves perceiving patterns in groups of moving points it can be challenging with unbalanced sample sizes. This requires the reader to mentally calculate the fraction of points that are in motion.
+The package provides the tools to create animations for simple temporal patterns with a few steps, but these visualization methods have some limitations. It is primarily for communication rather than exploration because one typically knows what the main patterns are. If there are many categories (quantiles), the display will be too crowded. Because the animation involves perceiving patterns in groups of moving points, it can be challenging with unbalanced sample sizes. This requires the reader to mentally calculate the fraction of points that are in motion.
 
-There are some potential new directions to develop this work. Some applications might benefit by re-parameterization of the x-axis from years to ages (e.g.~company ages, time since the company was founded). One could also re-arrange the mapping of variables to the plot and animations. For example, the New York Times article, mentioned that to better compare distributions in time, one could plot the quantiles, which would form something like an S-curve, and animate over time, to observe how the distributions are changing.
+There are some potential new directions to develop this work. Some applications might benefit by re-parameterization of the x-axis from years to ages (e.g.~company ages, time since the company was founded). This can be done by pre-processing before passing to animbook, but it would be more convenient to automate for the user. One could also imagine re-arranging the mapping of variables to the plot and animations, particularly, split on time and animate on the quantiles to focus on movement through the ranks. The New York Times article had examples of this idea. The static funnel web plot is a good place to experiment with this and to further enhance it visually.
 
 \hypertarget{acknowledgements}{%
 \section*{Acknowledgements}\label{acknowledgements}}
@@ -597,85 +593,85 @@ I would like to acknowledge Chika Saka for providing the inspiration that led to
 \hypertarget{refs}{}
 \begin{CSLReferences}{1}{0}
 \leavevmode\vadjust pre{\hypertarget{ref-the_new_york_time}{}}%
-Badger, Emily, Claire Cain Miller, Adam Pearce, and Kevin Quealy. 2018. {``Extensive Data Shows Punishing Reach of Racism for Black Boys.''} \emph{The New York Times}. The New York Times. \url{https://www.nytimes.com/interactive/2018/03/19/upshot/race-class-white-and-black-men.html}.
+Badger, Emily, Claire Cain Miller, Adam Pearce, and Kevin Quealy. 2018. {``{Extensive data shows punishing reach of racism for black boys}.''} \emph{The New York Times}. The New York Times. \url{https://www.nytimes.com/interactive/2018/03/19/upshot/race-class-white-and-black-men.html}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-d3js}{}}%
-Bostock, Mike. 2012. {``D3.js - Data-Driven Documents.''} 2012. \url{http://d3js.org/}.
+Bostock, Mike. 2012. {``{D3.js - Data-Driven Documents}.''} 2012. \url{http://d3js.org/}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-zombie_companies_2008}{}}%
-Caballero, Ricardo J., Takeo Hoshi, and Anil K. Kashyap. 2008. {``Zombie Lending and Depressed Restructuring in {J}apan.''} \emph{The American Economic Review} 98 (5): 1943--77. \url{http://www.jstor.org/stable/29730158}.
+Caballero, Ricardo J., Takeo Hoshi, and Anil K. Kashyap. 2008. {``{Zombie Lending and Depressed Restructuring in Japan}.''} \emph{The American Economic Review} 98 (5): 1943--77. \url{http://www.jstor.org/stable/29730158}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-race}{}}%
-Chetty, Raj, Nathaniel Hendren, Maggie Jones, and Sonya Porter. 2020. {``Race and Economic Opportunity in the United States: An Intergenerational Perspective*.''} \emph{The Quarterly Journal of Economics} 135 (May): 711--83. \url{https://doi.org/10.1093/qje/qjz042}.
+Chetty, Raj, Nathaniel Hendren, Maggie Jones, and Sonya Porter. 2020. {``{Race and Economic Opportunity in the United States: an Intergenerational Perspective}.''} \emph{The Quarterly Journal of Economics} 135 (May): 711--83. \url{https://doi.org/10.1093/qje/qjz042}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-learner-control}{}}%
-Hasler, Béatrice, Bernd Kersten, and John Sweller. 2007. {``Learner Control, Cognitive Load and Instructional Animation. Applied Cognitive Psychology, 21, 713-729.''} \emph{Applied Cognitive Psychology} 21 (September): 713--29. \url{https://doi.org/10.1002/acp.1345}.
+Hasler, Béatrice, Bernd Kersten, and John Sweller. 2007. {``{Learner control, cognitive load and instructional animation. Applied Cognitive Psychology, 21, 713-729}.''} \emph{Applied Cognitive Psychology} 21 (September): 713--29. \url{https://doi.org/10.1002/acp.1345}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Hvitfeldt_2018}{}}%
-Hvitfeldt, Emil. 2018. {``Recreate - Sankey Flow Chart.''} \emph{Recreate - Sankey Flow Chart}. \url{https://emilhvitfeldt.com/post/2018-03-20-recreate-sankey-flow-chart/}.
+Hvitfeldt, Emil. 2018. {``{Recreate - Sankey flow chart}.''} \emph{Recreate - Sankey Flow Chart}. \url{https://emilhvitfeldt.com/post/2018-03-20-recreate-sankey-flow-chart/}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-lgbtiq}{}}%
-{``LGBTIQ+ Health Australia Party Survey.''} 2022. \emph{LGBTIQ+ Health Australia}. \url{https://www.lgbtiqhealth.org.au/electionsurvey}.
+{``{LGBTIQ+ Health Australia Party survey}.''} 2022. \emph{LGBTIQ+ Health Australia}. \url{https://www.lgbtiqhealth.org.au/electionsurvey}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-mayer-2010}{}}%
-Mayer, Richard. 2010. {``Applying the Science of Learning to Medical Education.''} \emph{Medical Education} 44 (June): 543--49. \url{https://doi.org/10.1111/j.1365-2923.2010.03624.x}.
+Mayer, Richard. 2010. {``{Applying the science of learning to medical education}.''} \emph{Medical Education} 44 (June): 543--49. \url{https://doi.org/10.1111/j.1365-2923.2010.03624.x}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-mayer_2005}{}}%
-Mayer, Richard E. 2005. {``Cognitive Theory of Multimedia Learning.''} In \emph{The Cambridge Handbook of Multimedia Learning}, edited by RichardEditor Mayer, 31--48. Cambridge Handbooks in Psychology. Cambridge University Press. \url{https://doi.org/10.1017/CBO9780511816819.004}.
+Mayer, Richard E. 2005. {``{Cognitive Theory of Multimedia Learning}.''} In \emph{The Cambridge Handbook of Multimedia Learning}, edited by RichardEditor Mayer, 31--48. Cambridge Handbooks in Psychology. Cambridge University Press. \url{https://doi.org/10.1017/CBO9780511816819.004}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Mayer_Moreno_2002}{}}%
 Mayer, Richard E., and Roxana Moreno. 2002. \emph{Educational Psychology Review} 14 (1): 87--99. \url{https://doi.org/10.1023/a:1013184611077}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-aeles}{}}%
-McAllister, Ian, Jill Sheppard, Sarah Cameron, and Jackman Simon. 2023. {``Australian Election Study, 2022.''} ADA Dataverse. \url{https://doi.org/10.26193/W3U2S3}.
+McAllister, Ian, Jill Sheppard, Sarah Cameron, and Jackman Simon. 2023. {``{Australian Election Study, 2022}.''} ADA Dataverse. \url{https://doi.org/10.26193/W3U2S3}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-oecd_report}{}}%
-McGowan, Müge Adalet, Dan Andrews, and Valentine Millot. 2017. {``The Walking Dead?''} no. 1372. https://doi.org/\url{https://doi.org/https://doi.org/10.1787/180d80ad-en}.
+McGowan, Müge Adalet, Dan Andrews, and Valentine Millot. 2017. {``{The Walking Dead?}''} no. 1372. https://doi.org/\url{https://doi.org/https://doi.org/10.1787/180d80ad-en}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-webgl}{}}%
-Mozilla Foundation. 2011. {``WebGL.''} Khronos WebGL Working Group. \href{https://www.khronos.org/webgl/}{www.khronos.org/webgl/}.
+Mozilla Foundation. 2011. {``{WebGL}.''} Khronos WebGL Working Group. \href{https://www.khronos.org/webgl/}{www.khronos.org/webgl/}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-rjtools}{}}%
-O'Hara-Wild, Mitchell, Stephanie Kobakian, H. Sherry Zhang, Di Cook, Simon Urbanek, and Christophe Dervieux. 2023. \emph{Rjtools: Preparing, Checking, and Submitting Articles to the 'r Journal'}. \url{https://CRAN.R-project.org/package=rjtools}.
+O'Hara-Wild, Mitchell, Stephanie Kobakian, H. Sherry Zhang, Di Cook, Simon Urbanek, and Christophe Dervieux. 2023. \emph{{rjtools: Preparing, Checking, and Submitting Articles to the 'R Journal'}}. \url{https://CRAN.R-project.org/package=rjtools}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-av}{}}%
-Ooms, Jeroen. 2023a. \emph{Av: Working with Audio and Video in r}. \url{https://CRAN.R-project.org/package=av}.
+Ooms, Jeroen. 2023a. \emph{{av: Working with Audio and Video in R}}. \url{https://CRAN.R-project.org/package=av}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-gifski}{}}%
----------. 2023b. \emph{Gifski: Highest Quality GIF Encoder}. \url{https://CRAN.R-project.org/package=gifski}.
+---------. 2023b. \emph{{gifski: Highest Quality GIF Encoder}}. \url{https://CRAN.R-project.org/package=gifski}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-bvd}{}}%
 {``Osiris.''} 2023. \emph{Bvd}. Bureau van Dijk. \url{https://www.bvdinfo.com/en-gb/our-products/data/international/osiris}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-tweenr}{}}%
-Pedersen, Thomas Lin. 2022. \emph{Tweenr: Interpolate Data for Smooth Animations}. \url{https://CRAN.R-project.org/package=tweenr}.
+Pedersen, Thomas Lin. 2022. \emph{{tweenr: Interpolate Data for Smooth Animations}}. \url{https://CRAN.R-project.org/package=tweenr}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-gganimate}{}}%
-Pedersen, Thomas Lin, and David Robinson. 2020. {``Gganimate: A Grammar of Animated Graphics.''} \emph{R Package Version} 1 (7): 403--8.
+Pedersen, Thomas Lin, and David Robinson. 2020. {``{Gganimate: A grammar of animated graphics}.''} \emph{R Package Version} 1 (7): 403--8.
 
 \leavevmode\vadjust pre{\hypertarget{ref-r}{}}%
-R Core Team. 2021. \emph{R: A Language and Environment for Statistical Computing}. Vienna, Austria: R Foundation for Statistical Computing. \url{https://www.R-project.org/}.
+R Core Team. 2021. \emph{{R: A Language and Environment for Statistical Computing}}. Vienna, Austria: R Foundation for Statistical Computing. \url{https://www.R-project.org/}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-effective-trend}{}}%
-Robertson, George, Roland Fernandez, Danyel Fisher, Bongshin Lee, and John Stasko. 2008. {``Effectiveness of Animation in Trend Visualization.''} \emph{IEEE Transactions on Visualization and Computer Graphics} 14 (6): 1325--32. \url{https://doi.org/10.1109/TVCG.2008.125}.
+Robertson, George, Roland Fernandez, Danyel Fisher, Bongshin Lee, and John Stasko. 2008. {``{Effectiveness of Animation in Trend Visualization}.''} \emph{IEEE Transactions on Visualization and Computer Graphics} 14 (6): 1325--32. \url{https://doi.org/10.1109/TVCG.2008.125}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-Shaffer_2019}{}}%
-Shaffer, Jeffrey. 2019. {``Sankey Diagrams: Why i Used the Sigmoid Function and Why You Probably Shouldn't.''} \emph{Data + Science}. \url{https://www.dataplusscience.com/Sigmoid.html}.
+Shaffer, Jeffrey. 2019. {``{Sankey Diagrams: Why I Used the Sigmoid Function and Why You Probably Shouldn't}.''} \emph{Data + Science}. \url{https://www.dataplusscience.com/Sigmoid.html}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-plotly}{}}%
-Sievert, Carson. 2020. {``Interactive {Web-Based} Data Visualization with r, Plotly, and Shiny.''} Chapman; Hall/CRC. \url{https://plotly-r.com}.
+Sievert, Carson. 2020. {``{Interactive {Web-Based} Data Visualization with R, plotly, and shiny}.''} Chapman; Hall/CRC. \url{https://plotly-r.com}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-animation-mechanic}{}}%
-Webster, Chris. 2005. \emph{Animation : The Mechanics of Motion}. Focal Press Visual Effects and Animation Series. Oxford ; Burlington, MA: Elsevier Focal Press.
+Webster, Chris. 2005. \emph{{Animation : the mechanics of motion}}. Focal Press Visual Effects and Animation Series. Oxford ; Burlington, MA: Elsevier Focal Press.
 
 \leavevmode\vadjust pre{\hypertarget{ref-tidy-data}{}}%
-Wickham, Hadley. 2014. {``Tidy Data.''} \emph{Journal of Statistical Software} 59 (10): 1--23. \url{https://doi.org/10.18637/jss.v059.i10}.
+Wickham, Hadley. 2014. {``{Tidy Data}.''} \emph{Journal of Statistical Software} 59 (10): 1--23. \url{https://doi.org/10.18637/jss.v059.i10}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-dplyr}{}}%
-Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. \emph{Dplyr: A Grammar of Data Manipulation}.
+Wickham, Hadley, Romain François, Lionel Henry, Kirill Müller, and Davis Vaughan. 2023. \emph{{dplyr: A Grammar of Data Manipulation}}.
 
 \leavevmode\vadjust pre{\hypertarget{ref-purrr}{}}%
-Wickham, Hadley, and Lionel Henry. 2023. \emph{Purrr: Functional Programming Tools}. \url{https://CRAN.R-project.org/package=purrr}.
+Wickham, Hadley, and Lionel Henry. 2023. \emph{{purrr: Functional Programming Tools}}. \url{https://CRAN.R-project.org/package=purrr}.
 
 \end{CSLReferences}
 
