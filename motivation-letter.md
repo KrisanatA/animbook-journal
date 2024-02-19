@@ -13,9 +13,9 @@ The R Journal
 Dear Professor Cook,
 \bigskip
 
-Please consider our article titled "ToOoOlTiPs: An R Package for Customizable Tooltips in Interactive Graphics" for publication in the R Journal.
+Please consider our article titled "animbook: Visualizing Changes in Performance Measures and Demographic Affiliations Using Animation" for publication in the R journal.
 
-The manuscript introduces the new package called `ToOoOlTiPs` which provides examples on how to use interactive graphics in journal articles, and general tips for making an interesting contribution.
+The manuscript introduces the new package called `animbook` which provides new visualization functions to generate an animation. This animation is used for visualizing the changes in the categorical data that are measured over time. It also delves into the data format required, considerations for creating animations, and visual design.
 
 We believe the readers of the R Journal will find this article helpful for their work because it provides generally useful instructions that will work for many purposes. 
 
@@ -27,11 +27,11 @@ Regards,
     
     
     
-Quietest Quokka  
-Department of Letter Q  
-University of Little Mates  
-Somewhere, Australia  
-qquo@ulm.edu
+Krisanat Anukarnsakulchularp  
+Department of Econometrics and Business Statistics
+Monash University 
+Melbourne, Australia  
+krisanat.anu@gmail.com
 
 \bigskip
 
