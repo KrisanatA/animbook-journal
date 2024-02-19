@@ -1,0 +1,16 @@
+Initial check results: 
+
+SUCCESS: Submission has consistently named tex, bib, and R files
+ERROR: There are nested subdirectories. Please use at most two directory levels for the article.
+SUCCESS: No problematic file found
+SUCCESS: Possible motivation letter found: motivation-letter.md
+ERROR: The title is not in title case! Suggest title to be changed to:
+Animbook: Visualizing Changes in Performance Measures and Demographic Affiliations using Animation
+SUCCESS: All sections are properly formatted in sentence case
+SUCCESS: Abstract comes before the introduction section
+NOTE: A potential list of spelling to check: et, al, metabolization, js, de, plotly, nframes, sigmoid, pre, anim, ncat, runif, ggplot, gganimate, asizes, osiris, quartiles, grey, quartile, responders, animbook, acknowledgements, york, lgbtiq, mayer, aeles, oecd, https, doi, webgl, rjtools, gifski, bvd, tweenr, dplyr, purrr
+SUCCESS: CRAN activities have been detected for package animbook
+SUCCESS: All CRAN & Bioconductor packages mentioned are available
+
+SUCCESS: 7 | NOTE: 1 | WARNING: 0 | ERROR: 2
+
