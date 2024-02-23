@@ -10,15 +10,16 @@ Editor
 The R Journal  
 \bigskip
 
-Dear Professor Cook,
+Dear Dr. Mark van der Loo,
 \bigskip
 
-Please consider our article titled "animbook: Visualizing Changes in Performance Measures and Demographic Affiliations Using Animation" for publication in the R journal.
+Please consider our article titled "animbook: Visualizing changes in performance measures and demographic affiliations using animation" for publication in the R journal.
 
-The manuscript introduces the new package called `animbook` which provides new visualization functions to generate an animation. This animation is used for visualizing the changes in the categorical data that are measured over time. It also delves into the data format required, considerations for creating animations, and visual design.
+The manuscript introduces the new package called `animbook`. The paper describe backgroud to generate animation and detailed about the functions available in the package. Two applications are provided illustrate the use for studying corporate performance and voters preferences.
 
-We believe the readers of the R Journal will find this article helpful for their work because it provides generally useful instructions that will work for many purposes. 
+The methods were motivated by an especially innovative visualization publish in the New York Times newspaper. The animbook package make it possible to produces the animation like this along with variations with R. The primary area of use is when categorical data is provided over time.
 
+We believe the readers of the R Journal will find this article interesting and helpful.
 \bigskip
 \bigskip
 
@@ -34,8 +35,3 @@ Melbourne, Australia
 krisanat.anu@gmail.com
 
 \bigskip
-
-NOTES: Modify this file with information about your article. 
-
-1. It may be invisible to you, so be aware that after each address line there are two spaces, this makes the line break correctly.
-2. It is also reasonable to submit an .md format of your motivating letter instead of a pdf. 

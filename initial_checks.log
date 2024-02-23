@@ -2,15 +2,39 @@ Initial check results:
 
 SUCCESS: Submission has consistently named tex, bib, and R files
 ERROR: There are nested subdirectories. Please use at most two directory levels for the article.
+ERROR: Image(s) detected in the main directory: .
+They should be placed in the figures/ folder.
 SUCCESS: No problematic file found
 SUCCESS: Possible motivation letter found: motivation-letter.md
-ERROR: The title is not in title case! Suggest title to be changed to:
-Animbook: Visualizing Changes in Performance Measures and Demographic Affiliations using Animation
-SUCCESS: All sections are properly formatted in sentence case
-SUCCESS: Abstract comes before the introduction section
+ERROR: Article title not in title case! Suggest title: Animbook: Visualizing Changes in Performance Measures and Demographic Affiliations using Animation.
+ERROR: Section Explanation of the New York Times visualization is not in sentence case!
+ERROR: Abstract should be plain text without package markups,
+mathmatic notations, citation, or other formattings.
 NOTE: A potential list of spelling to check: et, al, metabolization, js, de, plotly, nframes, sigmoid, pre, anim, ncat, runif, ggplot, gganimate, asizes, osiris, quartiles, grey, quartile, responders, animbook, acknowledgements, york, lgbtiq, mayer, aeles, oecd, https, doi, webgl, rjtools, gifski, bvd, tweenr, dplyr, purrr
 SUCCESS: CRAN activities have been detected for package animbook
-SUCCESS: All CRAN & Bioconductor packages mentioned are available
+SUCCESS: No error with the use of \pkg markup.
+SUCCESS: All packages marked-up with \CRANpkg or \BIOpkg are available on CRAN or Bioconductor.
+WARNING: Citation should include a link to the reference, preferably a
+DOI, unless online resources cannot be found.
+References without DOI or URL: relational, dplyr, animation-mechanic.
+SUCCESS: No customised csl file used. Good!
+Initial check results: 
 
-SUCCESS: 7 | NOTE: 1 | WARNING: 0 | ERROR: 2
-
+SUCCESS: Submission has consistently named tex, bib, and R files
+ERROR: There are nested subdirectories. Please use at most two directory levels for the article.
+ERROR: Image(s) detected in the main directory: .
+They should be placed in the figures/ folder.
+SUCCESS: No problematic file found
+SUCCESS: Possible motivation letter found: motivation-letter.md
+ERROR: Article title not in title case! Suggest title: Animbook: Visualizing Changes in Performance Measures and Demographic Affiliations using Animation.
+ERROR: Section Explanation of the New York Times visualization is not in sentence case!
+ERROR: Abstract should be plain text without package markups,
+mathmatic notations, citation, or other formattings.
+NOTE: A potential list of spelling to check: et, al, metabolization, js, de, plotly, nframes, sigmoid, pre, anim, ncat, runif, ggplot, gganimate, asizes, osiris, quartiles, grey, quartile, responders, animbook, acknowledgements, york, lgbtiq, mayer, aeles, oecd, https, doi, webgl, rjtools, gifski, bvd, tweenr, dplyr, purrr
+SUCCESS: CRAN activities have been detected for package animbook
+SUCCESS: No error with the use of \pkg markup.
+SUCCESS: All packages marked-up with \CRANpkg or \BIOpkg are available on CRAN or Bioconductor.
+WARNING: Citation should include a link to the reference, preferably a
+DOI, unless online resources cannot be found.
+References without DOI or URL: relational, dplyr, animation-mechanic.
+SUCCESS: No customised csl file used. Good!
