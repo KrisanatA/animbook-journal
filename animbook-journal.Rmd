@@ -2,7 +2,6 @@
 title: "animbook: Visualizing Changes in Performance Measures and Demographic Affiliations using Animation"
 abstract: >
   Performance is often reported in quantiles or ranks and often repeatedly provided over time. Between elections, voters often switch party preferences, which produces categorical values over time. Inspired by the animation in the New York Times article "Extensive data show punishing reach of racism for black boys," we provide new visualization functions to generate animations that display this type of data in an R package called animbook. Functions to pre-process the data and prepare it for the animation are provided. The methods will be suitable generally for data where categorical variables are measured over time, and provide a way to engagingly view changes.
-draft: true
 author:  
   - name: Krisanat Anukarnsakulchularp
     affiliation: Monash University
@@ -162,7 +161,8 @@ original <- dbl_change |>
   reframe(id, time, values, gp) |> 
   arrange(gp, id)
 
-rank <- anim_prep(dbl_change, id, values, time, group = gp) 
+rank <- anim_prep(dbl_change, id, values, time, 
+                  group = gp) 
 
 class(rank) <- c("tbl_df", "tbl", "data.frame")
 
@@ -172,7 +172,9 @@ rank_data <- rank |>
          rank = qtile) |>  
   arrange(gp, id)
 
-absolute <- anim_prep(dbl_change, id, values, time, group = gp, scaling = "absolute") 
+absolute <- anim_prep(dbl_change, id, values, time, 
+                      group = gp, 
+                      scaling = "absolute") 
 
 class(absolute) <- c("tbl_df", "tbl", "data.frame")
 
@@ -182,7 +184,9 @@ absolute_data <- absolute |>
          absolute = qtile) |> 
   arrange(gp, id)
 
-rank_group <- anim_prep(dbl_change, id, values, time, group = gp, group_scaling = gp) 
+rank_group <- anim_prep(dbl_change, id, values, time, 
+                        group = gp, 
+                        group_scaling = gp) 
 
 class(rank_group) <- c("tbl_df", "tbl", "data.frame")
 
@@ -192,7 +196,10 @@ rank_group_data <- rank_group |>
          rank_group = qtile) |> 
   arrange(gp, id)
 
-absolute_group <- anim_prep(dbl_change, id, values, time, group = gp, group_scaling = gp, scaling = "absolute") 
+absolute_group <- anim_prep(dbl_change, id, values, time, 
+                            group = gp, 
+                            group_scaling = gp, 
+                            scaling = "absolute") 
 
 class(absolute_group) <- c("tbl_df", "tbl", "data.frame")
 
