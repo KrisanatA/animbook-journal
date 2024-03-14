@@ -421,8 +421,8 @@ gganimate::animate(p2)
 knitr::include_graphics("figures/animation-example.png")
 ```
 
-```{r catchange-gif, out.extra="class = 'gif'", fig.cap = "Animated visualization using example data. All of the X observations stay within the same group, while some of the Y observations change from group A to group E.", eval=knitr::is_html_output()}
-knitr::include_graphics("figures/catchange.gif")
+```{r catchange-gif, fig.cap = "Animated visualization using example data. All of the X observations stay within the same group, while some of the Y observations change from group A to group E.", eval=knitr::is_html_output()}
+knitr::include_url("https://www.youtube.com/embed/j-azl7vKjwo")
 ```
 
 
@@ -494,8 +494,8 @@ gganimate::animate(p2)
 knitr::include_graphics("figures/osiris.png")
 ```
 
-```{r kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report that US companies have a higher turnover rate relative to Japanese companies.", eval=knitr::is_html_output()}
-knitr::include_graphics("figures/kan-osiris.gif")
+```{r kan-osiris-gif, fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report that US companies have a higher turnover rate relative to Japanese companies.", eval=knitr::is_html_output()}
+knitr::include_url("https://www.youtube.com/embed/xB9DK5efEL8")
 ```
 
 In the kangaroo plot (Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:kan-osiris-figure}','\\@ref(fig:kan-osiris-gif)'))`) the five gray bars indicate the five categories (Top 25%, 25-50, 50-75, 75-100, Not listed) across years 2006 and 2018. Points represent individual companies with color indicating the country of registration. Points that stay within the bar indicate companies that remain in the same quartile over the entire time period. If a company drops in performance or improves performance to the extent of switching quartile, the corresponding point will jump up or down in this plot. Note that all the companies in the "Not listed" category were listed at some point during this time period. It can be seen that most companies stay in the same quantile group over the time period. There are several companies that move up and down, and most of these are US companies. This supports the @oecd_report claim that US companies have a higher turnover rate compared to Japanese companies.
@@ -506,8 +506,8 @@ Perceiving the differences between the movement patterns of groups can be diffic
 knitr::include_graphics("figures/animation-exit.png")
 ```
 
-```{r osiris-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", eval=knitr::is_html_output()}
-knitr::include_graphics("figures/exit.gif")
+```{r osiris-gif, fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", eval=knitr::is_html_output()}
+knitr::include_url("https://www.youtube.com/embed/TIWtFf6KaCI")
 ```
 
   In Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`, the focus is placed on companies that exited the market in 2018 that were in the market at some point since 2006. The gray regions show the proportion of companies in each of the categories in 2006 on the left that exited the market by 2018. (explain the difference in proportion and not listed companies). In 2006, the companies represented by points, colored by country, were in one of the quartiles or "Not listed" category. All the companies in the Top 25% were US companies. Any Japanese companies in the Top 25% in 2006 did not exit the market (Not listed). It is worth noting that there are actually none of the Japanese companies in the Top 25% in 2006. It is also interesting that the larger proportion of the companies in the Top 25% are getting de-listed, and the lower the quartiles, the less likely that the companies will exit the market.
@@ -560,8 +560,8 @@ gganimate::animate(p2_voter)
 knitr::include_graphics("figures/animation-voter.png")
 ```
 
-```{r voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, the few individuals who identified as neither male nor female overwhelmingly shifted their party affiliations to the Greens.", eval=knitr::is_html_output()}
-knitr::include_graphics("figures/voter.gif")
+```{r voter-gif, fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, the few individuals who identified as neither male nor female overwhelmingly shifted their party affiliations to the Greens.", eval=knitr::is_html_output()}
+knitr::include_url("https://www.youtube.com/embed/6afmJ0sxvtc")
 ```
 
   From Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:voter-figure}','\\@ref(fig:voter-gif)'))`, it reveals an intriguing pattern where individuals who identified their gender as 'others' have shifted their voting preference from the Liberal Party, the leading party in 2006, to the Greens Party. This change in behavior could be linked to the Green Party's "A FAIRER, MORE EQUAL COMMUNITY" campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals.
