@@ -19,6 +19,8 @@ author:
     orcid: 0000-0002-3813-7155
 type: package
 output: 
+  rjtools::rjournal_pdf_article:
+    toc: no
   rjtools::rjournal_web_article:
     self_contained: yes
     toc: no
@@ -39,7 +41,7 @@ library(tidyverse)
 
 The concept of "zombie companies" began to attract attention when @zombie_companies_2008 reported on their proliferation in Japan. Zombie companies are those with an interest coverage ratio of less than one for a period of more than three years, that is, companies taking space in the market but adding no life to the economy. We would detect their presence by a drop in performance, which is a movement pattern in their relative ranking over time. Generally, studying movement patterns is interesting for many problems, including rocket ship start-ups that rapidly perform well or in politics, to study voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
 
-  The New York Times provided a possible solution in the article titled "Extensive data show punishing reach of racism for black boys" (@the_new_york_time) to tell the story of how racism appears to inhibit socioeconomic change. This animation is the motivation for the new visualization presented here to be applied generally.
+  The New York Times provided a possible solution in the article titled "Extensive data show punishing reach of racism for black boys" (@the_new_york_time) to tell the story of how racism appears to inhibit socioeconomic change represent using the animation showing an individual transition from one category to another. This animation is the motivation for the new visualization presented here to be applied generally.
   
   The challenge in producing an animation similar to the New York Times article animation is the transformation of the data and connection with elements of the plot that will be animated. The complexities include allowing the user to choose the number of categories, standardizing distributions, and allowing the user to input pre-computed categorical data. These considerations provide the objective for creating an R package that can generalize the animation to suitably apply to a wide range of data.    
   
@@ -60,7 +62,7 @@ The interactive chart featured in the New York Times article (Figure \@ref(fig:n
 
   This animation was developed using software based on JavaScript, D3.js (@d3js), and WebGL (@webgl). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins. 
   
-  @Hvitfeldt_2018 provides R (@r) code to generate an animation similar to that of the New York Times. Taking inspiration from this example, \CRANpkg{animbook} expands upon the visualization in numerous ways and packages the code so that it can be used for a variety of similar animations for studying flow and temporal change data.
+  @Hvitfeldt_2018 provides R (@r) code to reproduce an animation similar to that of the New York Times. Taking inspiration from this coding example, \CRANpkg{animbook} expands upon the visualization in numerous ways and packages the code so that it can be used for a variety of similar animations for studying flow and temporal change data.
   
   The New York Times visualization is similar to a Sankey plot. Sankey plots are flow diagrams that show the movement/change from one category level to another, with the width of each arrow representing the proportional changes between levels. There are several R packages available to generate versions of Sankey plots, including \CRANpkg{ggalluvial} and \CRANpkg{ggparallel}. The main difference between the Sankey plot visualization and the animation featured in the New York Times lies in their methods of representing the proportion of changes. Sankey plots utilize the width of connecting lines, while the New York Times animation employs the density and color of points. 
 
@@ -71,11 +73,11 @@ The interactive chart featured in the New York Times article (Figure \@ref(fig:n
 knitr::include_graphics("figures/data-diagram.png")
 ```
 
-In the data structure, there are requirements that must be followed for reproducing the animation. First, the data set needs to be in a `tidy data` format (@tidy-data). The data then must have at least ID and time variables, in addition to the measured variables, which would usually be numeric but can also be categorical as well. The ID variable indicates the individual, which is followed over time, such as the company name. There may also be a grouping variable, such as the country where the company is registered.
+In the data structure, there are requirements that must be followed for reproducing the animation. First, the dataset needs to be in a `tidy data` format (@tidy-data). The data then must have at least ID and time variables, in addition to the measured variables, which would usually be numeric but can also be categorical as well. The ID variable indicates the individual, which is followed over time, such as the company name. There may also be a grouping variable, such as the country where the company is registered (United States and Japan). 
 
   Figure \@ref(fig:data-diagram) illustrates the expected format of the data and variables created to prepare it for the animation. We start with the raw data structure. The values are presented in the numerical format, which we call the 'raw' form. In most cases, the measured variable will be numerical and require transformation. The second form is categorized data, which involves transforming numerical variables into categories, typically quantiles. This transformation may not be necessary if it is already provided in the categorized format. The last form is animated data, where the frame is assigned to each unique ID.
   
-  One of the frequently encountered values in the dataset is NA, commonly known as a missing value. In the context of accounting data, NA might signify that a company is either not yet listed or has been de-listed. In scenarios like voter data, NA may indicate that individuals did not provide the necessary information. Disregarding NA values could result in the loss of valuable information. Therefore, instead of completely removing NA entries, this information is categorized into its quantiles, ensuring that the missing data are factored into the visualization.
+  One of the frequently encountered values in the dataset is NA, commonly known as a missing value. In the context of accounting data, NA might signify that a company is either not yet listed or has been de-listed. In scenarios like voter data, NA may indicate that individuals did not provide the necessary information. Disregarding NA values could result in the loss of valuable information. Therefore, instead of completely removing NA entries, it will get converted into its own quantiles, ensuring that the missing data are factored into the visualization.
 
 
 # Animation tools {#animation}
@@ -84,9 +86,7 @@ In the data structure, there are requirements that must be followed for reproduc
 knitr::include_graphics("figures/animation-diagram.png")
 ```
 
-A principle important for designing a useful animation is called persistence of vision (@animation-mechanic). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \@ref(fig:animation-diagram).
-
-  There are multiple ways to create an animation in the R environment (@r), including the packages \CRANpkg{gganimate} (@gganimate) and \CRANpkg{plotly} (@plotly).
+An principle important for designing a useful animation is called persistence of vision (@animation-mechanic). When an image disappears, the brain will retain the previous images for a brief period of time. It is this slight period of retention that allows humans to separate sequential images. If this is seen in quick succession, it will appear as if the objects are in motion. This is illustrated in Figure \@ref(fig:animation-diagram). There are multiple ways to create an animation in the R environment (@r), including the packages \CRANpkg{gganimate} (@gganimate) and \CRANpkg{plotly} (@plotly).
   
   The \CRANpkg{gganimate} package is an extension from the \CRANpkg{ggplot2} package (@ggplot2) to include the description of an animation. It added new grammar classes to the plot object, allowing it to understand how the plot should change over time. The use of `transition_*()` functions allows it to achieve this by specifying how the data evolves and how it relates to itself across time. The \CRANpkg{gganimate} includes `gifski_renderer()` from the \CRANpkg{gifski} package (@gifski) to save animation in GIF format or `av_renderer()` from the \CRANpkg{av} package (@av) to save it into a video file format.
   
@@ -95,10 +95,8 @@ A principle important for designing a useful animation is called persistence of 
 ```{r animated-diagram, fig.cap="Frames 1 and 2 show the year 1 and year 2 positions of points from the data in the table at the top. The id is necessary to enable interpolation to make the small changes to generate a perception of motion from frame 1 position to frame 2 position.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/animated-diagram.png")
 ```
-
-  In the context of data, as shown in Figure \@ref(fig:animated-diagram), observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the \CRANpkg{gganimate} package, the interpolation is achieved using the \CRANpkg{tweenr} package (@tweenr), while in \CRANpkg{plotly}, it utilizes d3.interpolate (@d3js).
   
-  Figure \@ref(fig:animated-diagram) demonstrates how the frame variables are applied in an animated plot. The frame variable within the animated data structure allows the animation function to determine the position of observations on the plot at any given frame.
+  Figure \@ref(fig:animated-diagram) demonstrates how the frame variables are applied in an animated plot. The frame variable within the animated data structure allows the animation function to determine the position of observations on the plot at any given frame. These observations are positioned at specific points in time. The further the distance between these points, the less smooth the animation becomes. This issue can be eliminated by interpolating additional points in between the observations. In the \CRANpkg{gganimate} package, the interpolation is achieved using the \CRANpkg{tweenr} package (@tweenr), while in \CRANpkg{plotly}, it utilizes d3.interpolate (@d3js).
   
   From @learner-control, it suggests that having control options for the animation can improve the efficiency of the learning process. Additionally, the length and speed of the animation should also be taken into consideration. According to @mayer-2010, the working memory, responsible for selecting and processing information from sensory memory, only holds a processed version of what was presented for generally less than thirty seconds.
   
@@ -124,13 +122,13 @@ knitr::include_graphics("figures/sine-shade.png")
   
   Another issue is that all observations would have a common starting time. It would mean all points start the animation simultaneously and move as a block through time. It poses a challenge in distinguishing and tracking individual observations and their change patterns. To alleviate this, the observations in the animation are randomly started at different times so a continuous flow of points can be seen. It is important to note that this does not necessarily reflect the real-time occurrence of observations.
   
-  The paths of observations are also interpolated to create small changes in the position of points to produce the appearance of motion. The interpolation functions in \CRANpkg{gganimate} and \CRANpkg{plotly} are inadequate because they only generate a linear path. Our animation needs a non-linear path to show the flow. Sigmoid curves are commonly used in Sankey diagrams (@Hvitfeldt_2018). However, @Shaffer_2019 argues that a sine curve more accurately represents proportion throughout the path. As illustrated in Figure \@ref(fig:proportional-shade). The sigmoid accurately represents the proportion at the beginning and end, but as it curves, the shape gets narrower, leading to a less accurate proportion representation than the sine curve. New interpolation functions are needed to compute both the sigmoid and sine paths.
+  The paths of observations are also interpolated to create small changes in the position of points to produce the appearance of motion. The interpolation functions in \CRANpkg{gganimate} and \CRANpkg{plotly} are inadequate because they only generate a linear path. Our animation needs a non-linear path to show the flow. Sigmoid curves are commonly used in Sankey diagrams (@Hvitfeldt_2018). However, @Shaffer_2019 argues that a sine curve more accurately represents proportion throughout the path. As illustrated in Figure \@ref(fig:proportional-shade), the sigmoid accurately represents the proportion at the beginning and end, but as it curves, the shape gets narrower, leading to a less accurate proportion representation than the sine curve. New interpolation functions are needed to compute both the sigmoid and sine paths.
 
 # Software {#software}
 
 ## Installation
 
-\CRANpkg{animbook} is available through CRAN. The development version of this package can be found in the Github repositories.
+\CRANpkg{animbook} is available through CRAN. The development version of this package can be found in the GitHub repositories at [https://github.com/KrisanatA/animbook](https://github.com/KrisanatA/animbook).
 
 ``` r
 # CRAN
@@ -148,7 +146,7 @@ In designing the \CRANpkg{animbook} package, a three-step structured approach wa
 
 ### Data pre-processing
 
-From Figure \@ref(fig:data-diagram), there is a need to map numerical value to a category. One way to handle this is by ranking the sales and grouping the rankings into quantiles. In some cases, this may not be the best option. When the observation is moved up by quantile, one is bound to move down, making the amount of observation in the quantile remain the same. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different groups, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data.
+From Figure \@ref(fig:data-diagram), there is a need to map numerical value to a category. One way to handle this is by ranking the observation and grouping the rankings into quantiles. In some cases, this may not be the best option because when an observation is moved up by a quantile, another one is bound to move down, making the amount of observation in the quantile remain the same. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different groups, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data.
 
   1. Ranking by year. (rank)
   2. Ranking by year within a group. (rank_group)
@@ -211,7 +209,7 @@ absolute_group_data <- absolute_group |>
 ```
 
 ```{r}
-original |> 
+scaling_table <- original |> 
   left_join(rank_data, by = c("id", "time", "gp")) |> 
   left_join(rank_group_data, by = c("id", "time", "gp")) |> 
   left_join(absolute_data, by = c("id", "time", "gp")) |> 
@@ -219,13 +217,25 @@ original |>
   reframe(id, time, gp, values, rank, rank_group, absolute, absolute_group)
 ```
   
+```{r tbl-scaling, eval=knitr::is_html_output()}
+scaling_table |> 
+  knitr::kable(caption = "A summary of different scaling methods applied to the dataset.")
+```
+
+```{r tbl-scaling-la, eval=knitr::is_latex_output()}
+scaling_table |> 
+  knitr::kable(caption = "A summary of different scaling methods applied to the dataset.") |> 
+  kableExtra::column_spec(8, width = "30em")
+```
+
+  
   For the first and second scaling methods, it is necessary to rank the values based on time, and in cases where a group is provided, they are ranked based on both time and groups. To ensure that the rank scales among different groups are the same, the variables are first normalized to a range between 0 and 1. The third and fourth scaling methods also involve a normalization step, but they are based on raw values instead of rank values.
   
   All of these scaling methods utilized the `cut()` function from the base R package (@r) to split the values into quantiles. The `cut()` function requires the specification of the `breaks` argument. If it is not provided, the prep function in this package defaults to using the `seq()` function, which sets the minimum and maximum values to 0 and 1, respectively, and then increments by equal steps based on the number of groups of interest. Additionally, the users have the option to specify the breaks themselves if they choose to do so, noting that the breaks provided need to be between 0 and 1, and the length of the vector needs to be the number of groups plus 1. 
   
   All of the pre-processing steps mentioned above are completed using the `anim_prep()` or `anim_prep_cat()` function, depending on the stages of the data structure. The `anim_prep()` function is used for raw data format, while the `anim_prep_cat()` function is for categorized data format. There are additional arguments that allow users for more customization.
 
-  These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning a frame to each individual observation, ensuring that each ID does not contain repeated frame values. It lets the \CRANpkg{gganimate} or \CRANpkg{plotly} perceive where the observation would be on the plot at a given frame, as seen in Figure \@ref(fig:animated-diagram).
+  These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw format into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning a frame to each individual observation, ensuring that each ID does not contain repeated frame values. It lets the \CRANpkg{gganimate} or \CRANpkg{plotly} perceive where the observation would be on the plot at a given frame, as seen in Figure \@ref(fig:animated-diagram).
   
   The frame variable is assigned by sorting the data based on the ID and time using the `arrange()` function, followed by applying the `group_by()` function on the ID, allowing the `row_number()` function to be performed within each group. The functions mentioned in this paragraph are from the \CRANpkg{dplyr} package (@dplyr). These are done by the internal function for each of the plots provided in the packages.
   
@@ -281,15 +291,11 @@ argument_cat_tab |>
 
 ```{r tbl-cat-la, eval=knitr::is_latex_output()}
 argument_num_tab |> 
-  kableExtra::kable(caption = "The argumenst for the anim\\_prep\\_cat function.", format = "latex") |> 
+  kableExtra::kable(caption = "The arguments for the anim\\_prep\\_cat function.", format = "latex") |> 
   kableExtra::column_spec(2, width = "30em")
 ```
   
-  The arguments for the `anim_prep()` and `anim_prep_cat()` functions are listed in Tables `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-num-la}','\\@ref(tab:tbl-num)'))` and `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-cat-la}','\\@ref(tab:tbl-cat)'))` respectively. The `data`, `id`, `values`, and `time` arguments are required for both functions.
-  
-  The `ncat`, `breaks`, `group_scaling`, and `scaling` arguments are for the user to customize the data scaling calculation in the `anim_prep()` function. In the `anim_prep_cat` function, the users can customize the order of the category to be shown on the y-axis using the `order` argument.
-  
-  Then, for further customization regarding how the final visualization looks. The `group`, `label`, and `time_dependent` arguments can be adjusted. 
+  The arguments for the `anim_prep()` and `anim_prep_cat()` functions are listed in Tables `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-num-la}','\\@ref(tab:tbl-num)'))` and `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-cat-la}','\\@ref(tab:tbl-cat)'))` respectively. The `data`, `id`, `values`, and `time` arguments are required for both functions. The `ncat`, `breaks`, `group_scaling`, and `scaling` arguments are for the user to customize the data scaling calculation in the `anim_prep()` function. In the `anim_prep_cat` function, the users can customize the order of the category to be shown on the y-axis using the `order` argument. Then, for further customization regarding how the final visualization looks. The `group`, `label`, and `time_dependent` arguments can be adjusted. 
   
   The `time_dependent` argument provides the user flexibility to choose whether points will start simultaneously (`time_dependent = TRUE`) or randomly (`time_dependent = FALSE`). The challenge with points starting at the same time is the formation of point clusters, making it difficult to track individual points. Allowing for the random starting time makes point tracking simpler. The starting times for the points are generated using the `runif()` function, where the `max` argument can be adjusted using the `width` parameter in the plotting function.
   
@@ -353,7 +359,7 @@ It is necessary to store the plot as a `ggplot` object before passing it to the 
 
 ## Example usage
 
-The `cat_change` data in the package is used to illustrate how to use this package. It has five categories, A to E, over two time points. Since the data is already in the categorized data structure, the `anim_prep_cat()` function is used. The output from this function is a class called `categorized`.
+The `cat_change` data in the \CRANpkg{animbook} package is used to illustrate how to use this package. It has five categories, A to E, over two time points. Since the data is already in the categorized data structure, the `anim_prep_cat()` function is used. The output from this function is a class called `categorized`.
 
 ```{r, echo=TRUE}
 a <- anim_prep_cat(cat_change, 
@@ -378,7 +384,7 @@ p <- wallaby_plot(data = a,
 p
 ```
 
-Figure \@ref(fig:top-many), shows the flexibility to use various options, such as `subset` or `relation`, to customize the plot appearance. Here `subset = "top"` is used to specify category A for the final time point, and `relation = "many_one"` is used to specify that all categories flowing into A at time point 2 are shown.
+Figure \@ref(fig:top-many) shows the flexibility to use various options, such as `subset` or `relation`, to customize the plot appearance. Here `subset = "top"` is used to specify category A for the final time point, and `relation = "many_one"` is used to specify that all categories flowing into A at time point 2 are shown.
 
 ```{r top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The plot shows the movement of points from categories A and E on the right to category A on the left, representing a many-to-one relationship. This specifically highlights the points that have moved to category A, which are the points that originate from categories A and E."}
 p_2 <- wallaby_plot(data = a,

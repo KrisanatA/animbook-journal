@@ -37,7 +37,8 @@ original <- dbl_change |>
   reframe(id, time, values, gp) |> 
   arrange(gp, id)
 
-rank <- anim_prep(dbl_change, id, values, time, group = gp) 
+rank <- anim_prep(dbl_change, id, values, time, 
+                  group = gp) 
 
 class(rank) <- c("tbl_df", "tbl", "data.frame")
 
@@ -47,7 +48,9 @@ rank_data <- rank |>
          rank = qtile) |>  
   arrange(gp, id)
 
-absolute <- anim_prep(dbl_change, id, values, time, group = gp, scaling = "absolute") 
+absolute <- anim_prep(dbl_change, id, values, time, 
+                      group = gp, 
+                      scaling = "absolute") 
 
 class(absolute) <- c("tbl_df", "tbl", "data.frame")
 
@@ -57,7 +60,9 @@ absolute_data <- absolute |>
          absolute = qtile) |> 
   arrange(gp, id)
 
-rank_group <- anim_prep(dbl_change, id, values, time, group = gp, group_scaling = gp) 
+rank_group <- anim_prep(dbl_change, id, values, time, 
+                        group = gp, 
+                        group_scaling = gp) 
 
 class(rank_group) <- c("tbl_df", "tbl", "data.frame")
 
@@ -67,7 +72,10 @@ rank_group_data <- rank_group |>
          rank_group = qtile) |> 
   arrange(gp, id)
 
-absolute_group <- anim_prep(dbl_change, id, values, time, group = gp, group_scaling = gp, scaling = "absolute") 
+absolute_group <- anim_prep(dbl_change, id, values, time, 
+                            group = gp, 
+                            group_scaling = gp, 
+                            scaling = "absolute") 
 
 class(absolute_group) <- c("tbl_df", "tbl", "data.frame")
 
@@ -79,12 +87,23 @@ absolute_group_data <- absolute_group |>
 
 
 ## -----------------------------------------------------------------------------
-original |> 
+scaling_table <- original |> 
   left_join(rank_data, by = c("id", "time", "gp")) |> 
   left_join(rank_group_data, by = c("id", "time", "gp")) |> 
   left_join(absolute_data, by = c("id", "time", "gp")) |> 
   left_join(absolute_group_data, by = c("id", "time", "gp")) |> 
   reframe(id, time, gp, values, rank, rank_group, absolute, absolute_group)
+
+
+## ----tbl-scaling, eval=knitr::is_html_output()--------------------------------
+# scaling_table |>
+#   knitr::kable(caption = "A summary of different scaling methods applied to the dataset.")
+
+
+## ----tbl-scaling-la, eval=knitr::is_latex_output()----------------------------
+scaling_table |> 
+  knitr::kable(caption = "A summary of different scaling methods applied to the dataset.") |> 
+  kableExtra::column_spec(2, width = "30em")
 
 
 ## -----------------------------------------------------------------------------
@@ -122,8 +141,8 @@ argument_cat_tab <- tibble::tibble(Argument = argument_cat,
 
 
 ## ----tbl-num, eval=knitr::is_html_output()------------------------------------
-#> argument_num_tab |>
-#>   knitr::kable(caption = "The arguments for the anim\\_prep function.")
+# argument_num_tab |>
+#   knitr::kable(caption = "The arguments for the anim\\_prep function.")
 
 
 ## ----tbl-num-la, eval=knitr::is_latex_output()--------------------------------
@@ -133,8 +152,8 @@ argument_num_tab |>
 
 
 ## ----tbl-cat, eval=knitr::is_html_output()------------------------------------
-#> argument_cat_tab |>
-#>   knitr::kable(caption = "The arguments for the anim\\_prep\\_cat function.")
+# argument_cat_tab |>
+#   knitr::kable(caption = "The arguments for the anim\\_prep\\_cat function.")
 
 
 ## ----tbl-cat-la, eval=knitr::is_latex_output()--------------------------------
@@ -166,8 +185,8 @@ argument_table2 <- tibble::tibble(Argument = argument2,
 
 
 ## ----eval=knitr::is_html_output()---------------------------------------------
-#> argument_table2 |>
-#>   knitr::kable(caption = "The arguments for the wallaby\\_plot function.")
+# argument_table2 |>
+#   knitr::kable(caption = "The arguments for the wallaby\\_plot function.")
 
 
 ## ----eval=knitr::is_latex_output()--------------------------------------------
@@ -218,18 +237,18 @@ p_3
 
 
 ## ----eval=FALSE---------------------------------------------------------------
-#> p2 <- anim_animate(p)
-#> 
-#> gganimate::anim_save("figures/catchange.gif", p2, height = 8, fps = 30,
-#>                      nframes = 400, width = 9, units = "in", res = 150)
+# p2 <- anim_animate(p)
+# 
+# gganimate::anim_save("figures/catchange.gif", p2, height = 8, fps = 30,
+#                      nframes = 400, width = 9, units = "in", res = 150)
 
 
 ## ----catchange-figure, fig.cap = "Four single frames from the animated visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/animation-example.png")
 
 
-## ----catchange-gif, out.extra="class = 'gif'", fig.cap = "Animated visualization using example data. All of the X observations stay within the same group, while some of the Y observations change from group A to group E.", eval=knitr::is_html_output()----
-#> knitr::include_graphics("figures/catchange.gif")
+## ----catchange-gif, fig.cap = "Animated visualization using example data. All of the X observations stay within the same group, while some of the Y observations change from group A to group E.", eval=knitr::is_html_output()----
+# knitr::include_url("https://www.youtube.com/embed/j-azl7vKjwo")
 
 
 ## ----echo=TRUE----------------------------------------------------------------
@@ -265,27 +284,27 @@ p2 <- anim_animate(p)
 
 
 ## ----eval=FALSE---------------------------------------------------------------
-#> gganimate::anim_save("figures/exit.gif", p2, height = 8, fps = 30,
-#>                      nframes = 400, width = 9, units = "in", res = 150)
-#> 
-#> gganimate::anim_save("figures/kan-osiris.gif", kan_p2, height = 8, fps = 10,
-#>                      nframes = 400, width = 9, units = "in", res = 150)
+# gganimate::anim_save("figures/exit.gif", p2, height = 8, fps = 30,
+#                      nframes = 400, width = 9, units = "in", res = 150)
+# 
+# gganimate::anim_save("figures/kan-osiris.gif", kan_p2, height = 8, fps = 10,
+#                      nframes = 400, width = 9, units = "in", res = 150)
 
 
 ## ----kan-osiris-figure, fig.cap = "Four frames from the kangaroo plot visualization showing the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report that US companies have a higher turnover rate relative to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/osiris.png")
 
 
-## ----kan-osiris-gif, out.extra="class = 'gif'", fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report that US companies have a higher turnover rate relative to Japanese companies.", eval=knitr::is_html_output()----
-#> knitr::include_graphics("figures/kan-osiris.gif")
+## ----kan-osiris-gif, fig.cap = "The kangaroo plot visualization shows the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report that US companies have a higher turnover rate relative to Japanese companies.", eval=knitr::is_html_output()----
+# knitr::include_url("https://www.youtube.com/embed/xB9DK5efEL8")
 
 
 ## ----osiris-figure, fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/animation-exit.png")
 
 
-## ----osiris-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", eval=knitr::is_html_output()----
-#> knitr::include_graphics("figures/exit.gif")
+## ----osiris-gif, fig.cap = "The wallaby plot visualization shows the companies that exited the market. There are more United States companies that fall down into a not listed group (got de-listed) compared to Japanese companies.", eval=knitr::is_html_output()----
+# knitr::include_url("https://www.youtube.com/embed/TIWtFf6KaCI")
 
 
 ## -----------------------------------------------------------------------------
@@ -317,14 +336,14 @@ p2_voter <- anim_animate(p_voter)
 
 
 ## ----eval=FALSE---------------------------------------------------------------
-#> gganimate::anim_save("figures/voter.gif", p2_voter, height = 8, fps = 30,
-#>                      nframes = 400, width = 9, units = "in", res = 150)
+# gganimate::anim_save("figures/voter.gif", p2_voter, height = 8, fps = 30,
+#                      nframes = 400, width = 9, units = "in", res = 150)
 
 
 ## ----voter-figure, fig.cap = "Four frames from a wallaby plot visualization show how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, the few individuals who identified as neither male nor female overwhelmingly shifted their party affiliations to the Greens.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()----
 knitr::include_graphics("figures/animation-voter.png")
 
 
-## ----voter-gif, out.extra="class = 'gif'", fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, the few individuals who identified as neither male nor female overwhelmingly shifted their party affiliations to the Greens.", eval=knitr::is_html_output()----
-#> knitr::include_graphics("figures/voter.gif")
+## ----voter-gif, fig.cap = "The wallaby plot visualization shows how the top party performs in keeping the old voters of different genders. Most voters remain loyal to the party, but a small fraction of voters with roughly equal male-to-female ratio switch primarily to the other major party. Interestingly, the few individuals who identified as neither male nor female overwhelmingly shifted their party affiliations to the Greens.", eval=knitr::is_html_output()----
+# knitr::include_url("https://www.youtube.com/embed/6afmJ0sxvtc")
 
