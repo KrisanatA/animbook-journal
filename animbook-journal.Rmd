@@ -217,17 +217,10 @@ scaling_table <- original |>
   reframe(id, time, gp, values, rank, rank_group, absolute, absolute_group)
 ```
   
-```{r tbl-scaling, eval=knitr::is_html_output()}
+```{r tbl-scaling}
 scaling_table |> 
   knitr::kable(caption = "A summary of different scaling methods applied to the dataset.")
 ```
-
-```{r tbl-scaling-la, eval=knitr::is_latex_output()}
-scaling_table |> 
-  knitr::kable(caption = "A summary of different scaling methods applied to the dataset.") |> 
-  kableExtra::column_spec(8, width = "30em")
-```
-
   
   For the first and second scaling methods, it is necessary to rank the values based on time, and in cases where a group is provided, they are ranked based on both time and groups. To ensure that the rank scales among different groups are the same, the variables are first normalized to a range between 0 and 1. The third and fourth scaling methods also involve a normalization step, but they are based on raw values instead of rank values.
   
@@ -295,8 +288,8 @@ argument_num_tab |>
   kableExtra::column_spec(2, width = "30em")
 ```
   
-  The arguments for the `anim_prep()` and `anim_prep_cat()` functions are listed in Tables `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-num-la}','\\@ref(tab:tbl-num)'))` and `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-cat-la}','\\@ref(tab:tbl-cat)'))` respectively. The `data`, `id`, `values`, and `time` arguments are required for both functions. The `ncat`, `breaks`, `group_scaling`, and `scaling` arguments are for the user to customize the data scaling calculation in the `anim_prep()` function. In the `anim_prep_cat` function, the users can customize the order of the category to be shown on the y-axis using the `order` argument. Then, for further customization regarding how the final visualization looks. The `group`, `label`, and `time_dependent` arguments can be adjusted. 
-  
+  The arguments for the `anim_prep()` and `anim_prep_cat()` functions are listed in Tables `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-num-la}','\\@ref(tab:tbl-num)'))` and `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-cat-la}','\\@ref(tab:tbl-cat)'))` respectively. The `data`, `id`, `values`, and `time` arguments are required for both functions. The `ncat`, `breaks`, `group_scaling`, and `scaling` arguments are for the user to customize the data scaling calculation in the `anim_prep()` function. In the `anim_prep_cat` function, the users can customize the order of the category to be shown on the y-axis using the `order` argument. Then, for further customization regarding how the final visualization looks. The `group`, `label`, and `time_dependent` arguments can be adjusted.
+
   The `time_dependent` argument provides the user flexibility to choose whether points will start simultaneously (`time_dependent = TRUE`) or randomly (`time_dependent = FALSE`). The challenge with points starting at the same time is the formation of point clusters, making it difficult to track individual points. Allowing for the random starting time makes point tracking simpler. The starting times for the points are generated using the `runif()` function, where the `max` argument can be adjusted using the `width` parameter in the plotting function.
   
 
@@ -367,8 +360,8 @@ a <- anim_prep_cat(cat_change,
                    values = qnt, 
                    time = time, 
                    group = gp)
-class(a)
-glimpse(a)
+# class(a)
+# glimpse(a)
 ```
 
 To obtain an object for the animation function, the `wallaby_plot` function is used. The `subset` and `relation` arguments are applied to refine the final appearance of the animation, Figure \@ref(fig:top-one).
@@ -469,7 +462,7 @@ accounting <- anim_prep(data,
 
 kan_p <- kangaroo_plot(accounting)
 
-p <- wallaby_plot(accounting,
+wal_p <- wallaby_plot(accounting,
                   subset = "bottom",
                   relation = "many_one",
                   height = 1,
@@ -479,11 +472,11 @@ p <- wallaby_plot(accounting,
 
 kan_p2 <- anim_animate(kan_p)
 
-p2 <- anim_animate(p)
+wal_p2 <- anim_animate(wal_p)
 ```
   
 ```{r, eval=FALSE}
-gganimate::anim_save("figures/exit.gif", p2, height = 8, fps = 30,
+gganimate::anim_save("figures/exit.gif", wal_p2, height = 8, fps = 30,
                      nframes = 400, width = 9, units = "in", res = 150)
 
 gganimate::anim_save("figures/kan-osiris.gif", kan_p2, height = 8, fps = 10,
@@ -493,7 +486,7 @@ gganimate::anim_save("figures/kan-osiris.gif", kan_p2, height = 8, fps = 10,
 ``` r
 gganimate::animate(kan_p2)
 
-gganimate::animate(p2)
+gganimate::animate(wal_p2)
 ```
 
 ```{r kan-osiris-figure, fig.cap = "Four frames from the kangaroo plot visualization showing the movement of the Japanese and US companies between the performance sales quantiles from 2006 to 2018 for a sample of data extracted from the Osiris database. The 'not listed' category indicates companies not yet listed or removed from the listing. Most companies stay in the same quantile group, with a small number moving up and down. Most of the movement is made by American companies, which supports the OECD report that US companies have a higher turnover rate relative to Japanese companies.", fig.width=8, fig.align='center', out.width="100%", layout = "l-page", eval=knitr::is_latex_output()}

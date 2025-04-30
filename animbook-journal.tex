@@ -10,7 +10,8 @@
 Performance is often reported in quantiles or ranks and often repeatedly provided over time. Between elections, voters often switch party preferences, which produces categorical values over time. Inspired by the animation in the New York Times article ``Extensive data show punishing reach of racism for black boys,'' we provide new visualization functions to generate animations that display this type of data in an R package called animbook. Functions to pre-process the data and prepare it for the animation are provided. The methods will be suitable generally for data where categorical variables are measured over time, and provide a way to engagingly view changes.
 }
 
-\section{Introduction}\label{intro}
+\hypertarget{intro}{%
+\section{Introduction}\label{intro}}
 
 The concept of ``zombie companies'' began to attract attention when \citet{zombie_companies_2008} reported on their proliferation in Japan. Zombie companies are those with an interest coverage ratio of less than one for a period of more than three years, that is, companies taking space in the market but adding no life to the economy. We would detect their presence by a drop in performance, which is a movement pattern in their relative ranking over time. Generally, studying movement patterns is interesting for many problems, including rocket ship start-ups that rapidly perform well or in politics, to study voters who switch party affiliation between elections. Viewing changes between categories over time is an interesting challenge for visualization.
 
@@ -20,7 +21,8 @@ The challenge in producing an animation similar to the New York Times article an
 
 The structure of this paper is as follows. The subsequent section explains the animation in The New York Times article and why it is relevant to the problem of studying zombie companies. It is then followed by sections describing the data format needed, considerations about making animations, and visual design. The functions and usage of the software are detailed in the next section. Just prior to the final section, the paper illustrates the usage of the software to examine company performance, particularly zombie patterns, and the changing political allegiance of voters in Australia. The concluding discussion section summarizes, outlines some limitations, and suggests future directions for the software.
 
-\section{Explanation of the New York Times visualization}\label{NYTvis}
+\hypertarget{NYTvis}{%
+\section{Explanation of the New York Times visualization}\label{NYTvis}}
 
 \begin{figure}
 
@@ -43,7 +45,8 @@ This animation was developed using software based on JavaScript, D3.js (\citet{d
 
 The New York Times visualization is similar to a Sankey plot. Sankey plots are flow diagrams that show the movement/change from one category level to another, with the width of each arrow representing the proportional changes between levels. There are several R packages available to generate versions of Sankey plots, including \CRANpkg{ggalluvial} and \CRANpkg{ggparallel}. The main difference between the Sankey plot visualization and the animation featured in the New York Times lies in their methods of representing the proportion of changes. Sankey plots utilize the width of connecting lines, while the New York Times animation employs the density and color of points.
 
-\section{Data}\label{data}
+\hypertarget{data}{%
+\section{Data}\label{data}}
 
 \begin{figure}
 
@@ -60,7 +63,8 @@ Figure \ref{fig:data-diagram} illustrates the expected format of the data and va
 
 One of the frequently encountered values in the dataset is NA, commonly known as a missing value. In the context of accounting data, NA might signify that a company is either not yet listed or has been de-listed. In scenarios like voter data, NA may indicate that individuals did not provide the necessary information. Disregarding NA values could result in the loss of valuable information. Therefore, instead of completely removing NA entries, it will get converted into its own quantiles, ensuring that the missing data are factored into the visualization.
 
-\section{Animation tools}\label{animation}
+\hypertarget{animation}{%
+\section{Animation tools}\label{animation}}
 
 \begin{figure}
 
@@ -94,7 +98,8 @@ In \CRANpkg{gganimate}, the issue of integrating controls can be addressed by se
 
 In the case of \CRANpkg{plotly}, control integration is already implemented by default. The \texttt{frame} and \texttt{transition} arguments within the \texttt{animation\_opts()} function can be specified to set the length and speed of the animation.
 
-\section{Visualization design}\label{design}
+\hypertarget{design}{%
+\section{Visualization design}\label{design}}
 
 The animated visualization can be an effective communication tool (\citet{Mayer_Moreno_2002}; \citet{effective-trend}). It helps with communicating changing data values, enhancing the narrative, and keeping it engaging for the audience. According to \citet{Mayer_Moreno_2002}, animation can improve learning, especially when the goal is to promote deep understanding.
 
@@ -112,9 +117,11 @@ Another issue is that all observations would have a common starting time. It wou
 
 The paths of observations are also interpolated to create small changes in the position of points to produce the appearance of motion. The interpolation functions in \CRANpkg{gganimate} and \CRANpkg{plotly} are inadequate because they only generate a linear path. Our animation needs a non-linear path to show the flow. Sigmoid curves are commonly used in Sankey diagrams (\citet{Hvitfeldt_2018}). However, \citet{Shaffer_2019} argues that a sine curve more accurately represents proportion throughout the path. As illustrated in Figure \ref{fig:proportional-shade}, the sigmoid accurately represents the proportion at the beginning and end, but as it curves, the shape gets narrower, leading to a less accurate proportion representation than the sine curve. New interpolation functions are needed to compute both the sigmoid and sine paths.
 
-\section{Software}\label{software}
+\hypertarget{software}{%
+\section{Software}\label{software}}
 
-\subsection{Installation}\label{installation}
+\hypertarget{installation}{%
+\subsection{Installation}\label{installation}}
 
 \CRANpkg{animbook} is available through CRAN. The development version of this package can be found in the GitHub repositories at \url{https://github.com/KrisanatA/animbook}.
 
@@ -126,11 +133,13 @@ install.packages("animbook")
 devtools::install_github("KrisanatA/animbook")
 \end{verbatim}
 
-\subsection{Overview of functions}\label{overview-of-functions}
+\hypertarget{overview-of-functions}{%
+\subsection{Overview of functions}\label{overview-of-functions}}
 
 In designing the \CRANpkg{animbook} package, a three-step structured approach was developed to create an animation. The initial step is to reformat the data into a categorized data structure, as seen in Figure \ref{fig:data-diagram}. The second stage is creating a \texttt{ggplot} object, which can be subsequently passed into the animation function. During the second stage, an internal function will turn the categorized data into an animated data structure. The final step involves transforming the \texttt{ggplot} to a \texttt{gganimate} object by integrating the animation settings. This three-step structure was implemented to ensure that users, regardless of their level of experience, can produce the animations with simplicity while retaining customization for more experienced users.
 
-\subsubsection{Data pre-processing}\label{data-pre-processing}
+\hypertarget{data-pre-processing}{%
+\subsubsection{Data pre-processing}\label{data-pre-processing}}
 
 From Figure \ref{fig:data-diagram}, there is a need to map numerical value to a category. One way to handle this is by ranking the observation and grouping the rankings into quantiles. In some cases, this may not be the best option because when an observation is moved up by a quantile, another one is bound to move down, making the amount of observation in the quantile remain the same. This issue can be resolved by using an alternative method, which is grouping values based on their absolute values. Users may also be interested in grouping the data based on different groups, for example, ranking within a specific country. This generalization leads to four different scaling methods for the numerical data.
 
@@ -149,9 +158,9 @@ From Figure \ref{fig:data-diagram}, there is a need to map numerical value to a 
 
 \begin{table}
 
-\caption{\label{tab:tbl-scaling-la}A summary of different scaling methods applied to the dataset.}
+\caption{\label{tab:tbl-scaling}A summary of different scaling methods applied to the dataset.}
 \centering
-\begin{tabular}[t]{l|>{\raggedleft\arraybackslash}p{30em}|l|r|r|r|r|r}
+\begin{tabular}[t]{l|r|l|r|r|r|r|r}
 \hline
 id & time & gp & values & rank & rank\_group & absolute & absolute\_group\\
 \hline
@@ -188,7 +197,7 @@ All of these scaling methods utilized the \texttt{cut()} function from the base 
 
 All of the pre-processing steps mentioned above are completed using the \texttt{anim\_prep()} or \texttt{anim\_prep\_cat()} function, depending on the stages of the data structure. The \texttt{anim\_prep()} function is used for raw data format, while the \texttt{anim\_prep\_cat()} function is for categorized data format. There are additional arguments that allow users for more customization.
 
-These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning a frame to each individual observation, ensuring that each ID does not contain repeated frame values. It lets the \CRANpkg{gganimate} or \CRANpkg{plotly} perceive where the observation would be on the plot at a given frame, as seen in Figure \ref{fig:animated-diagram}.
+These are only the initial steps in formatting the data into a category. Now that there is a method to transform the data from the raw format into a categorized format, the next step is to modify it into an animated data structure. It is carried out by assigning a frame to each individual observation, ensuring that each ID does not contain repeated frame values. It lets the \CRANpkg{gganimate} or \CRANpkg{plotly} perceive where the observation would be on the plot at a given frame, as seen in Figure \ref{fig:animated-diagram}.
 
 The frame variable is assigned by sorting the data based on the ID and time using the \texttt{arrange()} function, followed by applying the \texttt{group\_by()} function on the ID, allowing the \texttt{row\_number()} function to be performed within each group. The functions mentioned in this paragraph are from the \CRANpkg{dplyr} package (\citet{dplyr}). These are done by the internal function for each of the plots provided in the packages.
 
@@ -225,7 +234,7 @@ scaling & The scaling method to be used; "rank" or "absolute". The default scali
 
 \begin{table}
 
-\caption{\label{tab:tbl-cat-la}The argumenst for the anim\_prep\_cat function.}
+\caption{\label{tab:tbl-cat-la}The arguments for the anim\_prep\_cat function.}
 \centering
 \begin{tabular}[t]{l|>{\raggedright\arraybackslash}p{30em}}
 \hline
@@ -254,15 +263,12 @@ scaling & The scaling method to be used; "rank" or "absolute". The default scali
 \end{tabular}
 \end{table}
 
-The arguments for the \texttt{anim\_prep()} and \texttt{anim\_prep\_cat()} functions are listed in Tables \ref{tab:tbl-num-la} and \ref{tab:tbl-cat-la} respectively. The \texttt{data}, \texttt{id}, \texttt{values}, and \texttt{time} arguments are required for both functions.
-
-The \texttt{ncat}, \texttt{breaks}, \texttt{group\_scaling}, and \texttt{scaling} arguments are for the user to customize the data scaling calculation in the \texttt{anim\_prep()} function. In the \texttt{anim\_prep\_cat} function, the users can customize the order of the category to be shown on the y-axis using the \texttt{order} argument.
-
-Then, for further customization regarding how the final visualization looks. The \texttt{group}, \texttt{label}, and \texttt{time\_dependent} arguments can be adjusted.
+The arguments for the \texttt{anim\_prep()} and \texttt{anim\_prep\_cat()} functions are listed in Tables \ref{tab:tbl-num-la} and \ref{tab:tbl-cat-la} respectively. The \texttt{data}, \texttt{id}, \texttt{values}, and \texttt{time} arguments are required for both functions. The \texttt{ncat}, \texttt{breaks}, \texttt{group\_scaling}, and \texttt{scaling} arguments are for the user to customize the data scaling calculation in the \texttt{anim\_prep()} function. In the \texttt{anim\_prep\_cat} function, the users can customize the order of the category to be shown on the y-axis using the \texttt{order} argument. Then, for further customization regarding how the final visualization looks. The \texttt{group}, \texttt{label}, and \texttt{time\_dependent} arguments can be adjusted.
 
 The \texttt{time\_dependent} argument provides the user flexibility to choose whether points will start simultaneously (\texttt{time\_dependent\ =\ TRUE}) or randomly (\texttt{time\_dependent\ =\ FALSE}). The challenge with points starting at the same time is the formation of point clusters, making it difficult to track individual points. Allowing for the random starting time makes point tracking simpler. The starting times for the points are generated using the \texttt{runif()} function, where the \texttt{max} argument can be adjusted using the \texttt{width} parameter in the plotting function.
 
-\subsubsection{Plotting function}\label{plotting-function}
+\hypertarget{plotting-function}{%
+\subsubsection{Plotting function}\label{plotting-function}}
 
 Once the data is prepared. The next step is to create the \texttt{ggplot} object as a basis for the animation. There are three plots available in this package. Two of the plots could be used for the animation, and another plot is used as a static visualization. All of each plot has an associated internal function that converts the categorized data format into the animated structure.
 
@@ -288,7 +294,7 @@ Now that the data are in the right format for the wallaby's plot, the \texttt{ge
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-8}The arguments for the wallaby\_plot function.}
+\caption{\label{tab:unnamed-chunk-9}The arguments for the wallaby\_plot function.}
 \centering
 \begin{tabular}[t]{l|>{\raggedright\arraybackslash}p{30em}}
 \hline
@@ -321,13 +327,15 @@ alpha & The opacity of the proportional shaded areas. Default is 0.1.\\
 \end{tabular}
 \end{table}
 
-\subsubsection{Animating function}\label{animating-function}
+\hypertarget{animating-function}{%
+\subsubsection{Animating function}\label{animating-function}}
 
 It is necessary to store the plot as a \texttt{ggplot} object before passing it to the final function, \texttt{anim\_animate()}, to animate. This function will automatically detect which rendering method was specified in the previous steps and add the minimum requirement functions accordingly. By default, if the user specifies the rendering as \texttt{gganimate}, then it will add the \texttt{transition\_time()} function from the \CRANpkg{gganimate} package. Otherwise, the \texttt{animation\_opts()} function will be added from the \CRANpkg{plotly} package.
 
-\subsection{Example usage}\label{example-usage}
+\hypertarget{example-usage}{%
+\subsection{Example usage}\label{example-usage}}
 
-The \texttt{cat\_change} data in the package is used to illustrate how to use this package. It has five categories, A to E, over two time points. Since the data is already in the categorized data structure, the \texttt{anim\_prep\_cat()} function is used. The output from this function is a class called \texttt{categorized}.
+The \texttt{cat\_change} data in the \CRANpkg{animbook} package is used to illustrate how to use this package. It has five categories, A to E, over two time points. Since the data is already in the categorized data structure, the \texttt{anim\_prep\_cat()} function is used. The output from this function is a class called \texttt{categorized}.
 
 \begin{verbatim}
 a <- anim_prep_cat(cat_change, 
@@ -335,25 +343,8 @@ a <- anim_prep_cat(cat_change,
                    values = qnt, 
                    time = time, 
                    group = gp)
-class(a)
-\end{verbatim}
-
-\begin{verbatim}
-#> [1] "tbl_df"      "tbl"         "data.frame"  "categorized"
-\end{verbatim}
-
-\begin{verbatim}
-glimpse(a)
-\end{verbatim}
-
-\begin{verbatim}
-#> Rows: 400
-#> Columns: 5
-#> $ id    <fct> 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 1~
-#> $ time  <int> 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020, 2020~
-#> $ qtile <dbl> 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5~
-#> $ label <chr> "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A", "A",~
-#> $ group <fct> X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, Y, Y~
+# class(a)
+# glimpse(a)
 \end{verbatim}
 
 To obtain an object for the animation function, the \texttt{wallaby\_plot} function is used. The \texttt{subset} and \texttt{relation} arguments are applied to refine the final appearance of the animation, Figure \ref{fig:top-one}.
@@ -378,7 +369,7 @@ p
 \caption{This illustrates the transition of points from the left category A to the right categories A and E. This is also referred to as a one-to-many relationship plot. The points shown in this plot only originated in category A. It emphasizes that these points only stay within the same category A or change to category E.}\label{fig:top-one}
 \end{figure}
 
-Figure \ref{fig:top-many}, shows the flexibility to use various options, such as \texttt{subset} or \texttt{relation}, to customize the plot appearance. Here \texttt{subset\ =\ "top"} is used to specify category A for the final time point, and \texttt{relation\ =\ "many\_one"} is used to specify that all categories flowing into A at time point 2 are shown.
+Figure \ref{fig:top-many} shows the flexibility to use various options, such as \texttt{subset} or \texttt{relation}, to customize the plot appearance. Here \texttt{subset\ =\ "top"} is used to specify category A for the final time point, and \texttt{relation\ =\ "many\_one"} is used to specify that all categories flowing into A at time point 2 are shown.
 
 \begin{verbatim}
 p_2 <- wallaby_plot(data = a,
@@ -437,11 +428,13 @@ gganimate::animate(p2)
 \caption{Four single frames from the animated visualization using example data. All of the X observations stay within the same group, while Y observations change from group A to group E.}\label{fig:catchange-figure}
 \end{figure}
 
-\section{Applications}\label{applications}
+\hypertarget{applications}{%
+\section{Applications}\label{applications}}
 
 Two real-world examples of usage are provided. The osiris example studies company movement between quartiles of sales performance over a 12-year period. The voting example studies party preference changes between the 2016 and 2019 elections.
 
-\subsection{Accounting database: osiris}\label{accounting-database-osiris}
+\hypertarget{accounting-database-osiris}{%
+\subsection{Accounting database: osiris}\label{accounting-database-osiris}}
 
 The Osiris data presented in this section was acquired from Bureau van Dijk (\citet{bvd}), compiling information on a total of 122,318 companies. It was subsequently subsetted for the 2021 report, consisting of 1000 companies with 94 variables. The dataset included in the package focuses on 790 companies, spanning from 2006 to 2018. The variables in this dataset include year, ID, country, sales, and japan.
 
@@ -479,7 +472,7 @@ accounting <- anim_prep(data,
 
 kan_p <- kangaroo_plot(accounting)
 
-p <- wallaby_plot(accounting,
+wal_p <- wallaby_plot(accounting,
                   subset = "bottom",
                   relation = "many_one",
                   height = 1,
@@ -489,13 +482,13 @@ p <- wallaby_plot(accounting,
 
 kan_p2 <- anim_animate(kan_p)
 
-p2 <- anim_animate(p)
+wal_p2 <- anim_animate(wal_p)
 \end{verbatim}
 
 \begin{verbatim}
 gganimate::animate(kan_p2)
 
-gganimate::animate(p2)
+gganimate::animate(wal_p2)
 \end{verbatim}
 
 \begin{figure}
@@ -524,7 +517,8 @@ In Figure \ref{fig:osiris-figure}, the focus is placed on companies that exited 
 
 The wallaby plot can be employed to emphasize the high turnover rate observed in the kangaroo plot, as it specifically focuses on a subset, allowing the users to better perceive the \textbf{relative proportion}. However, it is also important to note that this plot is confined to only two-time points (start and end), which may not provide a comprehensive view of the entire story.
 
-\subsection{Voter behavior}\label{voter-behavior}
+\hypertarget{voter-behavior}{%
+\subsection{Voter behavior}\label{voter-behavior}}
 
 The election survey dataset included in the \CRANpkg{animbook} package focuses on the voter behavior of the 734 individuals who participated in the 2019 survey. The variables in this data are id, year, party, and gender. The ID variable has been de-identified to ensure the privacy of the responders, preventing the identification of the survey participants. The year column is derived from the two different questions in the survey, which answered how the top party performs in keeping the old voters of different genders relative to the 2016 Australian election results. This dataset was collected from ADA Dataverse (\citet{aeles}).
 
@@ -568,7 +562,8 @@ From Figure \ref{fig:voter-figure}, it reveals an intriguing pattern where indiv
 
 According to the survey (\citet{lgbtiq}), the Greens Party provided a detailed response to all nine priority areas that focus on changing systems and addressing health and well-being disparities among LGBTIQ+ communities. However, the Labor Party only gives a broad statement of commitment to a range of LGBTIQ+ and human rights issues. This includes working with LGBTIQ+ Australians and advocates to ensure equality before the law and full access to Medicare.
 
-\section{Discussion}\label{discussion}
+\hypertarget{discussion}{%
+\section{Discussion}\label{discussion}}
 
 Beginning with inspiration drawn from the New York Times article, this package provides tools to generate animations for temporal flow data to study changes in groups over time. The paper describes how to pre-process the data into a format for making several types of plots and animation. It also explains what needs to be considered when making an animation, such as the persistence of objects, how to achieve this using interpolation, and the visualization design choices automated and those available to users.
 
@@ -576,7 +571,8 @@ The package provides the tools to create animations for simple temporal patterns
 
 There are some potential new directions to develop this work. Some applications might benefit by re-parameterization of the x-axis from years to ages (e.g.~company ages, time since the company was founded). This can be done by pre-processing before passing to animbook, but it would be more convenient to automate for the user. One could also imagine re-arranging the mapping of variables to the plot and animations, particularly, split on time and animate on the quantiles to focus on movement through the ranks. The New York Times article had examples of this idea. The static funnel web plot is a good place to experiment with this and to further enhance it visually.
 
-\section*{Acknowledgements}\label{acknowledgements}
+\hypertarget{acknowledgements}{%
+\section*{Acknowledgements}\label{acknowledgements}}
 \addcontentsline{toc}{section}{Acknowledgements}
 
 This paper is created using the \CRANpkg{rjtools} packages (\citet{rjtools}) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \CRANpkg{animbook} package. This version is available on \url{https://github.com/KrisanatA/animbook}.
