@@ -35,7 +35,7 @@ The interactive chart featured in the New York Times article (Figure \ref{fig:ny
 
 In the visualization, each observation is initially classified into one group at the start and potentially transitions into either the same group or a different group. This dynamic visualization constructs questions on the broader use of this visualization to other types of data. The potential use of this visualization on accounting data is to convey a message, as reported by \citet{oecd_report}, that the concept of zombie companies is not unique to Japan alone. It is also present in the United States, which has a faster metabolization rate (more new listings and exits) relative to Japan.
 
-The political data that exhibits the movement of voters switching party affiliations between elections can be a valuable insight into the behavior of the voters. This data could be extended to incorporate demographic information about the voters, providing analysts with significant insight into voter behavior and allowing them to consolidate effective campaigns for their political party. It can also be applied to marketing data, where customers shift their product interest to the competitor, providing the marketing analysts with an understanding of both the company's products and the overall market.
+The political data that exhibits the movement of voters switching party affiliations between elections can be a valuable insight into the behavior of the voters. These data could be extended to incorporate demographic information about the voters, providing analysts with significant insight into voter behavior and allowing them to consolidate effective campaigns for their political party. It can also be applied to marketing data, where customers shift their product interest to the competitor, providing the marketing analysts with an understanding of both the company's products and the overall market.
 
 This animation was developed using software based on JavaScript, D3.js (\citet{d3js}), and WebGL (\citet{webgl}). The D3 JavaScript is one of the most widely known libraries for creating an interactive and dynamic visualization. It enables the designers to bind both the data and graphical elements to the DOM (Document Object Model). On the other hand, WebGL functions as a JavaScript API for rendering interactive 2D and 3D graphics within any compatible web browser without the use of plug-ins.
 
@@ -319,7 +319,7 @@ alpha & The opacity of the proportional shaded areas. Default is 0.1.\\
 
 \subsubsection{Animating function}\label{animating-function}
 
-It is necessary to store the plot as a \texttt{ggplot} object before passing it to the final function, \texttt{anim\_animate()}, to animate. This function will automatically detect which rendering method was specified in the previous steps and add the minimum requirement functions accordingly. By default, if the user specifies the rendering as \texttt{gganimate}, then it will add the \texttt{transition\_time()} function from the \CRANpkg{gganimate} package. Otherwise, the \texttt{animation\_opts()} function will be added from the \CRANpkg{plotly} package.
+It is necessary to store the plot as a \texttt{ggplot} object before passing it to the final function, \texttt{anim\_animate()}, to animate. This function will automatically detect which rendering method was specified in the previous steps and add the minimum requirement functions accordingly. By default, if the user specifies the rendering as \texttt{gganimate}, then it will add the \texttt{transition\_time()} function from the \CRANpkg{gganimate} package. It also means that the functionality from the \CRANpkg{gganimate} package (e.g., \texttt{shadow\_trail()} function) will work by default. Otherwise, the \texttt{animation\_opts()} function will be added from the \CRANpkg{plotly} package.
 
 \subsection{Example usage}\label{example-usage}
 
@@ -557,7 +557,7 @@ There are some potential new directions to develop this work. Some applications 
 This paper is created using the \CRANpkg{rjtools} packages (\citet{rjtools}) and utilized the \CRANpkg{dplyr}, \CRANpkg{knitr}, \CRANpkg{gganimate}, and \CRANpkg{kableExtra} for creating the visual included in this paper. This paper is based on the 0.0.0.9 version of the \CRANpkg{animbook} package. This version is available on \url{https://github.com/KrisanatA/animbook}.
 I also acknowledge the use of ChatGPT (\url{https://chat.openai.com/}) to improve the text, grammar, and spelling.
 
-I would like to acknowledge Chika Saka for providing the inspiration that led to the development of this R package. Additionally, thanks to Masayuki Jimichi for the efforts in collecting the sample Osiris data, which contributed to the practical application of the package.
+We would like to acknowledge Chika Saka for providing the inspiration that led to the development of this R package. Additionally, thanks to Masayuki Jimichi for the efforts in collecting the sample Osiris data, which contributed to the practical application of the package.
 
 \bibliography{animbook-journal.bib}
 

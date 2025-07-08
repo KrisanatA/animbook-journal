@@ -155,17 +155,17 @@ Response: The code has been fixed.
 
 - *When running the code on an M1 MacBook Pro, some of the shaded sections tear apart and look like white circles. This happens particularly with the wallaby plots.*
 
-Response: 
+Response: ??? It might be related to the default colour for shaded sections. Will need examples to replicate.
 
 ### *Other comments:*
 
 - *Are there plans to include additional visuals to help keep track of the points as they disappear? In the NYT article, the points are summed and proportions are calculated as the points reach the right side of the plot and I think this would be a nice addition in the future.*
 
-Response: 
+Response: ??? Not at the moment since it can lead to a visual overload.
 
 - *When there are many data points, it becomes difficult track the general movement of observations. Would there be any options to trace the paths to show where the points have moved (like a line with low alpha)?*
  
-Response: Make it clear.
+Response: The gganimate elements (e.g., shadow trail) work normally with this package. We have added an explanation on page 8.
 
 - *Overall, I really like this package!*
 
@@ -185,7 +185,7 @@ Response:
 
 *1. Figure 1 for instance. What is the interpretation of this figure? I struggled to understand and did not manage to do so.*
 
-Response: Describe what do we learn.
+Response: ??? Already in the caption.
 
 *2. Figures 2 and 4. Since the data entered in R are numerical or categorical values, what is the use of these figures? Why should the reader be informed of the raw, handwritten data?*
 
@@ -195,7 +195,7 @@ Response: Not change, this image is important base on discussion with user. (see
     
 *a) First paragraph after Figure 1. “This data…” > “These data…”. The word data is plural, the singular form is datum.*
 
-Response: Just change.
+Response: Fixed
 
 *b) Beginning of Section 5. Please delete the letters “R. E.” from the reference of Mayer and Moreno (2002).* 
 
@@ -203,21 +203,21 @@ Response: All referencing are automated and the style is consistent with the R j
 
 *c) Page 13. First paragraph, 3rd and 4rth lines probably have a typo (“…and japan”).*
 
-Response: Just change
+Response: ???
 
 *4. The description you give for Figure 10 helps the reader understand the meaning of this plot. But, in the example in the R package with the aeles dataset, things are not so obvious. There are many observations that mask the visibility of the points.Also, what do the X and Y mean?*
 
-Response: Add detail for X and Y.
+Response: ??? Not sure what the reviewer means.
 
 *5. Why do the authors write “I acknowledge…” and not “We…” in the acknowledgements?*
 
-Response: Just change
+Response: Fixed
 
 ### *Code*
 
 *I did not find the commands in the package very user-friendly. For instance, to produce a plot I must go through many functions, prior to typing the plot to appear. The example in the aeles dataset is such a case. I need to type 4 commands in order to see a plot, which I repeat, cannot understand, nor interpret easily. I would prefer a function that does all this preprocessing and plots the data. Legends are missing, and in my opinion, the help files are not very helpful for someone who wants to use this package easily, to visualize their data.* 
 
-Response: Fix helpfile.
+Response: ??? It was a design choice to allow for flexibility. For example, to add ggplot or gganimate elements, it needs to be done between the processes. There is also a page for getting started, which discusses it in more detail. (https://krisanata.github.io/animbook/articles/animbook.html)[https://krisanata.github.io/animbook/articles/animbook.html]
 
 
 
