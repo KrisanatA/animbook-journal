@@ -85,7 +85,7 @@ Response: Fixed
 
 - *Page 7, 3rd and 4th paragraphs: the time_dependent argument only appears in the _plot() functions, so it should be mentioned in the later section.*
 
-Response: 
+Response: Fixed
 
 - *Page 8, table 2: "argumenst" should be "arguments"*
 
@@ -117,19 +117,19 @@ Response: Fixed
 
 - *Page 15, paragraph starting with "In Figure 11": There is a sentence prompt that should be filled in "(explain the difference in proportion ...)"*
 
-Response: 
+Response: We forgot to remove that.
 
 - *Page 16, the two paragraphs before discussion: the second paragraph leads to explanation from the previous paragraph, so these ideas should stay together in one paragraph.*
 
-Response: 
+Response: Fixed
 
 - *Page 18: There is a reference starting with "---------" that should be filled in.*
 
-Response: 
+Response: Fixed
 
 - *An example with the funnel_web_plot() would be a nice addition in the applications section.*
 
-Response: 
+Response: ??? I think this is more like an experimental visualization.
 
 ## Code
 
@@ -137,21 +137,21 @@ Response:
 
 - *Page 6: it states that users can specify breaks on a 0 to 1 scale. Is there a reason why users can't provide breaks on the raw data scale and have the function transforms the values to fit the 0 and 1 scale?*
 
-Response: Be more clear (you should be able to)
+Response: In the function, before separating the observation into groups, it will go through normalization (the data scale will be between 0 and 1). If we implement the raw data scale, it would require redesigning the function, as it would have to be able to distinguish between normalization and raw data scale. ??? is this too long?
 
 - *Page 8: could the last_plot() function be used by default so that users don't have to save the plot into a ggplot2 object?*
 
-Response:
+Response: It should work by default.
 
 - *In the wallaby plot, the applicable points move from all categories to a single category (or vice versa). Is there a way to choose which single category gets used?*
 
-Response: Be more clear 
+Response: Yes, we have made it clearer in the arguments description and on page 10.
 
 *Code:* 
 
 - *When using custom breaks, the error displays "The breaks vector must have the same number of groups as ncat argument", but it is stated in the article that the length of breaks need to equal the number of categories plus 1.*
 
-Response: 
+Response: The code has been fixed.
 
 - *When running the code on an M1 MacBook Pro, some of the shaded sections tear apart and look like white circles. This happens particularly with the wallaby plots.*
 

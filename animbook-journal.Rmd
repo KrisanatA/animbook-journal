@@ -288,9 +288,7 @@ argument_num_tab |>
   kableExtra::column_spec(2, width = "30em")
 ```
   
-  The arguments for the `anim_prep()` and `anim_prep_cat()` functions are listed in Tables `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-num-la}','\\@ref(tab:tbl-num)'))` and `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-cat-la}','\\@ref(tab:tbl-cat)'))` respectively. The `data`, `id`, `values`, and `time` arguments are required for both functions. The `ncat`, `breaks`, `group_scaling`, and `scaling` arguments are for the user to customize the data scaling calculation in the `anim_prep()` function. In the `anim_prep_cat` function, the users can customize the order of the category to be shown on the y-axis using the `order` argument. Then, for further customization regarding how the final visualization looks. The `group`, `label`, and `time_dependent` arguments can be adjusted.
-
-  The `time_dependent` argument provides the user flexibility to choose whether points will start simultaneously (`time_dependent = TRUE`) or randomly (`time_dependent = FALSE`). The challenge with points starting at the same time is the formation of point clusters, making it difficult to track individual points. Allowing for the random starting time makes point tracking simpler. The starting times for the points are generated using the `runif()` function, where the `max` argument can be adjusted using the `width` parameter in the plotting function.
+  The arguments for the `anim_prep()` and `anim_prep_cat()` functions are listed in Tables `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-num-la}','\\@ref(tab:tbl-num)'))` and `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{tab:tbl-cat-la}','\\@ref(tab:tbl-cat)'))` respectively. The `data`, `id`, `values`, and `time` arguments are required for both functions. The `ncat`, `breaks`, `group_scaling`, and `scaling` arguments are for the user to customize the data scaling calculation in the `anim_prep()` function. In the `anim_prep_cat` function, the users can customize the order of the category to be shown on the y-axis using the `order` argument. Then, for further customization regarding how the final visualization looks. The `group`, `label`, and `time_dependent` arguments can be adjusted. The `time_dependent` argument will be further discussed in the next section.
   
 
 ### Plotting function
@@ -309,6 +307,8 @@ Once the data is prepared. The next step is to create the `ggplot` object as a b
   
   The `proportional_shade()` function's algorithm begins by calculating the corner points for each shaded area. Subsequently, the algorithm utilizes the `sine()` function to interpolate points between the left and right boundaries. Once this interpolation is completed, all the generated points are interconnected to form the shaded regions.
   
+  The user can further use the `time_dependent` argument to choose whether points will start simultaneously (`time_dependent = TRUE`) or randomly (`time_dependent = FALSE`). The challenge with points starting at the same time is the formation of point clusters, making it difficult to track individual points. Allowing for the random starting time makes point tracking simpler. The starting times for the points are generated using the `runif()` function, where the `max` argument can be adjusted using the `width` parameter in the plotting function.
+  
   Now that the data are in the right format for the wallaby's plot, the `geom_point()` function is used for plotting the observations, `geom_polygon()` is used for creating the proportional shaded areas, and `geom_text()` is used for creating labels. These three functions are from the \CRANpkg{ggplot2} package. During this process, the aesthetics mapping will be different depending on the rendering tool to be used, which can be either `gganimate` or `plotly`. The difference between the two rendering tools is that for `plotly`, the `ids` and `frame` arguments need to be specified during the creation of the `ggplot` object.
   
 ```{r}
@@ -321,7 +321,7 @@ description2 <- c("The categorized data returned from the prep function.",
                   "The vector of the palette used by the function to supply the color to the shaded area.",
                   "The choice of method used to create and display the plot, either gganimate or plotly. Default is gganimate.",
                   "Should the observations entered the visualization at the same time. Default is FALSE",
-                  "A character string specifying the variable used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument. Default is \"top\".",
+                  "A character string specifying the label used for subsetting the data. The \"top\" and \"bottom\" strings can also be used in this argument. Default is \"top\".",
                   "The choice of relationship for the values to display on the plot, either \"one_many.\" or \"many_one\". Default is \"one_many\".",
                   "The number of points the users want for the wallaby plot. Default is NULL, which is the number of points equal to the original.",
                   "The proportion of the area occupied by the observations in the shaded areas. Default is 0.6.",
@@ -377,7 +377,7 @@ p <- wallaby_plot(data = a,
 p
 ```
 
-Figure \@ref(fig:top-many) shows the flexibility to use various options, such as `subset` or `relation`, to customize the plot appearance. Here `subset = "top"` is used to specify category A for the final time point, and `relation = "many_one"` is used to specify that all categories flowing into A at time point 2 are shown.
+Figure \@ref(fig:top-many) shows the flexibility to use various options, such as `subset` or `relation`, to customize the plot appearance. Here `subset = "top"` is used to specify category A for the final time point, and `relation = "many_one"` is used to specify that all categories flowing into A at time point 2 are shown. However, if category B is the focusing point, setting `subset = "B"` will also allow for a choice of category to be shown as in Figure \@ref(fig:b-many).
 
 ```{r top-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The plot shows the movement of points from categories A and E on the right to category A on the left, representing a many-to-one relationship. This specifically highlights the points that have moved to category A, which are the points that originate from categories A and E."}
 p_2 <- wallaby_plot(data = a,
@@ -388,8 +388,6 @@ p_2 <- wallaby_plot(data = a,
 
 p_2
 ```
-
-Using `subset = "B"` will only show the point for a single category as shown in Figure \@ref(fig:b-many).
 
 ```{r b-many, echo=TRUE, fig.width=8, fig.align='center', out.width="100%", layout = "l-body", fig.cap="The plot shows the transfer of points from the right category B to the left category B. It underscores that the points ultimately landing in category B originate specifically from category B itself."}
 p_3 <- wallaby_plot(data = a,
@@ -509,7 +507,7 @@ knitr::include_graphics("figures/animation-exit.png")
 knitr::include_url("https://www.youtube.com/embed/TIWtFf6KaCI")
 ```
 
-  In Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`, the focus is placed on companies that exited the market in 2018 that were in the market at some point since 2006. The gray regions show the proportion of companies in each of the categories in 2006 on the left that exited the market by 2018. (explain the difference in proportion and not listed companies). In 2006, the companies represented by points, colored by country, were in one of the quartiles or "Not listed" category. All the companies in the Top 25% were US companies. Any Japanese companies in the Top 25% in 2006 did not exit the market (Not listed). It is worth noting that there are actually none of the Japanese companies in the Top 25% in 2006. It is also interesting that the larger proportion of the companies in the Top 25% are getting de-listed, and the lower the quartiles, the less likely that the companies will exit the market.
+  In Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:osiris-figure}','\\@ref(fig:osiris-gif)'))`, the focus is placed on companies that exited the market in 2018 that were in the market at some point since 2006. The gray regions show the proportion of companies in each of the categories in 2006 on the left that exited the market by 2018. In 2006, the companies represented by points, colored by country, were in one of the quartiles or "Not listed" category. All the companies in the Top 25% were US companies. Any Japanese companies in the Top 25% in 2006 did not exit the market (Not listed). It is worth noting that there are actually none of the Japanese companies in the Top 25% in 2006. It is also interesting that the larger proportion of the companies in the Top 25% are getting de-listed, and the lower the quartiles, the less likely that the companies will exit the market.
   
   The wallaby plot can be employed to emphasize the high turnover rate observed in the kangaroo plot, as it specifically focuses on a subset, allowing the users to better perceive the **relative proportion**. However, it is also important to note that this plot is confined to only two-time points (start and end), which may not provide a comprehensive view of the entire story.
 
@@ -563,9 +561,7 @@ knitr::include_graphics("figures/animation-voter.png")
 knitr::include_url("https://www.youtube.com/embed/6afmJ0sxvtc")
 ```
 
-  From Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:voter-figure}','\\@ref(fig:voter-gif)'))`, it reveals an intriguing pattern where individuals who identified their gender as 'others' have shifted their voting preference from the Liberal Party, the leading party in 2006, to the Greens Party. This change in behavior could be linked to the Green Party's "A FAIRER, MORE EQUAL COMMUNITY" campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals.
-  
-  According to the survey (@lgbtiq), the Greens Party provided a detailed response to all nine priority areas that focus on changing systems and addressing health and well-being disparities among LGBTIQ+ communities. However, the Labor Party only gives a broad statement of commitment to a range of LGBTIQ+ and human rights issues. This includes working with LGBTIQ+ Australians and advocates to ensure equality before the law and full access to Medicare.
+  From Figure `r knitr::asis_output(ifelse(knitr::is_latex_output(), '\\ref{fig:voter-figure}','\\@ref(fig:voter-gif)'))`, it reveals an intriguing pattern where individuals who identified their gender as 'others' have shifted their voting preference from the Liberal Party, the leading party in 2006, to the Greens Party. This change in behavior could be linked to the Green Party's "A FAIRER, MORE EQUAL COMMUNITY" campaign, which advocates for full equality under the law and communities for LGBTIQ+ individuals. According to the survey (@lgbtiq), the Greens Party provided a detailed response to all nine priority areas that focus on changing systems and addressing health and well-being disparities among LGBTIQ+ communities. However, the Labor Party only gives a broad statement of commitment to a range of LGBTIQ+ and human rights issues. This includes working with LGBTIQ+ Australians and advocates to ensure equality before the law and full access to Medicare.
   
   
 # Discussion
