@@ -19,10 +19,8 @@ author:
     orcid: 0000-0002-3813-7155
 type: package
 output: 
-  rjtools::rjournal_web_article:
+  rjtools::rjournal_article:
     self_contained: yes
-    toc: no
-  rjtools::rjournal_pdf_article:
     toc: no
 bibliography: animbook-journal.bib
 ---
@@ -426,7 +424,7 @@ knitr::include_url("https://www.youtube.com/embed/j-azl7vKjwo")
 
 # Applications
 
-Two real-world examples of usage are provided. The Osiris [@bvd] example studies company movement between quartiles of sales performance over a 12-year period. The voting example studies party preference changes between the 2016 and 2019 elections.
+Two real-world examples of usage are provided. The Osiris data [@bvd] example studies company movement between quartiles of sales performance over a 12-year period. The voting example studies party preference changes between the 2016 and 2019 elections.
 
 
 ## Accounting database: osiris
