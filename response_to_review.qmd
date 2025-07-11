@@ -97,7 +97,7 @@ Response: Fixed.
 
 - *Page 8, paragraph 4: should "wallaby's plot" be "wallaby plot"?* 
 
-Response: ???
+Response: Fixed.
 
 - *Page 8, last paragraph: state that the data is included in the animbook package.*
 
