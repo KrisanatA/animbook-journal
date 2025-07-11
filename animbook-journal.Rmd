@@ -109,7 +109,7 @@ knitr::include_graphics("figures/animated-diagram.png")
 
 The animated visualization can be an effective communication tool (@Mayer_Moreno_2002; @effective-trend). It helps with communicating changing data values, enhancing the narrative, and keeping it engaging for the audience. According to @Mayer_Moreno_2002, animation can improve learning, especially when the goal is to promote deep understanding.
 
-  @mayer_2005 states that designing multimedia requires the designer to understand how people learn. One of the principles in @mayer_2005, Redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
+  @mayer_2005 states that designing multimedia requires the designer to understand how people learn. One of the principles in @mayer_2005,  redundancy, suggests that a piece of excess information could overload the learners. By this principle, the animation must be carefully designed to avoid this pitfall.
   
 ```{r proportional-shade, fig.show="hold", out.width="50%", fig.cap="The plot shows the difference between the sigmoid (left) and the sine curve (right). In the sigmoid, as the curve progresses, it appears to become narrower, possibly resulting in more misperception of relative proportions compared to the sine curve."}
 knitr::include_graphics("figures/sigmoid-shade.png")

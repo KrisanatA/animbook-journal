@@ -53,7 +53,7 @@ Response: Fixed and switching the order.
 
 - *Page 5, paragraph 2: I don't think that redundancy needs to be capitalized here*
 
-Response: ???
+Response: Fixed
 
 - *Page 5, last paragraph of section 5: "As illustrated in Figure 5." is left as its own sentence, but should be included with the surrounding sentence.*
 
