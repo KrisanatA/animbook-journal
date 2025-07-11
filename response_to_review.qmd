@@ -161,7 +161,7 @@ Response: We are not sure what is happening here. We have tested on an M1 MacBoo
 
 - *Are there plans to include additional visuals to help keep track of the points as they disappear? In the NYT article, the points are summed and proportions are calculated as the points reach the right side of the plot and I think this would be a nice addition in the future.*
 
-Response: ??? Not at the moment since it can lead to a visual overload.
+Response: No plans right now, but it's a good idea. It's difficult to do well, and generally for different data sets.
 
 - *When there are many data points, it becomes difficult track the general movement of observations. Would there be any options to trace the paths to show where the points have moved (like a line with low alpha)?*
  
@@ -185,7 +185,7 @@ Response:
 
 *1. Figure 1 for instance. What is the interpretation of this figure? I struggled to understand and did not manage to do so.*
 
-Response: ??? Already in the caption.
+Response: There is already an explanation in the caption, but we have added more text.
 
 *2. Figures 2 and 4. Since the data entered in R are numerical or categorical values, what is the use of these figures? Why should the reader be informed of the raw, handwritten data?*
 

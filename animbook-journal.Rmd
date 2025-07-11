@@ -50,7 +50,7 @@ The concept of "zombie companies" began to attract attention when @zombie_compan
 
 # Explanation of the New York Times visualization {#NYTvis}
 
-```{r nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package. The animation illustrates the disparity between white men and black men. It reveals that despite black boys growing up in a rich household, they still have a higher likelihood of falling into lower income groups compared to white boys.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
+```{r nyt, fig.cap="Screenshot of the New York Times animation, which is the motivation for this visualization package. The animation illustrates the disparity between white men (yellow) and black men (blue). It reveals that despite black boys growing up in a rich household, they still have a higher likelihood of falling into lower income groups compared to white boys.This is observed by more yellow points apparently falling from the top bar to lower bars in the animated plot.", fig.width=8, fig.align='center', out.width="100%", layout = "l-body"}
 knitr::include_graphics("figures/NYT.png")
 ```
 
