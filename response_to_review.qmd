@@ -33,7 +33,7 @@ Response: We have emphasized that his example code that reproduces the New York 
 
 - *Page 2, paragraph starting with "In the data structure": I suggest a little more pretext for the example of company name and where the company is registered. Or state the purpose of ID and grouping before giving a cohesive example.*
 
-Response: ??? I have added US and Japan as an example, not sure what else can be added.
+Response: Text has been modified to include an example using the US and Japan osiris data.
 
 - *Page 3, paragraph starting with "One of the frequently": I was initially confused about how NA were handled, but it was clearer later in the paper that NA became its own category.* 
 
