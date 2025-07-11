@@ -93,7 +93,7 @@ Response: Fixed
 
 - *Page 8, paragraph 2/3: the proportional_shade() function can be discussed solely in one paragraph for better transition.* 
 
-Response: ??? I feel like the function should be mentioned first in the second paragraph. The third paragraph is mainly about the function algorithm.
+Response: Fixed.
 
 - *Page 8, paragraph 4: should "wallaby's plot" be "wallaby plot"?* 
 
