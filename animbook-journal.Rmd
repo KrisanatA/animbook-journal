@@ -431,7 +431,7 @@ Two real-world examples of usage are provided. The osiris example studies compan
 
 ## Accounting database: osiris
 
-The Osiris data presented in this section was acquired from Bureau van Dijk (@bvd), compiling information on a total of 122,318 companies. It was subsequently subsetted for the 2021 report, consisting of 1000 companies with 94 variables. The dataset included in the package focuses on 790 companies, spanning from 2006 to 2018. The variables in this dataset include year, ID, country, sales, and japan.
+The Osiris data presented in this section was acquired from Bureau van Dijk (@bvd), compiling information on a total of 122,318 companies. It was subsequently subsetted for the 2021 report, consisting of 1000 companies with 94 variables. The dataset included in the package focuses on 790 companies, spanning from 2006 to 2018. The variables in this dataset include year, ID, country, sales, and the binary variable called japan.
 
   @oecd_report reported that companies in the United States have a faster metabolic rate relative to Japanese companies. This means that US companies tend to move up and down in the performance metrics more frequently than Japanese companies. This can be examined using the wallaby and kangaroo plots. The wallaby plot allows the study of entry and exit behavior. The kangaroo plot allows for studying the full movement of companies over time.
   

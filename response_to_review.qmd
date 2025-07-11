@@ -203,7 +203,7 @@ Response: All referencing are automated and the style is consistent with the R j
 
 *c) Page 13. First paragraph, 3rd and 4rth lines probably have a typo (“…and japan”).*
 
-Response: ???
+Response: "japan" is one of the variables in the osiris data. We have changed the text so that this is clearer.
 
 *4. The description you give for Figure 10 helps the reader understand the meaning of this plot. But, in the example in the R package with the aeles dataset, things are not so obvious. There are many observations that mask the visibility of the points.Also, what do the X and Y mean?*
 
