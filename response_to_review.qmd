@@ -109,7 +109,7 @@ Response: Fixed
 
 - *Page 10, applications: include sources at the first mention of each example.*
 
-Response: ???
+Response: Fixed
 
 - *Page 13: use consistent naming for the plot objects (kan_p vs. p)*
 
@@ -129,7 +129,7 @@ Response: Fixed
 
 - *An example with the funnel_web_plot() would be a nice addition in the applications section.*
 
-Response: ??? I think this is more like an experimental visualization.
+Response: We would rather not because it is experimental and retained in the package in case it is useful at some point.
 
 ## Code
 
@@ -137,7 +137,7 @@ Response: ??? I think this is more like an experimental visualization.
 
 - *Page 6: it states that users can specify breaks on a 0 to 1 scale. Is there a reason why users can't provide breaks on the raw data scale and have the function transforms the values to fit the 0 and 1 scale?*
 
-Response: In the function, before separating the observation into groups, it will go through normalization (the data scale will be between 0 and 1). If we implement the raw data scale, it would require redesigning the function, as it would have to be able to distinguish between normalization and raw data scale. ??? is this too long?
+Response: In the function, before separating the observation into groups, it will go through normalization (the data scale will be between 0 and 1). If we implement the raw data scale, it would require redesigning the function, as it would have to be able to distinguish between normalization and raw data scale. 
 
 - *Page 8: could the last_plot() function be used by default so that users don't have to save the plot into a ggplot2 object?*
 
@@ -155,7 +155,7 @@ Response: The code has been fixed.
 
 - *When running the code on an M1 MacBook Pro, some of the shaded sections tear apart and look like white circles. This happens particularly with the wallaby plots.*
 
-Response: ??? It might be related to the default colour for shaded sections. Will need examples to replicate.
+Response: We are not sure what is happening here. We have tested on an M1 MacBook Pro and don't see the problem. Ideally this sort of problem is reported as an issue on the package website with a small code example.
 
 ### *Other comments:*
 
