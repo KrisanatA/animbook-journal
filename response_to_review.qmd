@@ -217,7 +217,7 @@ Response: Fixed
 
 *I did not find the commands in the package very user-friendly. For instance, to produce a plot I must go through many functions, prior to typing the plot to appear. The example in the aeles dataset is such a case. I need to type 4 commands in order to see a plot, which I repeat, cannot understand, nor interpret easily. I would prefer a function that does all this preprocessing and plots the data. Legends are missing, and in my opinion, the help files are not very helpful for someone who wants to use this package easily, to visualize their data.* 
 
-Response: ??? It was a design choice to allow for flexibility. For example, to add ggplot or gganimate elements, it needs to be done between the processes. There is also a page for getting started, which discusses it in more detail. (https://krisanata.github.io/animbook/articles/animbook.html)[https://krisanata.github.io/animbook/articles/animbook.html]
+Response: This was a design choice for transparency so the user can see the steps. We have updated the web page to make the steps clearer, and also added a single function that does all the steps. XXX
 
 
 
