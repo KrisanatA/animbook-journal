@@ -207,7 +207,7 @@ Response: "japan" is one of the variables in the osiris data. We have changed th
 
 *4. The description you give for Figure 10 helps the reader understand the meaning of this plot. But, in the example in the R package with the aeles dataset, things are not so obvious. There are many observations that mask the visibility of the points.Also, what do the X and Y mean?*
 
-Response: ??? Not sure what the reviewer means.
+Response: XXX We have fixed the example on the package website and provide more documentation about the animation.
 
 *5. Why do the authors write “I acknowledge…” and not “We…” in the acknowledgements?*
 
