@@ -424,12 +424,12 @@ knitr::include_url("https://www.youtube.com/embed/j-azl7vKjwo")
 
 # Applications
 
-Two real-world examples of usage are provided. The Osiris data [@bvd] example studies company movement between quartiles of sales performance over a 12-year period. The voting example studies party preference changes between the 2016 and 2019 elections.
+Two real-world examples of usage are provided. The Osiris data [@bvd] example studies company movement between quartiles of sales performance over a 12-year period. The voting example studies party preference changes between the 2016 and 2019 elections collected from ADA Dataverse (@aeles).
 
 
 ## Accounting database: osiris
 
-The full Osiris provides information on a total of 122,318 companies.  The dataset included in the package focuses on 790 companies, spanning from 2006 to 2018. The variables in this dataset include year, ID, country, sales, and the binary variable called japan.
+The full Osiris provides information on a total of 122,318 companies. The dataset included in the package focuses on 790 companies, spanning from 2006 to 2018. The variables in this dataset include `year`, `ID`, `country`, `sales`, and the binary variable called `japan`.
 
   @oecd_report reported that companies in the United States have a faster metabolic rate relative to Japanese companies. This means that US companies tend to move up and down in the performance metrics more frequently than Japanese companies. This can be examined using the wallaby and kangaroo plots. The wallaby plot allows the study of entry and exit behavior. The kangaroo plot allows for studying the full movement of companies over time.
   
@@ -512,7 +512,7 @@ knitr::include_url("https://www.youtube.com/embed/TIWtFf6KaCI")
 
 ## Voter behavior
 
-The election survey dataset included in the \CRANpkg{animbook} package focuses on the voter behavior of the 734 individuals who participated in the 2019 survey. The variables in this data are id, year, party, and gender. The ID variable has been de-identified to ensure the privacy of the responders, preventing the identification of the survey participants. The year column is derived from the two different questions in the survey, which answered how the top party performs in keeping the old voters of different genders relative to the 2016 Australian election results. This dataset was collected from ADA Dataverse (@aeles).
+The election survey dataset included in the \CRANpkg{animbook} package focuses on the voter behavior of the 734 individuals who participated in the 2019 survey. The variables in this data are `id`, `year`, `party`, and `gender`. The `id` variable has been de-identified to ensure the privacy of the responders, preventing the identification of the survey participants. The `year` column is derived from the two different questions in the survey, which answered how the top party performs in keeping the old voters of different genders relative to the 2016 Australian election results.
 
 ```{r}
 aeles <- aeles |> 
